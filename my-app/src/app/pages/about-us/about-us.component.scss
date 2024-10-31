@@ -1,0 +1,144 @@
+.backgroundimg {
+  width: 100%;
+  height: auto;
+  display: block;
+  margin-top: -70px;
+}
+
+.text-block {
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-right: auto;
+  margin-left: auto;
+
+  img {
+    width: 300px;
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .text {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 28px;
+  }
+}
+
+.team {
+  padding: 50px 20px;
+}
+
+.team h2 {
+  font-size: 50px;
+  font-weight: bold;
+  margin-left: 15%;
+  margin-bottom: 20px;
+  color: #425BDF;
+}
+
+.team-container {
+  width: 70%;
+  margin-right: auto;
+  margin-left: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.team-member {
+  padding: 20px;
+  text-align: center;
+  width: 40%;
+  transition: transform 0.2s;
+}
+
+.team-member:hover {
+  transform: scale(1.1);
+}
+
+.team-member img {
+  border-radius: 50%;
+  width: 350px;
+  height: 350px;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+
+.team-member h3 {
+  font-size: 32px;
+  font-weight: bold;
+  margin: 10px 0;
+}
+
+.team-member p {
+  font-size: 28px;
+  color: #777;
+}
+
+.questions-block {
+  width: 70%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  margin-right: auto;
+  margin-left: auto;
+
+  .label {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #425BDF;
+  }
+
+  body {
+    font-family: Arial, sans-serif;
+  }
+
+  .faq-item {
+    background-color: #ffffff;
+    border-radius: 25px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    padding: 20px 50px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .faq-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .faq-header span {
+    font-size: 32px;
+    font-weight: bold;
+  }
+
+  .faq-header img {
+    width: 30px;
+    height: 17px;
+    transition: transform 0.3s;
+  }
+
+  .faq-header img.rotated {
+    transform: rotate(180deg);
+  }
+
+  .faq-content {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .faq-content span {
+    font-size: 24px;
+    color: #333;
+  }
+
+}

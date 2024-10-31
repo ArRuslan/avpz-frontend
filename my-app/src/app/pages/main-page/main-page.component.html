@@ -1,0 +1,91 @@
+<div class="background">
+  <img class="backgroundimg" src="assets/images/hotels.png">
+</div>
+<div class="text-block">
+
+  <button class="book-now-button">Book now!</button>
+  <div class="text">
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+    standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
+    type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
+    remaining essentially unchanged.
+  </div>
+</div>
+<div class="container">
+  <main>
+    <div class="events-grid">
+      <div class="event-card">
+        <div class="event-image"></div>
+        <div class="event-info">
+          <h3>Hotel #1</h3>
+          <p>Price starts from ...</p>
+          <button routerLink="/event/:event_id" class="book-button">Explore</button>
+        </div>
+      </div>
+
+      <div class="event-card">
+        <div class="event-image"></div>
+        <div class="event-info">
+          <h3>Hotel #2</h3>
+          <p>Price starts from ...</p>
+          <button routerLink="/event/:event_id" class="book-button">Explore</button>
+        </div>
+      </div>
+
+      <div class="event-card">
+        <div class="event-image"></div>
+        <div class="event-info">
+          <h3>Hotel #3</h3>
+          <p>Price starts from ...</p>
+          <button routerLink="/event/:event_id" class="book-button">Explore</button>
+        </div>
+      </div>
+
+      <div class="event-card">
+        <div class="event-image"></div>
+        <div class="event-info">
+          <h3>Hotel #4</h3>
+          <p>Price starts from ...</p>
+          <button routerLink="/event/:event_id" class="book-button">Explore</button>
+        </div>
+      </div>
+
+      <div class="event-card">
+        <div class="event-image"></div>
+        <div class="event-info">
+          <h3>Hotel #5</h3>
+          <p>Price starts from ...</p>
+          <button routerLink="/event/:event_id" class="book-button">Explore</button>
+        </div>
+      </div>
+
+      <div class="event-card">
+        <div class="event-image"></div>
+        <div class="event-info">
+          <h3>Hotel #6</h3>
+          <p>Price starts from ...</p>
+          <button routerLink="/event/:event_id" class="book-button">Explore</button>
+        </div>
+      </div>
+
+      <div style="width: 100%" class="event-card">
+        <button style="width: 100%" routerLink="/event/:event_id" class="book-button">Explore all hotels</button>
+      </div>
+    </div>
+  </main>
+</div>
+<div id="questions" class="questions-block">
+  <div class="label">Frequently asked questions</div>
+  <div class="faq-item" *ngFor="let item of questions; let i = index" (click)="toggleAnswer(i)">
+    <div class="faq-header">
+      <span>{{item.question}}</span>
+      <img src="assets/images/arrow-down.png" [class.rotated]="item.isVisible"/>
+    </div>
+    <div class="faq-content" *ngIf="item.isVisible">
+      <div>
+        <span>{{item.answer}}</span>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

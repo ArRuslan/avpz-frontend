@@ -1,0 +1,27 @@
+<header #header>
+  <div class="container">
+    <div class="logo">
+      <h1 routerLink="/main-page">HHB</h1>
+    </div>
+    <nav>
+      <ul>
+        <li>
+          <a routerLink="/events">Hotels  <span class="arrow">&#9662;</span></a>
+          <ul class="dropdown-menu">
+            <li><a [routerLink]="['/events', 'luxury']">Luxury rooms</a></li>
+            <li><a [routerLink]="['/events', 'standard']">Standard rooms</a></li>
+            <li><a [routerLink]="['/events', 'premium']">Premium rooms</a></li>
+          </ul>
+        </li>
+        <li><a routerLink="/about_us">About us</a></li>
+        <li><a routerLink="/contacts">Contacts</a></li>
+      </ul>
+    </nav>
+    <div class="auth-links">
+      <a *ngIf="isLoggedIn" routerLink="/profile">My Profile</a>
+      <a *ngIf="isLoggedIn" (click)="logout()">Log out</a>
+      <a *ngIf="!isLoggedIn" routerLink="/login">Log in</a>
+      <a *ngIf="!isLoggedIn" routerLink="/sign_up">Sign up</a>
+    </div>
+  </div>
+</header>

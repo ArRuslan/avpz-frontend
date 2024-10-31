@@ -1,0 +1,26 @@
+<div class="sign-container">
+  <div class="sign-box">
+    <h1>Welcome!</h1>
+    <form (ngSubmit)="register(email.value, password.value, first_name.value, last_name.value)">
+      <div class="input-group">
+        <input #first_name type="text" class="name-input" placeholder="Your name" required />
+      </div>
+      <div class="input-group">
+        <input #last_name type="text" class="surname-input" placeholder="Your surname" required />
+      </div>
+      <div class="input-group">
+        <input #email type="email" class="email-input" placeholder="Your email" required />
+      </div>
+      <div class="input-group">
+        <input #password type="password" class="password-input" placeholder="Create a password" required />
+      </div>
+      <div class="input-group">
+        <re-captcha (resolved)="recaptchaResolved($event)" siteKey="{{environment.recaptchaKey}}"></re-captcha>
+      </div>
+      <button type="submit">Sign up</button>
+      <div class="separator">or</div>
+      <button type="button" class="google-btn" (click)="RegisterWithGoogle()">Continue with Google</button>
+      <p class="agreement-text">By clicking on the “Sign up” button I agree to the Privacy Policy and the Terms of service.</p>
+    </form>
+  </div>
+</div>

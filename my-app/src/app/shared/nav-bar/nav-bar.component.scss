@@ -1,0 +1,31 @@
+.nav-bar-container {
+  margin-right: auto;
+  margin-left: auto;
+  width: 90%;
+  border-radius: 15px;
+  font-size: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .title-block {
+    max-height: 60px;
+    padding: 5px;
+  }
+
+  .main-pages-block {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .account-block {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    color: blue;
+  }
+}
+

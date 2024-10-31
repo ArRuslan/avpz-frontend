@@ -1,0 +1,37 @@
+<div class="event-container">
+  <div class="first-column">
+    <div class="greybox">
+      <img [src]="img" alt="{{event.name}}" />
+    </div>
+    <div class="event-info">
+      <span class="event-title">{{event.name}}</span>
+      <div>
+        <span class="event-text">Date: {{formatDate(event.start_time)}}</span>
+        <span class="event-text">Duration: {{calculateDuration(event.start_time, event.end_time)}}m</span>
+      </div>
+      <span class="event-text">Age limit: 18+</span>
+      <span class="event-text">Director: Quentin Tarantino</span>
+      <span class="event-text">Location: {{event.location.name}}</span>
+    </div>
+  </div>
+  <div class="second-column">
+    <div class="summary-block">
+      <span class="event-title">Summary</span>
+      <p>{{event.description}}</p>
+    </div>
+    <div class="price-block">
+      <div class="title-block">
+        <span class="event-title">Ticket costs</span>
+      </div>
+      <div *ngFor="let plan of event.plans" class="price">
+        <span class="price-label">{{plan.name}}</span>
+        <button (click)="buyTicket(plan)" class="price-number">{{plan.price}}$</button>
+      </div>
+      <div *ngIf="isApproved == 0">Waiting for approval</div>
+      <div *ngIf="isApproved == 1">
+        <ngx-paypal [config]="payPalConfig"></ngx-paypal>
+      </div>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

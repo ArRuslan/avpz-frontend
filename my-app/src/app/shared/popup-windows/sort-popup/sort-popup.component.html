@@ -1,0 +1,21 @@
+<div class="sort-popup">
+  <div class="sort-popup-content">
+    <h2 mat-dialog-title>Order</h2>
+    <div mat-dialog-content class="ascDesc">
+      <label><input type="radio" name="order" value="asc" [(ngModel)]="sortOptions.order"> Ascending</label>
+      <label><input type="radio" name="order" value="desc" [(ngModel)]="sortOptions.order"> Descending</label>
+    </div>
+
+    <h2 mat-dialog-title>Sort Parameter</h2>
+    <div mat-dialog-content>
+      <label><input type="radio" name="sort-parameter" value="name" [(ngModel)]="sortOptions.sortParameter"> Name</label>
+      <label><input type="radio" name="sort-parameter" value="category" [(ngModel)]="sortOptions.sortParameter"> Category</label>
+      <label><input type="radio" name="sort-parameter" value="start_time" [(ngModel)]="sortOptions.sortParameter"> Date</label>
+    </div>
+
+    <div mat-dialog-actions>
+      <button (click)="closePopup()" class="cancel">Cancel</button>
+      <button (click)="applySorting()" class="sort">Sort</button>
+    </div>
+  </div>
+</div>

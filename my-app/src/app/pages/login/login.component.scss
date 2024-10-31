@@ -1,0 +1,96 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #0e3f88;
+}
+
+.login-box {
+  background-color: #f2f2f2;
+  padding: 2rem;
+  border-radius: 50px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 800px; /* Расширение формы */
+}
+
+h1 {
+  margin-bottom: 1.5rem;
+  color: #425BDF;
+  font-size: 3rem;
+}
+
+.input-group {
+
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Центрирование элементов */
+}
+
+.input-group input {
+  width: 43%;
+  padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+  border: 1px solid #ccc;
+  border-radius: 40px;
+  position: relative;
+}
+
+.input-group .email-input {
+  background: #fbfbfb url('/assets/images/mail.png') no-repeat 10px center;
+  background-size: 20px 20px;
+}
+
+.input-group .password-input {
+  background: #fbfbfb url('/assets/images/lock.png') no-repeat 10px center;
+  background-size: 20px 20px;
+}
+
+button {
+  width: 50%; /* Сделать кнопку шире */
+  padding: 0.75rem;
+  border: none;
+  border-radius: 40px;
+  background-color: #425BDF;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+
+}
+
+button.google-btn {
+  background-color: #425BDF;
+  background-repeat: no-repeat;
+  background-position: 70px center;
+  background-size: 25px 25px;
+  background-image: url('/assets/images/google.png');
+}
+
+.separator {
+  margin: 1rem 0;
+  color: #425BDF;
+  font-size: 1.5rem;
+}
+
+.signup-link {
+  margin-top: 1rem;
+}
+
+.signup-link a {
+  color: #3949ab;
+  text-decoration: none;
+}
+button:hover {
+  transform: scale(1.1);
+  transition: transform 0.3s ease;
+  background-color: #35509e;
+}
+
+button:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease;
+}
+button {
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}

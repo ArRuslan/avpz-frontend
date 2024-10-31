@@ -1,0 +1,22 @@
+<div class="login-container">
+  <div class="login-box">
+    <h1>Welcome back!</h1>
+    <form (ngSubmit)="login(email.value, password.value)">
+      <div class="input-group">
+        <input #email type="email" class="email-input" placeholder="Your email" required />
+      </div>
+      <div class="input-group">
+        <input #password type="password" class="password-input" placeholder="Your password" required />
+      </div>
+      <div class="input-group">
+        <re-captcha (resolved)="recaptchaResolved($event)" siteKey="{{environment.recaptchaKey}}"></re-captcha>
+      </div>
+      <button type="submit">Log in</button>
+      <div class="separator">or</div>
+      <button type="button" class="google-btn" (click)="loginWithGoogle()">Continue with Google</button>
+      <div class="signup-link">
+        <a href="/sign_up">Still don't have an account? Sign up!</a>
+      </div>
+    </form>
+  </div>
+</div>

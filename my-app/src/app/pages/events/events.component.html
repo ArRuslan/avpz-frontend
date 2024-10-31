@@ -1,0 +1,32 @@
+<div class="container">
+  <div class="search-container">
+    <div class="search">
+      <input type="text" placeholder="Search" [(ngModel)]="searchText">
+      <button class="search-button" (click)="searchEventsByName()"></button>
+    </div>
+    <button class="filter" (click)="openFilterDialog()">Filter</button>
+    <button class="sort" (click)="openSortDialog()">Sort</button>
+  </div>
+  <main>
+    <div class="events-grid" *ngIf="events.length > 0; else noEventsMessage">
+      <div class="event-card" *ngFor="let event of events">
+        <div class="event-image">
+          <img class="event-image" [src]="event.imageUrl" alt="event_image">
+        </div>
+        <div class="event-info">
+          <h3>{{ event.name }}</h3>
+          <p>{{ event.description }}</p>
+          <button [routerLink]="'/event/' + event.id" class="book-button">Book</button>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #noEventsMessage>
+      <div class="no-events-message">
+        <p>There are no events</p>
+      </div>
+    </ng-template>
+
+  </main>
+</div>
+<app-footer></app-footer>

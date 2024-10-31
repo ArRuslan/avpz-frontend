@@ -1,0 +1,152 @@
+.event-container {
+  display: flex;
+  justify-content: center;
+  gap: 10%;
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+
+.event-title {
+  font-size: 40px;
+  font-weight: bold;
+  margin-bottom: 30px;
+}
+
+.first-column {
+  background: white;
+  border-radius: 50px;
+  width: 555px;
+  height: 958px;
+
+  .greybox {
+    border-radius: 50px;
+    background: #e4d9d9;
+    height: 479px;
+
+    img {
+      height: 479px;
+      width: 555px;
+      border-radius: 50px;
+    }
+  }
+
+  .event-info {
+    padding: 50px 30px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+
+    div {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .event-text {
+      font-size: 28px;
+      text-decoration: underline;
+    }
+  }
+}
+
+.second-column {
+  border-radius: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 555px;
+  height: 958px;
+
+  .summary-block {
+    background: white;
+    padding: 60px 30px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-radius: 50px;
+    height: 466px;
+
+    p {
+      font-size: 28px;
+    }
+  }
+
+  .price-block {
+    background: white;
+    padding: 60px 30px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border-radius: 50px;
+    height: 466px;
+
+    .title-block {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      button {
+        background: #EEEE;
+        border-radius: 50px;
+        font-size: 24px;
+        padding: 5px 20px;
+        margin-bottom: 30px;
+      }
+    }
+
+    .price {
+      display: flex;
+      justify-content: space-between;
+
+      .price-label {
+        font-size: 28px;
+      }
+
+      .price-number {
+        border-radius: 50px;
+        font-size: 24px;
+        padding: 5px 70px;
+        color: #425bdf;
+        border: 5px solid #425bdf;
+      }
+    }
+
+  }
+}
+
+@media (max-width: 768px) {
+  .event-container {
+    flex-wrap: wrap;
+  }
+
+  .first-column {
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .event-container {
+    flex-wrap: wrap;
+  }
+
+  .first-column {
+    background: white;
+    border-radius: 50px;
+    width: 300px;
+
+    .greybox {
+      border-radius: 50px;
+      background: #e4d9d9;
+      height: 300px;
+
+      img {
+        height: 300px;
+        width: 300px;
+        border-radius: 50px;
+      }
+    }
+  }
+
+  .second-column {
+    width: 300px;
+  }
+}

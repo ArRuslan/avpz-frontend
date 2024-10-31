@@ -1,0 +1,162 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px;
+}
+
+.search-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  align-items: center;
+
+  .search {
+    position: relative;
+    flex-grow: 1;
+    margin-right: 10px;
+
+    .search-button {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 20px;
+      height: 20px;
+      background: url('/assets/images/loupe.png') no-repeat center center;
+      background-size: contain;
+      border: none;
+      cursor: pointer;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px 20px 10px 40px; // Відступ для тексту (залишаємо місце для іконки)
+      border: 0;
+      border-radius: 50px;
+      box-sizing: border-box;
+    }
+  }
+
+  .filter, .sort {
+    flex-grow: 0.2;
+    padding: 10px 20px;
+    border: 3px solid #425BDF;
+    border-radius: 50px;
+    background-color: #F1F1F1;
+    color: #425BDF;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  .filter {
+    margin-right: 10px; // Відступ між кнопками
+  }
+
+  .filter:hover, .sort:hover {
+    background-color: #425BDF;
+    color: #F1F1F1;
+  }
+}
+
+main {
+  padding-top: 60px;
+  .events-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 60px;
+
+    @media (max-width: 1190px) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    @media (max-width: 990px) {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 90px;
+    }
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr 1fr;
+      gap: 90px;
+    }
+
+    @media (max-width: 480px) {
+      grid-template-columns: 1fr;
+    }
+
+    .event-card {
+      background-color: rgba(255, 255, 255, 0);
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      .event-image {
+        width: 100%;
+        height: 250px;
+        border-radius: 40px;
+        background-color: #D9D9D9;
+        margin-bottom: 10px;
+      }
+
+      .event-info {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+
+        h3 {
+          font-size: 18px;
+          align-self: start;
+        }
+
+        p {
+          margin-bottom: 10px;
+          color: #666;
+          align-self: start;
+        }
+
+        .book-button {
+          padding: 10px 20px;
+          border: 3px solid #425BDF;
+          border-radius: 50px;
+          background-color: rgba(255, 255, 255, 0);
+          color: #425BDF;
+          cursor: pointer;
+          font-weight: bold;
+        }
+
+        .book-button:hover {
+          background-color: #425BDF;
+          color: #f1f1f1;
+        }
+      }
+    }
+  }
+
+  .no-events-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: lighter;
+    color: rgba(119, 119, 119, 0.6);
+    margin-bottom: 60px;
+    font-size: 24px;
+  }
+}
+
+.page-container {
+  margin-top: 20px;
+  text-align: center;
+
+  .pagination {
+    a {
+      color: #425BDF;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  }
+}

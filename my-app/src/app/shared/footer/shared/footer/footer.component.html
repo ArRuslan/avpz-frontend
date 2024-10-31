@@ -1,0 +1,47 @@
+<footer>
+  <div class="footer-content">
+    <div class="footer-links">
+      <div class="footer-section">
+        <h3>Rooms</h3>
+        <ul>
+          <li><a [routerLink]="['/events', 'cinema']">Standard room</a></li>
+          <li><a [routerLink]="['/events', 'theater']">Luxury room</a></li>
+          <li><a [routerLink]="['/events', 'sport']">Premium room</a></li>
+          <li><a [routerLink]="['/events', 'concert']">BOOK</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Information</h3>
+        <ul>
+          <li><a routerLink="/main-page">Main page</a></li>
+          <li><a routerLink="/about_us">About us</a></li>
+          <li><a routerLink="/main-page" fragment="questions">FAQ</a></li>
+          <li><a routerLink="/contacts">Contact us</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>My profile</h3>
+        <ul>
+          <li *ngIf="isLoggedIn"><a routerLink="/profile">View my profile</a></li>
+          <li *ngIf="!isLoggedIn"><a routerLink="/sign_up">Sign in</a></li>
+          <li *ngIf="!isLoggedIn"><a routerLink="/login">Log in</a></li>
+          <li *ngIf="isLoggedIn"><a href="#" (click)="logout()">Log out</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Join us</h3>
+        <ul class="social-media-icons">
+          <li><a href="https://www.facebook.com" target="_blank"><img src="assets/images/social_media/facebook.png" alt="Facebook"></a></li>
+          <li><a href="https://www.instagram.com" target="_blank"><img src="assets/images/social_media/inst.png" alt="Instagram"></a></li>
+          <li><a href="https://www.whatsapp.com" target="_blank"><img src="assets/images/social_media/whatsapp.png" alt="WhatsApp"></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-download">
+      <a href="https://HHB.ruslan.page/HHB/HHB.apk" download>Click here to download our mobile app</a>
+    </div>
+    <div class="footer-copy">
+      <p>©2024 HHB. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

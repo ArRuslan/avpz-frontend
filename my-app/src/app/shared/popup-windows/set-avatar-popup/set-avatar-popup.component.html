@@ -1,0 +1,13 @@
+<div class="avatar-popup">
+  <div class="avatar-popup-content">
+    <h2 mat-dialog-title>Change Avatar</h2>
+    <div mat-dialog-content class="choose-file">
+      <label for="file">Choose photo for avatar</label>
+      <input type="file" id="file" (change)="handleFileInput($event)">
+    </div>
+    <div mat-dialog-actions>
+      <button class="cancel" (click)="closePopup()">Cancel</button>
+      <button class="save" (click)="saveAvatar()">Save</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,89 @@
+<main>
+  <section class="profile" *ngIf="isUserLoggedIn">
+    <div class="profile-card">
+      <div class="profile-photo" (click)="changeAvatar()">
+        <img class="profile-photo" [src]="avatarUrl" alt="User Avatar" *ngIf="avatarUrl">
+      </div>
+      <div class="profile-info">
+        <div class="profile-edit">
+          <h2>My Profile</h2>
+          <button class="edit-button" (click)="toggleEdit()" *ngIf="!isEditing">Edit</button>
+        </div>
+        <div *ngIf="userData">
+          <div class="input" *ngIf="isEditing">
+            <div class="input-row">
+              <p>Name:</p>
+              <input type="text" [(ngModel)]="userData.first_name">
+            </div>
+            <div class="input-row">
+              <p>Surname:</p>
+              <input type="text" [(ngModel)]="userData.last_name">
+            </div>
+            <div class="input-row">
+              <p>Phone number:</p>
+              <input type="text" [(ngModel)]="userData.phone_number">
+            </div>
+            <div class="input-row">
+              <p>Email:</p>
+              <input type="text" [(ngModel)]="userData.email">
+            </div>
+          </div>
+          <div class="input" *ngIf="!isEditing">
+            <div class="input-row" *ngIf="userData.first_name">
+              <p>Name:</p>
+              <p style="text-decoration: underline;">{{ userData.first_name }}</p>
+            </div>
+            <div class="input-row" *ngIf="userData.last_name">
+              <p>Surname:</p>
+              <p style="text-decoration: underline;">{{ userData.last_name }}</p>
+            </div>
+            <div class="input-row" *ngIf="userData.phone_number">
+              <p>Phone number:</p>
+              <p style="text-decoration: underline;">{{ userData.phone_number }}</p>
+            </div>
+            <div class="input-row" *ngIf="userData.email">
+              <p>Email:</p>
+              <p style="text-decoration: underline;">{{ userData.email }}</p>
+            </div>
+          </div>
+        </div>
+        <button class="save-btn" (click)="saveData()" *ngIf="isEditing">Save</button>
+      </div>
+    </div>
+    <div class="xpay-accounts">
+      <div class="xPay-accounts-edit">
+        <h2>My Pay accounts</h2>
+      </div>
+
+      <div class="account">
+        <h3>Payment accounts</h3>
+        <ul *ngIf="paymentMethods && paymentMethods.length > 0">
+          <li *ngFor="let method of paymentMethods">
+            <p>{{ method.type }}</p>
+            <p>{{ method.card_number }}</p>
+          </li>
+        </ul>
+        <p *ngIf="!paymentMethods || paymentMethods.length === 0">No payment accounts available</p>
+      </div>
+
+    </div>
+    <div class="reservations">
+      <div class="reservations-filter">
+        <h2>My tickets</h2>
+      </div>
+
+      <div *ngFor="let ticket of tickets" class="reservation">
+        <span>{{ ticket.event.name }}</span>
+        <button class="soon-btn" (click)="showTicketInfo(ticket)">{{ formatStartTime(ticket.event.start_time) }}</button>
+      </div>
+
+    </div>
+  </section>
+  <section class="login" *ngIf="!isUserLoggedIn"> <!-- Показується тільки якщо користувач не увійшов у систему -->
+    <h1>You must be logged in to view your profile</h1>
+    <button routerLink="/login" class="log_in">Log in</button>
+    <button routerLink="/sign_up" class="sign_up">Sign up</button>
+  </section>
+</main>
+<app-footer></app-footer>
+

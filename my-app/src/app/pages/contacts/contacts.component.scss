@@ -1,0 +1,118 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&display=swap');
+
+.contact-page {
+  background-color: #F1F1F1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px;
+  font-family: 'Lato', sans-serif;
+
+  .contact-form-section {
+    background-color: #FFFFFF;
+    padding: 40px;
+    border-radius: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    margin-bottom: 5%;
+    text-align: center;
+
+    h1 {
+      margin-bottom: 30px;
+      font-size: 40px;
+      color: #425BDF;
+      font-weight: 900;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .form-group {
+        margin-bottom: 20px;
+        width: 100%;
+        max-width: 500px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+
+        .input-with-icon {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          position: relative;
+
+          label {
+            position: absolute;
+            left: 15px;
+            pointer-events: none;
+
+            .img-em {
+              width: 25px;
+              height: 24px;
+            }
+
+            .img-l {
+              width: 30px;
+              height: 30px;
+            }
+
+            .img-em1 {
+              width: 25px;
+              height: 24px;
+              margin-bottom: 100px;
+            }
+          }
+
+          input, textarea {
+            width: 100%;
+            padding: 10px 10px 10px 50px;
+            border: 4px solid #425BDF;
+            border-radius: 50px;
+            outline: none;
+            font-size: 16px;
+            font-family: 'Lato', sans-serif;
+
+            &:focus {
+              border-color: #425BDF;
+              box-shadow: 0 0 5px rgba(66, 91, 223, 0.5);
+            }
+          }
+
+          textarea {
+            height: 120px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            padding-top: 10px;
+          }
+        }
+      }
+
+      button {
+        width: 100%;
+        max-width: 500px;
+        margin-top: 20px;
+        padding: 10px 20px;
+        background-color: #425BDF;
+        border: 4px solid #425BDF;
+        color: white;
+        border-radius: 50px;
+        cursor: pointer;
+        font-size: 18px;
+        transition: background-color 0.3s, color 0.3s, border 0.3s;
+
+        &:hover {
+          background-color: darken(#425BDF, 10%);
+        }
+
+        &:active {
+          background-color: white;
+          color: #425BDF;
+          border: 4px solid #425BDF;
+        }
+      }
+    }
+  }
+}
