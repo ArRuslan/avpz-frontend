@@ -1,0 +1,89 @@
+.guest-room-container {
+  width: 300px;
+  text-align: center;
+  border: 1px solid #c0c0c0;
+  padding: 20px;
+  margin: 50px auto auto;
+  font-family: Arial, sans-serif;
+
+  h2 {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #c0c0c0;
+    padding-bottom: 10px;
+  }
+
+  .selection-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    .selection-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      label {
+        font-size: 1em;
+        color: #333;
+        margin-bottom: 5px;
+      }
+
+      select {
+        width: 100%;
+        padding: 5px;
+        font-size: 1em;
+      }
+    }
+  }
+
+  .add-room {
+    margin-bottom: 20px;
+
+    a {
+      font-size: 1em;
+      color: #0056b3;
+      text-decoration: none;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .promo-code {
+    margin-bottom: 20px;
+
+    label {
+      display: block;
+      font-size: 1em;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      font-size: 1em;
+    }
+  }
+
+  .update-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 1em;
+    font-weight: bold;
+    background-color: #0056b3;
+    color: white;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #003d82;
+    }
+    &:disabled {
+      background-color: #abccf1;
+    }
+  }
+}

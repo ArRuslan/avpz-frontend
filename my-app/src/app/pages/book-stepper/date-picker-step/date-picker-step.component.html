@@ -1,0 +1,22 @@
+<div class="date-picker">
+  <h2>Check-in — Check-out</h2>
+
+  <div class="calendar-container">
+    <ng-container *ngFor="let month of months">
+      <div class="month">
+        <h3>{{ month.name }}</h3>
+        <div class="days-grid">
+          <div class="day" *ngFor="let day of month.days"
+               [class.selected]="isSelected(day)"
+               [class.range]="isInRange(day)"
+               (click)="selectDate(day)">
+            <span>{{
+                formatedDay(day) }}</span>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+
+  <p class="note">The above rates are minimum starting rates</p>
+</div>

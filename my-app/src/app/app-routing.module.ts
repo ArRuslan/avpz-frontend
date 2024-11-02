@@ -8,6 +8,7 @@ import { ContactsComponent } from './pages/contacts/contacts.component';
 import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { LoginComponent } from './pages/login/login.component';
 import {MyProfileComponent} from "./pages/my-profile/my-profile.component";
+import {BookStepperComponent} from "./pages/book-stepper/book-stepper.component";
 
 const routes: Routes = [
   { path: 'main-page', component: MainPageComponent },
@@ -16,6 +17,7 @@ const routes: Routes = [
   { path: 'event/:event_id', component: EventDetailComponent },
   { path: 'about_us', component: AboutUsComponent },
   { path: 'contacts', component: ContactsComponent },
+  { path: 'book-room', component: BookStepperComponent },
   { path: 'sign_up', component: SignUpComponent },
   { path: 'login', component: LoginComponent },
   { path: 'profile', component: MyProfileComponent },

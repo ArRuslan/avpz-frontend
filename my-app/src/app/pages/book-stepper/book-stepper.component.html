@@ -1,0 +1,18 @@
+<ng-container *ngIf="selectedStep == 0">
+<app-guests-step
+(moveToNextStep)="changeStep($event)"></app-guests-step>
+</ng-container>
+
+<ng-container *ngIf="selectedStep == 1">
+<app-date-picker-step></app-date-picker-step>
+</ng-container>
+
+<ng-container *ngIf="selectedStep == 2">
+<app-room-pick-step></app-room-pick-step>
+</ng-container>
+
+<ng-container *ngIf="selectedStep == 3">
+<app-confirmation-step></app-confirmation-step>
+</ng-container>
+
+<app-footer></app-footer>

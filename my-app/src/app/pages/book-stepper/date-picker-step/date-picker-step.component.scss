@@ -1,0 +1,69 @@
+.date-picker {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  margin: 0 auto;
+
+  h2 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333;
+  }
+
+  .calendar-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .month {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 200px;
+
+    h3 {
+      font-size: 1.2em;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 5px;
+    }
+
+    .day {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1em;
+      color: #333;
+      transition: background 0.3s ease;
+
+      &.selected {
+        background-color: #0066cc;
+        color: #fff;
+      }
+
+      &.range {
+        background-color: #cce5ff;
+      }
+
+      &:hover {
+        background-color: #f0f0f0;
+      }
+    }
+  }
+
+  .note {
+    font-size: 0.9em;
+    color: #666;
+    margin-top: 20px;
+  }
+}

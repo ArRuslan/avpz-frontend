@@ -2,13 +2,16 @@
 
 footer {
   background-color: #102542;
-  background-size: cover;
   color: white;
   width: 100%;
   padding-top: 60px;
   padding-bottom: 60px;
   text-align: center;
   font-family: 'Lato', sans-serif;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
 
   .footer-content {
     display: flex;
