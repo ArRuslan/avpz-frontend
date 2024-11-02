@@ -27,7 +27,7 @@ export class SignUpComponent {
   }
   sendGoogleCallbackParams(code: string, state: string) {
     const requestBody = { code, state };
-    this.http.post<{ token: string }>(`${environment.apiBaseUrl}/api/auth/google/callback`, requestBody).subscribe({
+    this.http.post<{ token: string }>(`${environment.apiBaseUrl}/auth/google/callback`, requestBody).subscribe({
       next: (response) => {
         console.log('Google callback response:', response);
         localStorage.setItem('token', response.token);
@@ -54,7 +54,7 @@ export class SignUpComponent {
       last_name: lastName,
       captcha_key: this.captchaKey
     };
-    this.http.post<SignIn>(`${environment.apiBaseUrl}/api/auth/register`, requestBody).subscribe({
+    this.http.post<SignIn>(`${environment.apiBaseUrl}/auth/register`, requestBody).subscribe({
       next: (response) => {
         console.log('Registration successful', response);
         localStorage.setItem('token', response.token);
@@ -67,7 +67,7 @@ export class SignUpComponent {
     });
   }
   RegisterWithGoogle() {
-    this.http.get<{ url: string }>(`${environment.apiBaseUrl}/api/auth/google`).subscribe({
+    this.http.get<{ url: string }>(`${environment.apiBaseUrl}/auth/google`).subscribe({
       next: (response) => {
         console.log('URL for Google login:', response.url);
         window.location.href = response.url;

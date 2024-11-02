@@ -5,7 +5,7 @@
 export const environment = {
   production: false,
   recaptchaKey: "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI",
-  apiBaseUrl: 'https://HHB.ruslan.page'
+  apiBaseUrl: 'https://hhb-testing.ruslan.page'
 };
 
 /*

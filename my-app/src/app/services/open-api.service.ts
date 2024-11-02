@@ -24,7 +24,7 @@ export class OpenApiService {
     });
     console.log(localStorage.getItem('token'));
 
-    return this.http.get<any>(`${this.apiUrl}/api/users/me`, { headers: headers });
+    return this.http.get<any>(`${this.apiUrl}/users/me`, { headers: headers });
   }
 
   getEventInfo(id: number): Observable<any> {
@@ -32,7 +32,7 @@ export class OpenApiService {
       'Authorization': `${localStorage.getItem('token')}`
     });
 
-    return this.http.get<any>(`${this.apiUrl}/api/events/${id}?with_plans=true`, { headers: headers });
+    return this.http.get<any>(`${this.apiUrl}/hotels/${id}`, { headers: headers });
   }
 
   updateUserProfile(userData: any): Observable<any> {
@@ -41,18 +41,21 @@ export class OpenApiService {
     });
     console.log(localStorage.getItem('token'));
 
-    return this.http.patch<any>(`${this.apiUrl}/api/users/me`, userData, { headers: headers });
+    return this.http.patch<any>(`${this.apiUrl}/users/me`, userData, { headers: headers });
   }
 
-  searchEvents(searchData: any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/api/events/search`, searchData);
+  searchHotels(): Observable<any> {
+    const headers = new HttpHeaders({
+    'Authorization': `${localStorage.getItem('token')}`
+  });
+    return this.http.get<any>(`${this.apiUrl}/hotels`, { headers: headers });
   }
 
   buyTicket(ticketInfo: any): Observable<any> {
     const headers = new HttpHeaders({
       'Authorization': `${localStorage.getItem('token')}`
     });
-    return this.http.post<any>(`${this.apiUrl}/api/tickets/request-payment`, ticketInfo, { headers: headers });
+    return this.http.post<any>(`${this.apiUrl}/tickets/request-payment`, ticketInfo, { headers: headers });
   }
 
   getVerification(ticket_id: number): Observable<any> {
@@ -60,7 +63,7 @@ export class OpenApiService {
       'Authorization': `${localStorage.getItem('token')}`
     });
 
-    return this.http.get<any>(`${this.apiUrl}/api/tickets/${ticket_id}/check-verification`, { headers: headers });
+    return this.http.get<any>(`${this.apiUrl}/tickets/${ticket_id}/check-verification`, { headers: headers });
   }
 
   checkPayment(ticket_id: number): Observable<any> {
@@ -68,7 +71,7 @@ export class OpenApiService {
       'Authorization': `${localStorage.getItem('token')}`
     });
 
-    return this.http.post<any>(`${this.apiUrl}/api/tickets/${ticket_id}/check-payment`, {}, { headers: headers });
+    return this.http.post<any>(`${this.apiUrl}/tickets/${ticket_id}/check-payment`, {}, { headers: headers });
   }
 
   sortEvents(sort_by: string, sort_direction: string): Observable<any> {
@@ -77,7 +80,7 @@ export class OpenApiService {
       .set('sort_by', sort_by)
       .set('sort_direction', sort_direction);
 
-    return this.http.post<any>(`${this.apiUrl}/api/events/search`, {},{ params });
+    return this.http.post<any>(`${this.apiUrl}/events/search`, {},{ params });
   }
 
   getUserAvatar(userData: any): string | undefined {
@@ -101,7 +104,7 @@ export class OpenApiService {
     // Перевірка, чи image_id події не null
     if (event.image_id !== null) {
       // Якщо image_id не null, виконайте запит для отримання URL фотографії
-      return `${this.apiUrl}/HHB/events/${event.image_id}.jpg`;
+      return `${this.apiUrl}/HHB//${event.image_id}.jpg`;
     } else {
       // Якщо image_id null, поверніть порожній результат
       return "";
@@ -118,7 +121,7 @@ export class OpenApiService {
       password: password
     };
 
-    return this.http.patch<any>(`${this.apiUrl}/api/users/me`, requestBody, { headers: headers });
+    return this.http.patch<any>(`${this.apiUrl}/users/me`, requestBody, { headers: headers });
   }
 
   getUserPaymentMethods(): Observable<any> {
@@ -126,7 +129,7 @@ export class OpenApiService {
       'Authorization': `${localStorage.getItem('token')}`
     });
     // Виконайте запит GET до API для отримання методів оплати користувача
-    return this.http.get(`${this.apiUrl}/api/users/me/payment`, { headers: headers });
+    return this.http.get(`${this.apiUrl}/users/me/payment`, { headers: headers });
   }
 
 
@@ -136,6 +139,6 @@ export class OpenApiService {
       'Authorization': `${localStorage.getItem('token')}`
     });
     // Виконайте запит GET до API для отримання методів оплати користувача
-    return this.http.get<TicketData[]>(`${this.apiUrl}/api/tickets`, { headers: headers });
+    return this.http.get<TicketData[]>(`${this.apiUrl}/tickets`, { headers: headers });
   }
 }

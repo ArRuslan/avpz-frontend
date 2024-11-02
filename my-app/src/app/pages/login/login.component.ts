@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit {
   }
   sendGoogleCallbackParams(code: string, state: string) {
     const requestBody = { code, state };
-    this.http.post<{ token: string }>(`${environment.apiBaseUrl}/api/auth/google/callback`, requestBody).subscribe({
+    this.http.post<{ token: string }>(`${environment.apiBaseUrl}/auth/google/callback`, requestBody).subscribe({
       next: (response) => {
         console.log('Google callback response:', response);
         localStorage.setItem('token', response.token);
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
       captcha_key: this.captchaKey
     };
 
-    this.http.post<LoginResponse>(`${environment.apiBaseUrl}/api/auth/login`, requestBody).subscribe({
+    this.http.post<LoginResponse>(`${environment.apiBaseUrl}/auth/login`, requestBody).subscribe({
       next: (response) => {
         console.log('Login successful', response);
         localStorage.setItem('token', response.token);
@@ -70,7 +70,7 @@ export class LoginComponent implements OnInit {
 
   }
   loginWithGoogle() {
-    this.http.get<{ url: string }>(`${environment.apiBaseUrl}/api/auth/google`).subscribe({
+    this.http.get<{ url: string }>(`${environment.apiBaseUrl}/auth/google`).subscribe({
       next: (response) => {
         console.log('URL for Google login:', response.url);
         window.location.href = response.url;

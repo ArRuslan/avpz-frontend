@@ -50,17 +50,9 @@ export class EventsComponent {
   }
 
   getAllEvents(): void {
-    const searchData: {
-      sort_by: string,
-      sort_direction: string,
-      with_plans: boolean
-    } = {
-      sort_by: 'start_time',
-      sort_direction: 'asc',
-      with_plans: false
-    };
 
-    this.openApiService.searchEvents(searchData).subscribe(
+
+    this.openApiService.searchHotels().subscribe(
       (response) => {
         this.events = response;
         console.log(this.events);
@@ -79,7 +71,7 @@ export class EventsComponent {
       name: eventName
     };
 
-    this.openApiService.searchEvents(searchData).subscribe(
+    this.openApiService.searchHotels().subscribe(
       (response) => {
         this.events = response;
         console.log(this.events);
@@ -148,7 +140,7 @@ export class EventsComponent {
       searchData.category = filters.category;
     }
 
-    this.openApiService.searchEvents(searchData).subscribe(
+    this.openApiService.searchHotels().subscribe(
       (response) => {
         this.events = response;
         console.log(this.events);
@@ -168,7 +160,7 @@ export class EventsComponent {
       category: category
     };
 
-    this.openApiService.searchEvents(searchData).subscribe(
+    this.openApiService.searchHotels().subscribe(
       (response) => {
         this.events = response;
         console.log(this.events);
