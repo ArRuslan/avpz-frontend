@@ -29,5 +29,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   logout(): void {
     localStorage.removeItem('token');
     this.isLoggedIn = false;
+    this.router.navigate(['/login']);
   }
 }

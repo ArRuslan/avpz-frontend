@@ -42,18 +42,35 @@ export class SignUpComponent {
     this.captchaKey = response;
   }
 
-  register(email: string, password: string, firstName: string, lastName: string): void {
+  register(
+    email: string,
+    password: string,
+    firstName: string,
+    lastName: string,
+    phone: any,
+    address: string,
+    city: string,
+    country: string,
+    postalCode: any
+  ): void {
     if (!this.captchaKey) {
       console.error('Captcha not resolved');
       return;
     }
+
     const requestBody = {
       email: email,
       password: password,
       first_name: firstName,
       last_name: lastName,
+      phone: phone,
+      address: address,
+      city: city,
+      country: country,
+      postal_code: postalCode,
       captcha_key: this.captchaKey
     };
+
     this.http.post<SignIn>(`${environment.apiBaseUrl}/auth/register`, requestBody).subscribe({
       next: (response) => {
         console.log('Registration successful', response);
@@ -66,6 +83,9 @@ export class SignUpComponent {
       }
     });
   }
+
+
+
   RegisterWithGoogle() {
     this.http.get<{ url: string }>(`${environment.apiBaseUrl}/auth/google`).subscribe({
       next: (response) => {

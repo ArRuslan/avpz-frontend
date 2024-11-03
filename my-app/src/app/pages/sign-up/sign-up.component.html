@@ -1,7 +1,15 @@
 <div class="sign-container">
   <div class="sign-box">
     <h1>Welcome!</h1>
-    <form (ngSubmit)="register(email.value, password.value, first_name.value, last_name.value)">
+    <form (ngSubmit)="register(email.value,
+     password.value,
+      first_name.value,
+       last_name.value,
+       phone.value,
+       address.value,
+       city.value,
+       country.value,
+       postalCode.value)">
       <div class="input-group">
         <input #first_name type="text" class="name-input" placeholder="Your name" required />
       </div>
@@ -10,6 +18,21 @@
       </div>
       <div class="input-group">
         <input #email type="email" class="email-input" placeholder="Your email" required />
+      </div>
+      <div class="input-group">
+        <input #phone type="tel" placeholder="Your phone number" />
+      </div>
+      <div class="input-group">
+        <input #address type="text" placeholder="Your address" />
+      </div>
+      <div class="input-group">
+        <input #city type="text" placeholder="Your city" />
+      </div>
+      <div class="input-group">
+        <input #country type="text" placeholder="Your country" />
+      </div>
+      <div class="input-group">
+        <input #postalCode type="text" placeholder="Your postal code" />
       </div>
       <div class="input-group">
         <input #password type="password" class="password-input" placeholder="Create a password" required />
