@@ -18,5 +18,7 @@
     </ng-container>
   </div>
 
-  <p class="note">The above rates are minimum starting rates</p>
+  <button class="update-button"
+          [disabled]="!checkOutDate || !checkInDate"
+          (click)="updateDates()">Update Guests & Rooms</button>
 </div>

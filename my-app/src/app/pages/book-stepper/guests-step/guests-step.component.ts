@@ -6,7 +6,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
   styleUrls: ['./guests-step.component.scss']
 })
 export class GuestsStepComponent implements OnInit {
-  @Output() moveToNextStep = new EventEmitter<number>();
+  @Output() moveToNextStep = new EventEmitter<{ number: number, guests: number }>();
   adults = 0;
   children = 0;
   rooms = 0;
@@ -18,9 +18,10 @@ export class GuestsStepComponent implements OnInit {
 
 
   updateGuestsAndRooms(): void {
-    console.log(`Guests: ${this.adults} adults, ${this.children} children`);
+    const totalGuests = +this.adults + +this.children;
+    console.log(`Guests: ${totalGuests}`);
     console.log(`Rooms: ${this.rooms}`);
     console.log(`Promo Code: ${this.promoCode}`);
-    this.moveToNextStep.emit(1)
+    this.moveToNextStep.emit({ number: 1, guests: totalGuests})
   }
 }

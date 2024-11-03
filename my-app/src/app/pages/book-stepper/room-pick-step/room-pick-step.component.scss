@@ -1,0 +1,134 @@
+.room-pick {
+  text-align: center;
+  font-family: Arial, sans-serif;
+  overflow-y: auto;
+  height: 80vh;
+
+
+  h2 {
+    font-size: 1.8em;
+    margin-bottom: 20px;
+  }
+
+  .room-card {
+    width: 70%;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    align-items: flex-start;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .room-image {
+    width: 200px;
+    height: auto;
+    border-radius: 8px;
+    margin-right: 20px;
+  }
+
+  .room-info {
+    flex: 2;
+
+    h3 {
+      font-size: 1.5em;
+      margin: 0;
+    }
+
+    .availability {
+      font-size: 0.9em;
+      color: red;
+      font-weight: bold;
+      margin-top: 5px;
+    }
+
+    p {
+      margin: 10px 0;
+    }
+
+    .room-details {
+      display: flex;
+      gap: 10px;
+      font-size: 0.9em;
+
+      span {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+    }
+
+    .details-link {
+      color: #0073e6;
+      text-decoration: underline;
+      font-size: 0.9em;
+    }
+  }
+
+  .room-rates {
+    flex: 1;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 5px;
+
+        input[type="radio"] {
+          margin-right: 10px;
+        }
+
+        .rate-price {
+          font-weight: bold;
+        }
+
+        .rate-details {
+          color: #0073e6;
+          font-size: 0.9em;
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .view-all-rates {
+      color: #0073e6;
+      font-size: 0.9em;
+      text-decoration: underline;
+      display: block;
+      margin-top: 10px;
+    }
+  }
+
+  .booking {
+    margin-left: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    .price {
+      font-size: 1.5em;
+      color: #0073e6;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .book-button {
+      background-color: #0073e6;
+      color: #fff;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1em;
+      font-weight: bold;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import { addMonths, format, startOfMonth, endOfMonth, eachDayOfInterval } from 'date-fns';
 
 @Component({
@@ -7,6 +7,7 @@ import { addMonths, format, startOfMonth, endOfMonth, eachDayOfInterval } from '
   styleUrls: ['./date-picker-step.component.scss']
 })
 export class DatePickerStepComponent implements OnInit {
+  @Output() moveToNextStep = new EventEmitter<{ number: number, checkIn: any, checkOut: any }>();
   currentDate = new Date();
   checkInDate: Date | null = null;
   checkOutDate: Date | null = null;
@@ -56,7 +57,11 @@ export class DatePickerStepComponent implements OnInit {
     );
   }
 
-  formatedDay(day: any) {
-    format(day, 'dd')
+  formatedDay(day: Date): string {
+    return format(day, 'dd');
+  }
+
+  updateDates(): void {
+    this.moveToNextStep.emit({number: 2, checkIn: this.checkInDate, checkOut: this.checkOutDate})
   }
 }
