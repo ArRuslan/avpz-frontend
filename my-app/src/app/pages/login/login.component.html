@@ -1,12 +1,12 @@
 <div class="login-container">
   <div class="login-box">
     <h1>Welcome back!</h1>
-    <form (ngSubmit)="login(email.value, password.value)">
-      <div class="input-group">
-        <input #email type="email" class="email-input" placeholder="Your email" required />
+    <form [formGroup]="loginForm" (ngSubmit)="login()">
+      <div class="input-group" [class.invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+        <input formControlName="email" type="email" class="email-input" placeholder="Your email" required />
       </div>
-      <div class="input-group">
-        <input #password type="password" class="password-input" placeholder="Your password" required />
+      <div class="input-group" [class.invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+        <input formControlName="password" type="password" class="password-input" placeholder="Your password" required />
       </div>
       <div class="input-group">
         <re-captcha (resolved)="recaptchaResolved($event)" siteKey="{{environment.recaptchaKey}}"></re-captcha>

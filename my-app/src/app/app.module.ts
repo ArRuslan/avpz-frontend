@@ -19,7 +19,7 @@ import {FilterPopupComponent} from './shared/popup-windows/filter-popup/filter-p
 import {SortPopupComponent} from './shared/popup-windows/sort-popup/sort-popup.component';
 import {MatDialogModule} from '@angular/material/dialog';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './shared/header/shared/header/header.component';
 import {FooterComponent} from './shared/footer/shared/footer/footer.component';
 import {AnnouncementPopupComponent} from './shared/popup-windows/announcement-popup/announcement-popup.component';
@@ -31,6 +31,7 @@ import { GuestsStepComponent } from './pages/book-stepper/guests-step/guests-ste
 import { DatePickerStepComponent } from './pages/book-stepper/date-picker-step/date-picker-step.component';
 import { RoomPickStepComponent } from './pages/book-stepper/room-pick-step/room-pick-step.component';
 import { ConfirmationStepComponent } from './pages/book-stepper/confirmation-step/confirmation-step.component';
+import {MatSnackBarModule} from "@angular/material/snack-bar";
 
 @NgModule({
   declarations: [
@@ -64,9 +65,11 @@ import { ConfirmationStepComponent } from './pages/book-stepper/confirmation-ste
     RecaptchaModule,
     MatDialogModule,
     BrowserAnimationsModule,
+    MatSnackBarModule,
     FormsModule,
     NgxPayPalModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

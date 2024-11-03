@@ -37,6 +37,10 @@ h1 {
   position: relative;
 }
 
+.input-group.invalid input {
+  border: 1px solid red;
+}
+
 .input-group .email-input {
   background: #fbfbfb url('/assets/images/mail.png') no-repeat 10px center;
   background-size: 20px 20px;

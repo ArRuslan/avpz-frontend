@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
-import { environment } from '../../../environments/environment';
 import { Router } from '@angular/router';
 import { HttpClient } from "@angular/common/http";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import {environment} from "../../../environments/environment";
 
 interface SignIn {
   token: string;
 }
+
 
 @Component({
   selector: 'app-sign-up',
@@ -13,8 +16,27 @@ interface SignIn {
   styleUrls: ['./sign-up.component.scss']
 })
 export class SignUpComponent {
+  signUpForm: FormGroup;
   captchaKey: string | null = null;
-  constructor(private http: HttpClient, private router: Router) { }
+
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private fb: FormBuilder,
+    private snackBar: MatSnackBar
+  ) {
+    this.signUpForm = this.fb.group({
+      first_name: ['', [Validators.required, Validators.minLength(2)]],
+      last_name: ['', [Validators.required, Validators.minLength(2)]],
+      email: ['', [Validators.required, Validators.email]],
+      phone: ['', [Validators.pattern(/^\+?[0-9]*$/)]],
+      address: [''],
+      city: [''],
+      country: [''],
+      postalCode: [''],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
+  }
 
   ngOnInit(): void {
     const urlParams = new URLSearchParams(window.location.search);
@@ -25,78 +47,71 @@ export class SignUpComponent {
       this.sendGoogleCallbackParams(code, state);
     }
   }
+
   sendGoogleCallbackParams(code: string, state: string) {
     const requestBody = { code, state };
     this.http.post<{ token: string }>(`${environment.apiBaseUrl}/auth/google/callback`, requestBody).subscribe({
       next: (response) => {
-        console.log('Google callback response:', response);
         localStorage.setItem('token', response.token);
+        this.showToast('Google login successful', 'success');
       },
-      error: (error) => {
-        console.error('Google callback failed', error);
+      error: () => {
+        this.showToast('Google login failed', 'error');
       }
     });
   }
+
   recaptchaResolved(response: string) {
-    console.log(`Resolved captcha with response: ${response}`);
     this.captchaKey = response;
   }
 
-  register(
-    email: string,
-    password: string,
-    firstName: string,
-    lastName: string,
-    phone: any,
-    address: string,
-    city: string,
-    country: string,
-    postalCode: any
-  ): void {
+  register(): void {
     if (!this.captchaKey) {
-      console.error('Captcha not resolved');
+      console.log(1)
+      this.showToast('Please complete the captcha', 'error');
+      return;
+    }
+    if (this.signUpForm.invalid) {
+      console.log(2)
+      this.showToast('Please fill all required fields correctly', 'error');
       return;
     }
 
     const requestBody = {
-      email: email,
-      password: password,
-      first_name: firstName,
-      last_name: lastName,
-      phone: phone,
-      address: address,
-      city: city,
-      country: country,
-      postal_code: postalCode,
+      ...this.signUpForm.value,
       captcha_key: this.captchaKey
     };
 
     this.http.post<SignIn>(`${environment.apiBaseUrl}/auth/register`, requestBody).subscribe({
       next: (response) => {
-        console.log('Registration successful', response);
         localStorage.setItem('token', response.token);
-        console.log(response.token);
         this.router.navigate(['/main-page']);
+        this.showToast('Registration successful', 'success');
       },
-      error: (error) => {
-        console.error('Registration failed', error);
+      error: () => {
+        this.showToast('Registration failed', 'error');
       }
     });
   }
-
-
 
   RegisterWithGoogle() {
     this.http.get<{ url: string }>(`${environment.apiBaseUrl}/auth/google`).subscribe({
       next: (response) => {
-        console.log('URL for Google login:', response.url);
         window.location.href = response.url;
       },
-      error: (error) => {
-        console.error('Google login failed', error);
+      error: () => {
+        this.showToast('Failed to connect with Google', 'error');
       }
     });
   }
 
+  private showToast(message: string, type: 'success' | 'error') {
+    console.log("WORK")
+    this.snackBar.open(message, 'Close', {
+      duration: 3000,
+      panelClass: type
+    });
+  }
   protected readonly environment = environment;
 }
+

@@ -2,11 +2,13 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100%;
   background-color: #0e3f88;
 }
 
 .sign-box {
+  margin-top: 3%;
+  margin-bottom: 3%;
   background-color: #f2f2f2;
   padding: 2rem;
   border-radius: 50px;
@@ -16,17 +18,22 @@
 }
 
 h1 {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
   color: #425BDF;
-  font-size: 3rem;
+  font-size: 2rem;
 }
+
+.input-group.invalid input {
+  border: 1px solid red;
+}
+
 
 .input-group {
 
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
-  justify-content: center; /* Центрирование элементов */
+  justify-content: center;
 }
 
 .input-group input {
@@ -63,7 +70,6 @@ button {
   color: #fff;
   font-size: 1rem;
   cursor: pointer;
-
 }
 
 button.google-btn {
@@ -75,9 +81,9 @@ button.google-btn {
 }
 
 .separator {
-  margin: 1rem 0;
+  margin: 0.5rem 0;
   color: #425BDF;
-  font-size: 1.5rem;
+  font-size: 1rem;
 }
 
 .g-recaptcha {
