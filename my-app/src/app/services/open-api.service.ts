@@ -80,7 +80,7 @@ export class OpenApiService {
       .set('sort_by', sort_by)
       .set('sort_direction', sort_direction);
 
-    return this.http.post<any>(`${this.apiUrl}/events/search`, {},{ params });
+    return this.http.post<any>(`${this.apiUrl}/hotels/search`, {},{ params });
   }
 
   getUserAvatar(userData: any): string | undefined {
@@ -94,7 +94,7 @@ export class OpenApiService {
 
   getEventImage(id: any): string | undefined {
     if (id !== null) {
-      return `${this.apiUrl}/HHB/events/${id}.jpg`;
+      return `${this.apiUrl}/HHB/hotels/${id}.jpg`;
     } else {
       return undefined;
     }

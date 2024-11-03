@@ -12,8 +12,8 @@ import {BookStepperComponent} from "./pages/book-stepper/book-stepper.component"
 
 const routes: Routes = [
   { path: 'main-page', component: MainPageComponent },
-  { path: 'events', component: EventsComponent },
-  { path: 'events/:category', component: EventsComponent },
+  { path: 'hotels', component: EventsComponent },
+  { path: 'hotels/:category', component: EventsComponent },
   { path: 'event/:event_id', component: EventDetailComponent },
   { path: 'about_us', component: AboutUsComponent },
   { path: 'contacts', component: ContactsComponent },
