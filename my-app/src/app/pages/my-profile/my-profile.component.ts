@@ -17,10 +17,17 @@ export class MyProfileComponent implements OnInit {
   userData: any; // Змінна для збереження інформації про користувача
   isEditing: boolean = false;
   avatarUrl: string | undefined;
-  tickets: TicketData[] = [];
   files: FileList | undefined;
   isUserLoggedIn: boolean | undefined;
-  paymentMethods: any[] = [];
+  paymentMethods = [
+    { type: 'Activate account', card_number: '4444-4444-4444-4444', isActive: true },
+    { type: 'Activate account', card_number: '4444-4444-4444-4444', isActive: false },
+  ];
+  tickets = [
+    { room: 'Room #1', status: 'Soon' },
+    { room: 'Room #2', status: 'Soon' },
+    { room: 'Room #3', status: 'Is Over' },
+  ];
 
   constructor(public dialog: MatDialog, private openApiService: OpenApiService) { }
 
@@ -62,7 +69,7 @@ export class MyProfileComponent implements OnInit {
   getUserPaymentMethods(): void {
     this.openApiService.getUserPaymentMethods().subscribe(
       (response) => {
-        this.paymentMethods = response;
+      //  this.paymentMethods = response;
         console.log(this.paymentMethods);
       },
       (error) => {
@@ -74,7 +81,7 @@ export class MyProfileComponent implements OnInit {
   getUserTickets(): void {
     this.openApiService.getUserTickets().subscribe(
       (response) => {
-        this.tickets = response;
+       // this.tickets = response;
         console.log(this.tickets);
       },
       (error) => {
@@ -204,7 +211,7 @@ export class MyProfileComponent implements OnInit {
     }
   }
 
-  showTicketInfo(ticket: TicketData) {
+  showTicketInfo(ticket: any) {
     let message = '<p>Event name: ' + ticket.event.name + '</p>'+
                           '<p>Category: ' + ticket.event.category + '</p>'+
                           '<p>City ' + ticket.event.city + '</p>'+

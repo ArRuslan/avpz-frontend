@@ -92,7 +92,6 @@ main {
       }
     }
 
-    .xpay-accounts,
     .reservations {
       display: flex;
       flex-wrap: wrap;
@@ -116,7 +115,6 @@ main {
         display: flex;
         justify-content: space-between;
         align-items: start;
-        margin-bottom: 20px;
         font-weight: lighter;
         font-size: 18px;
 
@@ -138,11 +136,7 @@ main {
       }
     }
 
-    .xpay-accounts {
-      grid-column-start: 2;
-      grid-row-start: 1;
-      grid-row-end: 2;
-    }
+
 
     .reservations {
       grid-column-start: 2;
@@ -204,3 +198,57 @@ main {
   }
 }
 
+
+.xpay-accounts {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 20px;
+
+  h2 {
+    margin-bottom: 10px;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+
+      button {
+        padding: 5px 10px;
+        width: 30%;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: bold;
+        border: 3px solid #425BDF;
+        background-color: rgba(255, 255, 255, 0);
+        color: #425BDF;
+
+        &:hover {
+          background-color: #425BDF;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.payment-method-block {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.payment-method-text {
+  display: flex;
+  flex-direction: column;
+}

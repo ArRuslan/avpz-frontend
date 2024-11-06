@@ -2,7 +2,7 @@
   <section class="profile" *ngIf="isUserLoggedIn">
     <div class="profile-card">
       <div class="profile-photo" (click)="changeAvatar()">
-        <img class="profile-photo" [src]="avatarUrl" alt="User Avatar" *ngIf="avatarUrl">
+        <img class="profile-photo" [src]="avatarUrl" *ngIf="avatarUrl">
       </div>
       <div class="profile-info">
         <div class="profile-edit">
@@ -51,30 +51,28 @@
       </div>
     </div>
     <div class="xpay-accounts">
-      <div class="xPay-accounts-edit">
-        <h2>My Pay accounts</h2>
-      </div>
-
-      <div class="account">
-        <h3>Payment accounts</h3>
-        <ul *ngIf="paymentMethods && paymentMethods.length > 0">
-          <li *ngFor="let method of paymentMethods">
-            <p>{{ method.type }}</p>
-            <p>{{ method.card_number }}</p>
-          </li>
-        </ul>
-        <p *ngIf="!paymentMethods || paymentMethods.length === 0">No payment accounts available</p>
-      </div>
-
+      <h2>My xPay accounts</h2>
+      <ul>
+        <li *ngFor="let method of paymentMethods">
+          <div class="payment-method-block">
+            <div  class="payment-method-text">
+              <span>{{ method.type }}</span>
+              <span>{{ method.card_number }}</span>
+            </div>
+            <button class="soon-btn">{{ method.isActive ? 'Block' : 'Unlock' }}</button>
+          </div>
+        </li>
+      </ul>
     </div>
+
     <div class="reservations">
       <div class="reservations-filter">
-        <h2>My reservations</h2>
+        <h2>My tickets</h2>
       </div>
 
       <div *ngFor="let ticket of tickets" class="reservation">
-        <span>{{ ticket.event.name }}</span>
-        <button class="soon-btn" (click)="showTicketInfo(ticket)">{{ formatStartTime(ticket.event.start_time) }}</button>
+        <b>{{ ticket.room }}</b>
+        <button class="soon-btn" (click)="showTicketInfo(ticket)">{{ ticket.status }}</button>
       </div>
 
     </div>
