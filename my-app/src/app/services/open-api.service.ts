@@ -24,7 +24,7 @@ export class OpenApiService {
     });
     console.log(localStorage.getItem('token'));
 
-    return this.http.get<any>(`${this.apiUrl}/users/me`, { headers: headers });
+    return this.http.get<any>(`${this.apiUrl}/user/info`, { headers: headers });
   }
 
   getEventInfo(id: number): Observable<any> {
