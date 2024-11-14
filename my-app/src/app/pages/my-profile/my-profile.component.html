@@ -21,11 +21,11 @@
             </div>
             <div class="input-row">
               <p>Phone number:</p>
-              <input type="text" [(ngModel)]="userData.phone_number">
+              <input type="number" [(ngModel)]="userData.phone_number">
             </div>
             <div class="input-row">
               <p>Email:</p>
-              <input type="text" [(ngModel)]="userData.email">
+              <input type="text" disabled [(ngModel)]="userData.email">
             </div>
           </div>
           <div class="input" *ngIf="!isEditing">

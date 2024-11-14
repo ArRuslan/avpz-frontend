@@ -95,25 +95,12 @@ export class MyProfileComponent implements OnInit {
   }
 
   saveData() {
-    const dialogRef = this.dialog.open(PasswordConfirmationPopupComponent,
-      {width: '100%', height: '100%'});
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result && result !== 'cancel') {
-        this.confirmPassword(result);
-      } else {
-        this.openAnnouncementPopup('Password confirmation canceled.');
-        this.isEditing = false;
-        this.getUserData();
-      }
-    });
-  }
-
-  confirmPassword(enteredPassword: string) {
-    this.userData.password = enteredPassword;
-    console.log('Entered password:', enteredPassword);
-
-    this.openApiService.updateUserProfile(this.userData).subscribe(
+    console.log(this.userData)
+    const dataToUpdate = {
+      first_name: this.userData.first_name,
+      last_name: this.userData.last_name,
+    }
+    this.openApiService.updateUserProfile(dataToUpdate).subscribe(
       (response) => {
         this.userData = response;
         console.log('User data updated successfully:', this.userData);
