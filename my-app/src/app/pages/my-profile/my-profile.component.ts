@@ -23,7 +23,7 @@ export class MyProfileComponent implements OnInit {
     { type: 'Activate account', card_number: '4444-4444-4444-4444', isActive: true },
     { type: 'Activate account', card_number: '4444-4444-4444-4444', isActive: false },
   ];
-  tickets = [
+  reservations = [
     { room: 'Room #1', status: 'Soon' },
     { room: 'Room #2', status: 'Soon' },
     { room: 'Room #3', status: 'Is Over' },
@@ -81,8 +81,8 @@ export class MyProfileComponent implements OnInit {
   getUserTickets(): void {
     this.openApiService.getUserTickets().subscribe(
       (response) => {
-       // this.tickets = response;
-        console.log(this.tickets);
+       // this.reservations = response;
+        console.log(this.reservations);
       },
       (error) => {
         console.log('Error fetching payment methods:', error);

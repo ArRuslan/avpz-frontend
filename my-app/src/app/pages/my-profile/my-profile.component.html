@@ -70,9 +70,9 @@
         <h2>My reservations</h2>
       </div>
 
-      <div *ngFor="let ticket of tickets" class="reservation">
-        <b>{{ ticket.room }}</b>
-        <button class="soon-btn" (click)="showTicketInfo(ticket)">{{ ticket.status }}</button>
+      <div *ngFor="let reservation of reservations" class="reservation">
+        <b>{{ reservation.room }}</b>
+        <button class="soon-btn" (click)="showTicketInfo(reservation)">{{ reservation.status }}</button>
       </div>
 
     </div>

@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {HttpClient} from "@angular/common/http";
-import {MatSnackBar} from "@angular/material/snack-bar";
-import {environment} from "../../../environments/environment";
-import {ActivatedRoute, Router} from "@angular/router";
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { HttpClient } from "@angular/common/http";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { environment } from "../../../environments/environment";
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: 'app-reset-password',
@@ -16,6 +16,8 @@ export class ResetPasswordComponent implements OnInit {
   captchaKey: string | null = null;
   isTokenPresent: boolean = false;
   resetToken: string | null = null;
+  showCheckEmailMessage: boolean = false;
+  isGoToResetPageDisplayed: boolean = false;
 
   constructor(
     private http: HttpClient,
@@ -34,8 +36,9 @@ export class ResetPasswordComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Проверяем наличие токена сброса в URL
     this.route.queryParams.subscribe(params => {
-      this.resetToken = params['reset-token'];
+      this.resetToken = params['reset_token'];
       this.isTokenPresent = !!this.resetToken;
     });
   }
@@ -62,11 +65,10 @@ export class ResetPasswordComponent implements OnInit {
     this.http.post(`${environment.apiBaseUrl}/auth/reset-password/request`, requestBody, { observe: 'response' }).subscribe({
       next: (response) => {
         const token = response.headers.get('X-Debug-Token');
-        console.log(response)
-        console.log('TOKEN', token)
         if (token) {
           this.resetToken = token;
-          this.isTokenPresent = true;
+          this.showCheckEmailMessage = true; // Показать сообщение "Check your email"
+          this.isGoToResetPageDisplayed = true; // Показать сообщение "Check your email"
           this.showToast('Reset link sent successfully', 'success');
         } else {
           this.showToast('Failed to retrieve reset token', 'error');
@@ -102,6 +104,11 @@ export class ResetPasswordComponent implements OnInit {
         this.showToast('Failed to reset password', 'error');
       }
     });
+  }
+
+  navigateToPasswordReset(): void {
+    this.router.navigate(['/reset-password'], { queryParams: { reset_token: this.resetToken } });
+    this.isGoToResetPageDisplayed = false;
   }
 
   private showToast(message: string, type: 'success' | 'error') {
