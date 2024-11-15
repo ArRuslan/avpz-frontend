@@ -33,6 +33,7 @@ import { RoomPickStepComponent } from './pages/book-stepper/room-pick-step/room-
 import { ConfirmationStepComponent } from './pages/book-stepper/confirmation-step/confirmation-step.component';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { AdminComponent } from './pages/admin/admin.component';
+import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import { AdminComponent } from './pages/admin/admin.component';
     DatePickerStepComponent,
     RoomPickStepComponent,
     ConfirmationStepComponent,
-    AdminComponent
+    AdminComponent,
+    AdminLoginComponent
   ],
   imports: [
     BrowserModule,
