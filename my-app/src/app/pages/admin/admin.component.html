@@ -1,0 +1,205 @@
+<div class="admin-container">
+  <aside class="sidebar">
+    <h1 class="logo">HBB.</h1>
+    <ul class="menu">
+      <li><a (click)="setActiveSection('Hotels')" [class.active]="activeSection === 'Hotels'">
+        <img src="assets/images/hotel.png" alt="Hotels" class="icon"> Hotels
+      </a></li>
+      <li><a (click)="setActiveSection('Rooms')" [class.active]="activeSection === 'Rooms'">
+        <img src="assets/images/room.png" alt="Rooms" class="icon"> Rooms
+      </a></li>
+      <li><a (click)="setActiveSection('Bookings')" [class.active]="activeSection === 'Bookings'">
+        <img src="assets/images/book.png" alt="Bookings" class="icon"> Bookings
+      </a></li>
+      <li><a (click)="setActiveSection('Users')" [class.active]="activeSection === 'Users'">
+        <img src="assets/images/user-for-admin-menu.png" alt="Users" class="icon"> Users
+      </a></li>
+      <li><a (click)="setActiveSection('Payments')" [class.active]="activeSection === 'Payments'">
+        <img src="assets/images/payment.png" alt="Payments" class="icon"> Payments
+      </a></li>
+      <li><a (click)="setActiveSection('Administrators')" [class.active]="activeSection === 'Administrators'">
+        <img src="assets/images/admin.png" alt="Administrators" class="icon"> Administrators
+      </a></li>
+    </ul>
+  </aside>
+
+  <main class="main-content">
+    <header class="header">
+      <input type="text" placeholder="Search" class="search-bar" />
+      <div class="admin-icons">
+        <img src="assets/images/surname.png" alt="Admin" class="admin-avatar" />
+      </div>
+    </header>
+
+    <section class="content">
+      <h2>{{ activeSection }} Information</h2>
+
+      <!-- Поля для фільтрації, які змінюються залежно від активного розділу -->
+      <div class="filters">
+        <ng-container *ngIf="activeSection === 'Hotels'">
+          <input type="text" placeholder="Enter Hotel Name" />
+          <input type="text" placeholder="Enter Address" />
+          <input type="text" placeholder="Enter City" />
+          <input type="text" placeholder="Description" />
+          <input type="text" placeholder="Enter Rating" />
+        </ng-container>
+
+        <ng-container *ngIf="activeSection === 'Rooms'">
+          <input type="text" placeholder="Enter Hotel" />
+          <input type="text" placeholder="Enter ID" />
+          <input type="text" placeholder="Enter Type" />
+          <input type="text" placeholder="Enter Price" />
+          <input type="text" placeholder="Enter Rating" />
+        </ng-container>
+
+        <ng-container *ngIf="activeSection === 'Bookings'">
+          <input type="text" placeholder="Enter User" />
+          <input type="text" placeholder="Enter Room" />
+          <input type="text" placeholder="Start Date" />
+          <input type="text" placeholder="End Date" />
+          <input type="text" placeholder="Total Price" />
+          <input type="text" placeholder="Enter Status" />
+        </ng-container>
+
+        <ng-container *ngIf="activeSection === 'Administrators'">
+          <input type="text" placeholder="Enter Customer Name" />
+          <input type="text" placeholder="Enter Invoice ID" />
+          <input type="text" placeholder="Enter Payable Amount" />
+          <input type="text" placeholder="Enter Paid Amount" />
+        </ng-container>
+
+        <ng-container *ngIf="activeSection === 'Users'">
+          <input type="text" placeholder="Enter Customer Name" />
+          <input type="text" placeholder="Enter Email" />
+          <input type="text" placeholder="Enter Phone" />
+          <input type="text" placeholder="Enter Role" />
+        </ng-container>
+
+        <ng-container *ngIf="activeSection === 'Payments'">
+          <input type="text" placeholder="Enter Booking" />
+          <input type="text" placeholder="Enter Date" />
+          <input type="text" placeholder="Enter Amount" />
+          <input type="text" placeholder="Enter Method" />
+        </ng-container>
+      </div>
+
+      <!-- Таблиця з умовними колонками -->
+      <table class="table">
+        <thead>
+          <tr *ngIf="activeSection === 'Hotels'">
+            <th><input type="checkbox" /></th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>City</th>
+            <th>Description</th>
+            <th>Rating</th>
+          </tr>
+          <tr *ngIf="activeSection === 'Rooms'">
+            <th><input type="checkbox" /></th>
+            <th>ID</th>
+            <th>Hotel</th>
+            <th>Room Type</th>
+            <th>Price</th>
+            <th>Rating</th>
+          </tr>
+          <tr *ngIf="activeSection === 'Bookings'">
+            <th><input type="checkbox" /></th>
+            <th>ID</th>
+            <th>User</th>
+            <th>Room</th>
+            <th>Dates</th>
+            <th>Total Price</th>
+            <th>Status</th>
+          </tr>
+          <tr *ngIf="activeSection === 'Administrators'">
+            <th><input type="checkbox" /></th>
+            <th>Invoice ID</th>
+            <th>Date</th>
+            <th>Customer</th>
+            <th>Payable Amount</th>
+            <th>Paid Amount</th>
+            <th>Due</th>
+          </tr>
+          <tr *ngIf="activeSection === 'Users'">
+            <th><input type="checkbox" /></th>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Role</th>
+          </tr>
+          <tr *ngIf="activeSection === 'Payments'">
+            <th><input type="checkbox" /></th>
+            <th>ID</th>
+            <th>Booking</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Method</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Динамічний вміст таблиці для кожного розділу -->
+          <tr *ngIf="activeSection === 'Hotels'">
+            <td><input type="checkbox" /></td>
+            <td>#H001</td>
+            <td>Hotel California</td>
+            <td>Main Street</td>
+            <td>City A</td>
+            <td>Great view</td>
+            <td>5</td>
+          </tr>
+          <tr *ngIf="activeSection === 'Rooms'">
+            <td><input type="checkbox" /></td>
+            <td>101</td>
+            <td>Hotel California</td>
+            <td>Deluxe</td>
+            <td>$100</td>
+            <td>4.5</td>
+          </tr>
+          <tr *ngIf="activeSection === 'Bookings'">
+            <td><input type="checkbox" /></td>
+            <td>#B123</td>
+            <td>John Doe</td>
+            <td>Room 101</td>
+            <td>01/01/2023 - 07/01/2023</td>
+            <td>$700</td>
+            <td>Confirmed</td>
+          </tr>
+          <tr *ngIf="activeSection === 'Administrators'">
+            <td><input type="checkbox" /></td>
+            <td>#A001</td>
+            <td>01/01/2023</td>
+            <td>John Doe</td>
+            <td>$500</td>
+            <td>$400</td>
+            <td>$100</td>
+          </tr>
+          <tr *ngIf="activeSection === 'Users'">
+            <td><input type="checkbox" /></td>
+            <td>U001</td>
+            <td>John Doe</td>
+            <td>johndoe@example.com</td>
+            <td>+123456789</td>
+            <td>Customer</td>
+          </tr>
+          <tr *ngIf="activeSection === 'Payments'">
+            <td><input type="checkbox" /></td>
+            <td>P001</td>
+            <td>#B123</td>
+            <td>02/01/2023</td>
+            <td>$100</td>
+            <td>Credit Card</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <div class="action-buttons">
+    <button class="action-button">Edit</button>
+    <button class="action-button">Add</button>
+    <button class="action-button">Delete</button>
+  </div>
+
+</div>

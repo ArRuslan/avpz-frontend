@@ -9,6 +9,7 @@ import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { LoginComponent } from './pages/login/login.component';
 import {MyProfileComponent} from "./pages/my-profile/my-profile.component";
 import {BookStepperComponent} from "./pages/book-stepper/book-stepper.component";
+import { AdminComponent } from './pages/admin/admin.component';
 
 const routes: Routes = [
   { path: 'main-page', component: MainPageComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'sign_up', component: SignUpComponent },
   { path: 'login', component: LoginComponent },
   { path: 'profile', component: MyProfileComponent },
+  { path: 'admin', component: AdminComponent },
   { path: '', redirectTo: '/main-page', pathMatch: 'full' },
   { path: '**', redirectTo: '/main-page' }
 ];

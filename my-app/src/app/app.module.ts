@@ -32,6 +32,7 @@ import { DatePickerStepComponent } from './pages/book-stepper/date-picker-step/d
 import { RoomPickStepComponent } from './pages/book-stepper/room-pick-step/room-pick-step.component';
 import { ConfirmationStepComponent } from './pages/book-stepper/confirmation-step/confirmation-step.component';
 import {MatSnackBarModule} from "@angular/material/snack-bar";
+import { AdminComponent } from './pages/admin/admin.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +58,8 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
     GuestsStepComponent,
     DatePickerStepComponent,
     RoomPickStepComponent,
-    ConfirmationStepComponent
+    ConfirmationStepComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
