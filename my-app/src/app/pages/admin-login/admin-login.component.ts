@@ -31,5 +31,5 @@ export class AdminLoginComponent implements OnInit {
         alert('Invalid login credentials');
       }
     }
-  }gi
+  }
 }
