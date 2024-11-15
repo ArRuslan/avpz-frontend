@@ -41,7 +41,7 @@ export class OpenApiService {
     });
     console.log(localStorage.getItem('token'));
 
-    return this.http.patch<any>(`${this.apiUrl}/users/me`, userData, { headers: headers });
+    return this.http.patch<any>(`${this.apiUrl}/user/info`, userData, { headers: headers });
   }
 
   searchHotels(): Observable<any> {
