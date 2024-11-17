@@ -99,6 +99,7 @@ export class MyProfileComponent implements OnInit {
     const dataToUpdate = {
       first_name: this.userData.first_name,
       last_name: this.userData.last_name,
+      phone_number: this.userData.phone_number || null
     }
     this.openApiService.updateUserProfile(dataToUpdate).subscribe(
       (response) => {
