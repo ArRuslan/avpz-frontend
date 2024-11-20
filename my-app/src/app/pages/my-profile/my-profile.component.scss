@@ -37,9 +37,11 @@ main {
           flex-direction: column;
 
           .input-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            div {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            }
             margin-bottom: 20px;
           }
         }
@@ -88,6 +90,10 @@ main {
           &:active {
             background-color: white;
             color: #2e438f;
+            border: 3px solid #2e438f;
+          }
+          &:disabled {
+            background-color: gray;
             border: 3px solid #2e438f;
           }
         }
@@ -262,3 +268,7 @@ h2 {
   margin-bottom: 10px;
 }
 
+.error {
+  color: red;
+  font-size: 10px;
+}
