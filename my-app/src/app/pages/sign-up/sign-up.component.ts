@@ -29,7 +29,7 @@ export class SignUpComponent {
       first_name: ['', [Validators.required, Validators.minLength(2)]],
       last_name: ['', [Validators.required, Validators.minLength(2)]],
       email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.pattern(/^\+?[0-9]*$/)]],
+      phone_number: ['', [Validators.pattern(/^\+?[0-9]*$/)]],
       address: [''],
       city: [''],
       country: [''],

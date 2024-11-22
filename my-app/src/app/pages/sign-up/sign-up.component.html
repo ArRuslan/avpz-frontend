@@ -11,8 +11,8 @@
       <div class="input-group" [class.invalid]="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched">
         <input formControlName="email" type="email" class="email-input" placeholder="Your email" required />
       </div>
-      <div class="input-group" [class.invalid]="signUpForm.get('phone')?.invalid && signUpForm.get('phone')?.touched">
-        <input formControlName="phone" type="tel" placeholder="Your phone number" />
+      <div class="input-group" [class.invalid]="signUpForm.get('phone_number')?.invalid && signUpForm.get('phone_number')?.touched">
+        <input formControlName="phone_number" type="tel" placeholder="Your phone number" />
       </div>
       <div class="input-group">
         <input formControlName="address" type="text" placeholder="Your address" />
@@ -38,6 +38,9 @@
       <button type="button" class="google-btn" (click)="RegisterWithGoogle()">Continue with Google</button>
       <div class="signup-link">
         <a href="/login">Already have an account? Sign in!</a>
+      </div>
+      <div class="signup-link">
+        <a href="/reset-password">Forgot password?</a>
       </div>
       <p class="agreement-text">By clicking on the “Sign up” button I agree to the Privacy Policy and the Terms of service.</p>
     </form>

@@ -2,7 +2,7 @@
   <section class="profile" *ngIf="isUserLoggedIn">
     <div class="profile-card">
       <div class="profile-photo" (click)="changeAvatar()">
-        <img class="profile-photo" [src]="avatarUrl" alt="User Avatar" *ngIf="avatarUrl">
+        <img class="profile-photo" [src]="avatarUrl" *ngIf="avatarUrl">
       </div>
       <div class="profile-info">
         <div class="profile-edit">
@@ -11,70 +11,131 @@
         </div>
         <div *ngIf="userData">
           <div class="input" *ngIf="isEditing">
-            <div class="input-row">
-              <p>Name:</p>
-              <input type="text" [(ngModel)]="userData.first_name">
-            </div>
-            <div class="input-row">
-              <p>Surname:</p>
-              <input type="text" [(ngModel)]="userData.last_name">
-            </div>
-            <div class="input-row">
-              <p>Phone number:</p>
-              <input type="text" [(ngModel)]="userData.phone_number">
-            </div>
-            <div class="input-row">
-              <p>Email:</p>
-              <input type="text" [(ngModel)]="userData.email">
-            </div>
+            <form #profileForm="ngForm" style="display: flex; flex-direction: column">
+              <div class="input-row">
+                <div>
+                  <p>Name:</p>
+                  <input
+                    type="text"
+                    [(ngModel)]="userData.first_name"
+                    name="firstName"
+                    required
+                    minlength="2"
+                    #firstName="ngModel"
+                  />
+                </div>
+
+                <span *ngIf="firstName.invalid && firstName.touched" class="error">
+        Name is required (min 2 characters)
+      </span>
+              </div>
+              <div class="input-row">
+                <div>
+                  <p>Surname:</p>
+                  <input
+                    type="text"
+                    [(ngModel)]="userData.last_name"
+                    name="lastName"
+                    required
+                    minlength="2"
+                    #lastName="ngModel"
+                  />
+                </div>
+                <span *ngIf="lastName.invalid && lastName.touched" class="error">
+        Surname is required (min 2 characters)
+      </span>
+              </div>
+              <div class="input-row">
+                <div>
+                  <p>Phone number:</p>
+                  <input
+                    type="text"
+                    [(ngModel)]="userData.phone_number"
+                    name="phoneNumber"
+                    required
+                    pattern="^\+380\d{9}$"
+                    #phoneNumber="ngModel"
+                  />
+                </div>
+
+                <span *ngIf="phoneNumber.invalid && phoneNumber.touched" class="error">
+        Must be a valid 10-digit phone number
+      </span>
+              </div>
+              <div class="input-row">
+                <div>
+                  <p>Email:</p>
+                  <input type="text"
+                         disabled [(ngModel)]="userData.email"
+                         [ngModelOptions]="{standalone: true}">
+                </div>
+              </div>
+              <button
+                class="save-btn"
+                (click)="saveData()"
+                *ngIf="isEditing"
+                [disabled]="profileForm.invalid"
+              >
+                Save
+              </button>
+            </form>
           </div>
+
+
           <div class="input" *ngIf="!isEditing">
             <div class="input-row" *ngIf="userData.first_name">
-              <p>Name:</p>
-              <p style="text-decoration: underline;">{{ userData.first_name }}</p>
+              <div><p>Name:</p>
+                <p style="text-decoration: underline;">{{ userData.first_name }}</p></div>
+
             </div>
             <div class="input-row" *ngIf="userData.last_name">
-              <p>Surname:</p>
-              <p style="text-decoration: underline;">{{ userData.last_name }}</p>
+              <div>
+
+                <p>Surname:</p>
+                <p style="text-decoration: underline;">{{ userData.last_name }}</p>
+              </div>
             </div>
             <div class="input-row" *ngIf="userData.phone_number">
-              <p>Phone number:</p>
-              <p style="text-decoration: underline;">{{ userData.phone_number }}</p>
+              <div>
+
+                <p>Phone number:</p>
+                <p style="text-decoration: underline;">{{ userData.phone_number }}</p>
+              </div>
             </div>
             <div class="input-row" *ngIf="userData.email">
-              <p>Email:</p>
-              <p style="text-decoration: underline;">{{ userData.email }}</p>
+              <div>
+
+                <p>Email:</p>
+                <p style="text-decoration: underline;">{{ userData.email }}</p>
+              </div>
             </div>
           </div>
         </div>
-        <button class="save-btn" (click)="saveData()" *ngIf="isEditing">Save</button>
       </div>
     </div>
     <div class="xpay-accounts">
-      <div class="xPay-accounts-edit">
-        <h2>My Pay accounts</h2>
-      </div>
-
-      <div class="account">
-        <h3>Payment accounts</h3>
-        <ul *ngIf="paymentMethods && paymentMethods.length > 0">
-          <li *ngFor="let method of paymentMethods">
-            <p>{{ method.type }}</p>
-            <p>{{ method.card_number }}</p>
-          </li>
-        </ul>
-        <p *ngIf="!paymentMethods || paymentMethods.length === 0">No payment accounts available</p>
-      </div>
-
+      <h2>My xPay accounts</h2>
+      <ul>
+        <li *ngFor="let method of paymentMethods">
+          <div class="payment-method-block">
+            <div class="payment-method-text">
+              <span>{{ method.type }}</span>
+              <span>{{ method.card_number }}</span>
+            </div>
+            <button class="soon-btn">{{ method.isActive ? 'Block' : 'Unlock' }}</button>
+          </div>
+        </li>
+      </ul>
     </div>
+
     <div class="reservations">
       <div class="reservations-filter">
         <h2>My reservations</h2>
       </div>
 
-      <div *ngFor="let ticket of tickets" class="reservation">
-        <span>{{ ticket.event.name }}</span>
-        <button class="soon-btn" (click)="showTicketInfo(ticket)">{{ formatStartTime(ticket.event.start_time) }}</button>
+      <div *ngFor="let reservation of reservations" class="reservation">
+        <b>{{ reservation.room }}</b>
+        <button class="soon-btn" (click)="showTicketInfo(reservation)">{{ reservation.status }}</button>
       </div>
 
     </div>

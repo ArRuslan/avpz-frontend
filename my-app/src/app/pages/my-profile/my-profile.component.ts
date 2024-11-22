@@ -17,10 +17,17 @@ export class MyProfileComponent implements OnInit {
   userData: any; // Змінна для збереження інформації про користувача
   isEditing: boolean = false;
   avatarUrl: string | undefined;
-  tickets: TicketData[] = [];
   files: FileList | undefined;
   isUserLoggedIn: boolean | undefined;
-  paymentMethods: any[] = [];
+  paymentMethods = [
+    { type: 'Activate account', card_number: '4444-4444-4444-4444', isActive: true },
+    { type: 'Activate account', card_number: '4444-4444-4444-4444', isActive: false },
+  ];
+  reservations = [
+    { room: 'Room #1', status: 'Soon' },
+    { room: 'Room #2', status: 'Soon' },
+    { room: 'Room #3', status: 'Is Over' },
+  ];
 
   constructor(public dialog: MatDialog, private openApiService: OpenApiService) { }
 
@@ -62,7 +69,7 @@ export class MyProfileComponent implements OnInit {
   getUserPaymentMethods(): void {
     this.openApiService.getUserPaymentMethods().subscribe(
       (response) => {
-        this.paymentMethods = response;
+      //  this.paymentMethods = response;
         console.log(this.paymentMethods);
       },
       (error) => {
@@ -74,8 +81,8 @@ export class MyProfileComponent implements OnInit {
   getUserTickets(): void {
     this.openApiService.getUserTickets().subscribe(
       (response) => {
-        this.tickets = response;
-        console.log(this.tickets);
+       // this.reservations = response;
+        console.log(this.reservations);
       },
       (error) => {
         console.log('Error fetching payment methods:', error);
@@ -88,25 +95,13 @@ export class MyProfileComponent implements OnInit {
   }
 
   saveData() {
-    const dialogRef = this.dialog.open(PasswordConfirmationPopupComponent,
-      {width: '100%', height: '100%'});
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result && result !== 'cancel') {
-        this.confirmPassword(result);
-      } else {
-        this.openAnnouncementPopup('Password confirmation canceled.');
-        this.isEditing = false;
-        this.getUserData();
-      }
-    });
-  }
-
-  confirmPassword(enteredPassword: string) {
-    this.userData.password = enteredPassword;
-    console.log('Entered password:', enteredPassword);
-
-    this.openApiService.updateUserProfile(this.userData).subscribe(
+    console.log(this.userData)
+    const dataToUpdate = {
+      first_name: this.userData.first_name,
+      last_name: this.userData.last_name,
+      phone_number: this.userData.phone_number || null
+    }
+    this.openApiService.updateUserProfile(dataToUpdate).subscribe(
       (response) => {
         this.userData = response;
         console.log('User data updated successfully:', this.userData);
@@ -204,7 +199,7 @@ export class MyProfileComponent implements OnInit {
     }
   }
 
-  showTicketInfo(ticket: TicketData) {
+  showTicketInfo(ticket: any) {
     let message = '<p>Event name: ' + ticket.event.name + '</p>'+
                           '<p>Category: ' + ticket.event.category + '</p>'+
                           '<p>City ' + ticket.event.city + '</p>'+
