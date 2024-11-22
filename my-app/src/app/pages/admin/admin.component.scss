@@ -1,0 +1,248 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.admin-container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #001f3f;
+}
+
+.sidebar {
+  width: 220px;
+  background-color: #f4f6f8;
+  color: #333;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20px;
+  height: 100vh; /* Висота меню на всю висоту вікна */
+  position: sticky; /* Sticky позиціювання для бокового меню */
+  top: 0; /* Прикріплення до верхнього краю */
+  overflow-y: auto;
+}
+
+a.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.menu {
+  list-style: none;
+  width: 100%;
+  padding: 0;
+}
+
+.menu li {
+  width: 100%;
+}
+
+.menu a {
+  display: flex;
+  align-items: center;
+  padding: 15px 20px;
+  color: #666;
+  text-decoration: none;
+  font-size: 16px;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.menu a.active {
+  color: #007bff;
+  font-weight: bold;
+}
+
+.menu a.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background-color: #007bff;
+  border-radius: 2px;
+}
+
+.menu a:hover {
+  color: #007bff;
+}
+
+.logo {
+  font-size: 24px;
+  margin-bottom: 40px;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  background-color: #001f3f;
+  color: white;
+  min-height: 100vh;
+}
+
+.table {
+  margin-bottom: 20px; /* Відступ між таблицею і кнопкою */
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.search-bar {
+  width: 50%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+.search-input[disabled] {
+  background-color: #f0f0f0;
+  color: #aaa;
+  border-color: #ddd;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.admin-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  margin-right: 70px;
+  margin-left: 1200px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px;
+  object-fit: contain;
+}
+
+.content {
+  background-color: #001f3f;
+  color: white;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.content h2 {
+  margin-bottom: 20px;
+}
+
+.filters {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.filters input {
+  padding: 10px;
+  border-radius: 4px;
+  border: none;
+  font-size: 14px;
+  width: 100%;
+  height: 40px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  color: #102a43;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.table thead {
+  background-color: #e0e7ff;
+}
+
+.table th,
+.table td {
+  padding: 15px;
+  text-align: left;
+}
+
+.table tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+.table a {
+  color: #3b82f6;
+  text-decoration: none;
+}
+
+.action-buttons {
+  position: fixed;
+  bottom: 50px;
+  right: 50px;
+  display: flex;
+  gap: 20px;
+  background-color: #001f3f;
+  padding: 15px 20px;
+  border-radius: 40px;
+}
+
+.action-button {
+  padding: 10px 50px;
+  font-size: 16px;
+  color: #007bff;
+  background-color: white;
+  border: 2px solid #007bff;
+  border-radius: 40px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.action-button:hover {
+  background-color: #007bff;
+  color: white;
+}
+
+.action-button:disabled {
+  background-color: #d6d6d6;
+  color: #a1a1a1;
+  cursor: not-allowed;
+}
+
+.hotel-selector {
+  width: 100%;
+  height: 40px;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.show-more-button {
+  display: block;
+  margin: 20px auto; /* Відступ після таблиці та центрування */
+  padding: 8px 16px; /* Зменшений розмір кнопки */
+  font-size: 14px; /* Зменшений розмір тексту */
+  background-color: #007bff; /* Колір фону кнопки */
+  color: white; /* Колір тексту */
+  border: none; /* Без рамки */
+  border-radius: 5px; /* Згладжені краї */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Ефект наведення */
+.show-more-button:hover {
+  background-color: #0056b3; /* Трохи темніший колір на наведення */
+}
+
+/* Ефект натискання */
+.show-more-button:active {
+  background-color: #003d80; /* Темніший колір при натисканні */
+}
