@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-admin-login',
@@ -9,8 +10,9 @@ import { Router } from '@angular/router';
 })
 export class AdminLoginComponent implements OnInit {
   loginForm!: FormGroup;
+  private apiUrl: string = 'https://hhb-testing.ruslan.page';
 
-  constructor(private fb: FormBuilder, private router: Router) {}
+  constructor(private fb: FormBuilder, private router: Router, private http: HttpClient) {}
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -23,13 +25,27 @@ export class AdminLoginComponent implements OnInit {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
 
-      // Замініть перевірку облікових даних на реальну логіку аутентифікації
-      if (email === 'admin@example.com' && password === 'admin') {
-        localStorage.setItem('isAdminLoggedIn', 'true');
-        this.router.navigate(['/admin']);
-      } else {
-        alert('Invalid login credentials');
-      }
+      const loginData = {
+        captcha_key: 'for-now-this-field-is-not-empty-for-backward-compatibility-reasons',
+        email: email,
+        password: password
+      };
+
+      this.http.post(`${this.apiUrl}/auth/login`, loginData).subscribe(
+        (response: any) => {
+          // Перевіряємо, чи токен існує
+          if (response && response.token) {
+            localStorage.setItem('isAdminLoggedIn', 'true');
+            this.router.navigate(['/admin']);
+          } else {
+            alert('Authentication failed: Token not received');
+          }
+        },
+        error => {
+          console.error('Login failed:', error);
+          alert('Invalid login credentials');
+        }
+      );
     }
   }
 }

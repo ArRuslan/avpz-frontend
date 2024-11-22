@@ -7,7 +7,7 @@
 
 .admin-container {
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
   background-color: #001f3f;
 }
 
@@ -19,6 +19,16 @@
   flex-direction: column;
   align-items: center;
   padding-top: 20px;
+  height: 100vh; /* Висота меню на всю висоту вікна */
+  position: sticky; /* Sticky позиціювання для бокового меню */
+  top: 0; /* Прикріплення до верхнього краю */
+  overflow-y: auto;
+}
+
+a.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .menu {
@@ -70,6 +80,13 @@
 .main-content {
   flex-grow: 1;
   padding: 20px;
+  background-color: #001f3f;
+  color: white;
+  min-height: 100vh;
+}
+
+.table {
+  margin-bottom: 20px; /* Відступ між таблицею і кнопкою */
 }
 
 .header {
@@ -87,11 +104,20 @@
   border: 1px solid #ccc;
 }
 
+.search-input[disabled] {
+  background-color: #f0f0f0;
+  color: #aaa;
+  border-color: #ddd;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
 .admin-avatar {
   width: 32px;
   height: 32px;
   border-radius: 50%;
   margin-right: 70px;
+  margin-left: 1200px;
 }
 
 .icon {
@@ -124,6 +150,7 @@
   border: none;
   font-size: 14px;
   width: 100%;
+  height: 40px;
 }
 
 .table {
@@ -179,4 +206,43 @@
 .action-button:hover {
   background-color: #007bff;
   color: white;
+}
+
+.action-button:disabled {
+  background-color: #d6d6d6;
+  color: #a1a1a1;
+  cursor: not-allowed;
+}
+
+.hotel-selector {
+  width: 100%;
+  height: 40px;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.show-more-button {
+  display: block;
+  margin: 20px auto; /* Відступ після таблиці та центрування */
+  padding: 8px 16px; /* Зменшений розмір кнопки */
+  font-size: 14px; /* Зменшений розмір тексту */
+  background-color: #007bff; /* Колір фону кнопки */
+  color: white; /* Колір тексту */
+  border: none; /* Без рамки */
+  border-radius: 5px; /* Згладжені краї */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+/* Ефект наведення */
+.show-more-button:hover {
+  background-color: #0056b3; /* Трохи темніший колір на наведення */
+}
+
+/* Ефект натискання */
+.show-more-button:active {
+  background-color: #003d80; /* Темніший колір при натисканні */
 }
