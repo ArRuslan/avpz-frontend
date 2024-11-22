@@ -20,7 +20,7 @@ main {
 
       .profile-photo {
         width: 100%;
-        height: 480px;
+        height: 400px;
         background-color: #E4D9D9;
         border-radius: 50px;
         margin-bottom: 50px;
@@ -30,15 +30,18 @@ main {
         display: flex;
         flex-direction: column;
         padding: 0 30px;
+        font-size: 28px;
 
         .input {
           display: flex;
           flex-direction: column;
 
           .input-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
+            div {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+            }
             margin-bottom: 20px;
           }
         }
@@ -63,6 +66,7 @@ main {
             background-color: #EEEEEE;
             font-weight: lighter;
             color: #686868;
+            font-size: 24px;
             cursor: pointer;
 
             &:active {
@@ -88,11 +92,14 @@ main {
             color: #2e438f;
             border: 3px solid #2e438f;
           }
+          &:disabled {
+            background-color: gray;
+            border: 3px solid #2e438f;
+          }
         }
       }
     }
 
-    .xpay-accounts,
     .reservations {
       display: flex;
       flex-wrap: wrap;
@@ -116,9 +123,8 @@ main {
         display: flex;
         justify-content: space-between;
         align-items: start;
-        margin-bottom: 20px;
         font-weight: lighter;
-        font-size: 18px;
+        font-size: 28px;
 
         button {
           padding: 5px 10px;
@@ -126,6 +132,7 @@ main {
           border-radius: 50px;
           cursor: pointer;
           font-weight: bold;
+          font-size: 30px;
           border: 3px solid #425BDF;
           background-color: rgba(255, 255, 255, 0);
           color: #425BDF;
@@ -138,11 +145,7 @@ main {
       }
     }
 
-    .xpay-accounts {
-      grid-column-start: 2;
-      grid-row-start: 1;
-      grid-row-end: 2;
-    }
+
 
     .reservations {
       grid-column-start: 2;
@@ -175,7 +178,7 @@ main {
       border: 3px solid white;
       border-radius: 50px;
       cursor: pointer;
-      font-size: 24px;
+      font-size: 30px;
 
       &:active {
         background-color: white;
@@ -194,7 +197,7 @@ main {
       border: 3px solid #425BDF;
       background-color: rgba(255, 255, 255, 0);
       color: #425BDF;
-      font-size: 20px;
+      font-size: 30px;
 
       &:hover {
         background-color: #425BDF;
@@ -204,3 +207,68 @@ main {
   }
 }
 
+
+.xpay-accounts {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  font-size: 24px;
+
+
+  ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+
+      button {
+        padding: 5px 10px;
+        width: 30%;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: bold;
+        border: 3px solid #425BDF;
+        background-color: rgba(255, 255, 255, 0);
+        color: #425BDF;
+        font-size: 30px;
+
+        &:hover {
+          background-color: #425BDF;
+          color: white;
+        }
+      }
+    }
+  }
+}
+
+.payment-method-block {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin-top: 30px;
+  flex: 1 0 100%;
+  align-self: center;
+}
+
+.payment-method-text {
+  display: flex;
+  flex-direction: column;
+}
+
+h2 {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.error {
+  color: red;
+  font-size: 10px;
+}

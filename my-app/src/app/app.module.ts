@@ -34,6 +34,7 @@ import { ConfirmationStepComponent } from './pages/book-stepper/confirmation-ste
 import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { AdminComponent } from './pages/admin/admin.component';
 import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
+import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -60,6 +61,7 @@ import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
     DatePickerStepComponent,
     RoomPickStepComponent,
     ConfirmationStepComponent,
+    ResetPasswordComponent,
     AdminComponent,
     AdminLoginComponent
   ],
