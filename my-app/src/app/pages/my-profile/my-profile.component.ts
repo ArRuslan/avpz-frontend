@@ -8,6 +8,19 @@ import {AnnouncementPopupComponent} from "../../shared/popup-windows/announcemen
 import {Observable, tap} from "rxjs";
 import {SetAvatarPopupComponent} from "../../shared/popup-windows/set-avatar-popup/set-avatar-popup.component";
 
+export interface Reservation {
+  id: number;
+  user_id: number;
+  room_id: number;
+  check_in: string;
+  check_out: string;
+  total_price: number;
+  status: number;
+  created_at: string;
+  payment_id: string;
+}
+
+
 @Component({
   selector: 'app-my-profile',
   templateUrl: './my-profile.component.html',
@@ -23,11 +36,75 @@ export class MyProfileComponent implements OnInit {
     { type: 'Activate account', card_number: '4444-4444-4444-4444', isActive: true },
     { type: 'Activate account', card_number: '4444-4444-4444-4444', isActive: false },
   ];
-  reservations = [
-    { room: 'Room #1', status: 'Soon' },
-    { room: 'Room #2', status: 'Soon' },
-    { room: 'Room #3', status: 'Is Over' },
+  reservations: Reservation[] = [
+    {
+      id: 1,
+      user_id: 123,
+      room_id: 1,
+      check_in: '2024-11-28',
+      check_out: '2024-11-29',
+      total_price: 100,
+      status: 1, // Будущая резервация
+      created_at: '2024-11-25',
+      payment_id: 'PAY12345',
+    },
+    {
+      id: 2,
+      user_id: 123,
+      room_id: 2,
+      check_in: '2024-11-20',
+      check_out: '2024-11-22',
+      total_price: 150,
+      status: 2, // Прошлая резервация
+      created_at: '2024-11-15',
+      payment_id: 'PAY12346',
+    },
+    {
+      id: 2,
+      user_id: 123,
+      room_id: 2,
+      check_in: '2024-11-20',
+      check_out: '2024-11-22',
+      total_price: 150,
+      status: 2, // Прошлая резервация
+      created_at: '2024-11-15',
+      payment_id: 'PAY12346',
+    },
+    {
+      id: 2,
+      user_id: 123,
+      room_id: 2,
+      check_in: '2024-11-20',
+      check_out: '2024-11-22',
+      total_price: 150,
+      status: 2, // Прошлая резервация
+      created_at: '2024-11-15',
+      payment_id: 'PAY12346',
+    },
+    {
+      id: 2,
+      user_id: 123,
+      room_id: 2,
+      check_in: '2024-11-20',
+      check_out: '2024-11-22',
+      total_price: 150,
+      status: 2, // Прошлая резервация
+      created_at: '2024-11-15',
+      payment_id: 'PAY12346',
+    },
+    {
+      id: 3,
+      user_id: 123,
+      room_id: 3,
+      check_in: '2024-11-29',
+      check_out: '2024-11-30',
+      total_price: 200,
+      status: 3, // Текущая резервация
+      created_at: '2024-11-28',
+      payment_id: 'PAY12347',
+    },
   ];
+
 
   constructor(public dialog: MatDialog, private openApiService: OpenApiService) { }
 
@@ -38,7 +115,7 @@ export class MyProfileComponent implements OnInit {
         () => {
           this.getUserAvatar();
           this.getUserPaymentMethods();
-          this.getUserTickets();
+          this.getUserReservations();
         },
         (error) => {
           console.error('Помилка при отриманні даних користувача:', error);
@@ -78,17 +155,64 @@ export class MyProfileComponent implements OnInit {
     );
   }
 
-  getUserTickets(): void {
-    this.openApiService.getUserTickets().subscribe(
+  getUserReservations(): void {
+    this.openApiService.getUserReservations().subscribe(
       (response) => {
-       // this.reservations = response;
-        console.log(this.reservations);
+     //  this.reservations = response.result;
+        console.log(response);
       },
       (error) => {
         console.log('Error fetching payment methods:', error);
       }
     );
   }
+
+  getStatusLabel(status: number): string {
+    switch (status) {
+      case 1:
+        return 'Upcoming';
+      case 2:
+        return 'Past';
+      case 3:
+        return 'Ongoing';
+      default:
+        return 'Unknown';
+    }
+  }
+
+  getStatusClass(status: number): string {
+    switch (status) {
+      case 1:
+        return 'status-upcoming'; // Будущая резервация
+      case 2:
+        return 'status-past'; // Прошлая резервация
+      case 3:
+        return 'status-ongoing'; // Текущая резервация
+      default:
+        return 'status-unknown'; // Неизвестный статус
+    }
+  }
+
+
+  cancelReservation(reservationId: number): void {
+    const confirmation = window.confirm(
+      'Are you sure you want to cancel this reservation?'
+    );
+    if (confirmation) {
+      console.log(`Canceling reservation with ID: ${reservationId}`);
+
+
+      this.openApiService.cancelReservation(reservationId).subscribe(() => {
+        this.reservations = this.reservations.filter(
+          (reservation) => reservation.id !== reservationId
+        );
+      });
+    } else {
+      console.log('Reservation cancellation canceled.');
+    }
+  }
+
+
 
   toggleEdit() {
     this.isEditing = !this.isEditing;

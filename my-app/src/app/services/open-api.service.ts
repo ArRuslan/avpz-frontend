@@ -58,6 +58,13 @@ export class OpenApiService {
     return this.http.post<any>(`${this.apiUrl}/tickets/request-payment`, ticketInfo, { headers: headers });
   }
 
+  cancelReservation(id: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `${localStorage.getItem('token')}`
+    });
+    return this.http.post<any>(`${this.apiUrl}/bookings/${id}/cancel`, {booking_id: id}, { headers: headers });
+  }
+
   getVerification(ticket_id: number): Observable<any> {
     const headers = new HttpHeaders({
       'Authorization': `${localStorage.getItem('token')}`
@@ -134,11 +141,11 @@ export class OpenApiService {
 
 
 
-  getUserTickets() : Observable<TicketData[]> {
+  getUserReservations() : Observable<any> {
     const headers = new HttpHeaders({
       'Authorization': `${localStorage.getItem('token')}`
     });
     // Виконайте запит GET до API для отримання методів оплати користувача
-    return this.http.get<TicketData[]>(`${this.apiUrl}/tickets`, { headers: headers });
+    return this.http.get<any[]>(`${this.apiUrl}/bookings`, { headers: headers });
   }
 }

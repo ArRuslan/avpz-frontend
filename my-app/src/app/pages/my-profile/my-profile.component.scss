@@ -100,59 +100,106 @@ main {
       }
     }
 
+
     .reservations {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
+      gap: 20px;
       background-color: #fff;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      font-family: 'Arial', sans-serif;
+      max-height: 600px;
+      overflow-y: auto;
+    }
+
+    .reservation {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      background-color: #f9f9f9;
       padding: 20px;
-      border-radius: 50px;
-
-      .xPay-accounts-edit,
-      .reservations-filter {
-        display: flex;
-        justify-content: space-between;
-        margin-bottom: 10px;
-        flex: 1 0 100%;
-        align-self: center;
-      }
-
-
-      .account,
-      .reservation {
-        flex: 1 0 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: start;
-        font-weight: lighter;
-        font-size: 28px;
-
-        button {
-          padding: 5px 10px;
-          width: 30%;
-          border-radius: 50px;
-          cursor: pointer;
-          font-weight: bold;
-          font-size: 30px;
-          border: 3px solid #425BDF;
-          background-color: rgba(255, 255, 255, 0);
-          color: #425BDF;
-
-          &:hover {
-            background-color: #425BDF;
-            color: white;
-          }
-        }
-      }
+      border-radius: 15px;
+      border: 1px solid #ddd;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
-
-
-    .reservations {
-      grid-column-start: 2;
-      grid-row-start: 2;
-      grid-row-end: 3;
+    .reservation:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     }
+
+    .reservation b {
+      font-size: 24px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .reservation p {
+      margin: 0;
+      font-size: 18px;
+      color: #555;
+    }
+
+    .reservation-buttons {
+      height: 50px;
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    button {
+      padding: 10px 20px;
+      border-radius: 20px;
+      border: 2px solid #425BDF;
+      background-color: transparent;
+      color: #425BDF;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #425BDF;
+      color: white;
+    }
+
+    button.cancel-btn {
+      border-color: #FF6347;
+      color: #FF6347;
+    }
+
+    button.cancel-btn:hover {
+      background-color: #FF6347;
+      color: white;
+    }
+
   }
+
+  .status-upcoming {
+    color: #28a745 !important; /* Зеленый */
+    font-weight: bold;
+  }
+
+  .status-past {
+    color: #6c757d !important; /* Серый */
+    font-weight: bold;
+  }
+
+  .status-ongoing {
+    color: #ffc107 !important; /* Желтый */
+    font-weight: bold;
+  }
+
+  .status-unknown {
+    color: #dc3545 !important; /* Красный */
+    font-weight: bold;
+  }
+
 
   .login {
     display: flex;
