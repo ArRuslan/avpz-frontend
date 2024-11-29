@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { differenceInDays, format } from 'date-fns';
+import {ICreateOrderRequest, IPayPalConfig} from "ngx-paypal";
 
 interface Room {
   name: string;
@@ -35,11 +36,13 @@ export class ConfirmationStepComponent implements OnInit {
   subtotal: number = 0;
   formattedCheckIn: string = '';
   formattedCheckOut: string = '';
+  public payPalConfig?: IPayPalConfig;
 
   constructor() {}
 
   ngOnInit(): void {
     this.calculateReservationDetails();
+    this.initConfig();
   }
 
   calculateReservationDetails(): void {
@@ -54,5 +57,65 @@ export class ConfirmationStepComponent implements OnInit {
     // Format dates for display
     this.formattedCheckIn = format(this.checkIn, 'eee MMM dd yyyy');
     this.formattedCheckOut = format(this.checkOut, 'eee MMM dd yyyy');
+  }
+
+  private initConfig(): void {
+    this.payPalConfig = {
+      currency: 'EUR',
+      clientId: 'sb',
+      createOrderOnClient: (data) => <ICreateOrderRequest>{
+        intent: 'CAPTURE',
+        purchase_units: [
+          {
+            amount: {
+              currency_code: 'EUR',
+              value: '9.99',
+              breakdown: {
+                item_total: {
+                  currency_code: 'EUR',
+                  value: '9.99'
+                }
+              }
+            },
+            items: [
+              {
+                name: 'Enterprise Subscription',
+                quantity: '1',
+                category: 'DIGITAL_GOODS',
+                unit_amount: {
+                  currency_code: 'EUR',
+                  value: '9.99',
+                },
+              }
+            ]
+          }
+        ]
+      },
+      advanced: {
+        commit: 'true'
+      },
+      style: {
+        label: 'paypal',
+        layout: 'vertical'
+      },
+      onApprove: (data, actions) => {
+        console.log('onApprove - transaction was approved, but not authorized', data, actions);
+        actions.order.get().then((details: any) => {
+          console.log('onApprove - you can get full order details inside onApprove: ', details);
+        });
+      },
+      onClientAuthorization: (data) => {
+        console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
+      },
+      onCancel: (data, actions) => {
+        console.log('OnCancel', data, actions);
+      },
+      onError: err => {
+        console.log('OnError', err);
+      },
+      onClick: (data, actions) => {
+        console.log('onClick', data, actions);
+      },
+    };
   }
 }
