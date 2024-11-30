@@ -17,24 +17,13 @@
     align-items: center;
     margin-right: 20px;
 
-    h1 {
-      font-size: 2em;
-      font-weight: bold;
-      margin: 0;
-      color: #001f3f;
-      background-color: #fff;
-      padding: 10px 15px;
-      border-radius: 5px;
-    }
-
-    p {
-      margin: 0;
-      margin-left: 10px;
-      font-size: 0.9em;
+    img {
+      height: 65px;
     }
   }
 
   .step {
+    height: 50px;
     display: flex;
     flex-direction: column;
     align-items: center;
