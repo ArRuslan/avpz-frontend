@@ -36,74 +36,7 @@ export class MyProfileComponent implements OnInit {
     { type: 'Activate account', card_number: '4444-4444-4444-4444', isActive: true },
     { type: 'Activate account', card_number: '4444-4444-4444-4444', isActive: false },
   ];
-  reservations: Reservation[] = [
-    {
-      id: 1,
-      user_id: 123,
-      room_id: 1,
-      check_in: '2024-11-28',
-      check_out: '2024-11-29',
-      total_price: 100,
-      status: 1, // Будущая резервация
-      created_at: '2024-11-25',
-      payment_id: 'PAY12345',
-    },
-    {
-      id: 2,
-      user_id: 123,
-      room_id: 2,
-      check_in: '2024-11-20',
-      check_out: '2024-11-22',
-      total_price: 150,
-      status: 2, // Прошлая резервация
-      created_at: '2024-11-15',
-      payment_id: 'PAY12346',
-    },
-    {
-      id: 2,
-      user_id: 123,
-      room_id: 2,
-      check_in: '2024-11-20',
-      check_out: '2024-11-22',
-      total_price: 150,
-      status: 2, // Прошлая резервация
-      created_at: '2024-11-15',
-      payment_id: 'PAY12346',
-    },
-    {
-      id: 2,
-      user_id: 123,
-      room_id: 2,
-      check_in: '2024-11-20',
-      check_out: '2024-11-22',
-      total_price: 150,
-      status: 2, // Прошлая резервация
-      created_at: '2024-11-15',
-      payment_id: 'PAY12346',
-    },
-    {
-      id: 2,
-      user_id: 123,
-      room_id: 2,
-      check_in: '2024-11-20',
-      check_out: '2024-11-22',
-      total_price: 150,
-      status: 2, // Прошлая резервация
-      created_at: '2024-11-15',
-      payment_id: 'PAY12346',
-    },
-    {
-      id: 3,
-      user_id: 123,
-      room_id: 3,
-      check_in: '2024-11-29',
-      check_out: '2024-11-30',
-      total_price: 200,
-      status: 3, // Текущая резервация
-      created_at: '2024-11-28',
-      payment_id: 'PAY12347',
-    },
-  ];
+  reservations: Reservation[] = [];
 
 
   constructor(public dialog: MatDialog, private openApiService: OpenApiService) { }
@@ -158,7 +91,7 @@ export class MyProfileComponent implements OnInit {
   getUserReservations(): void {
     this.openApiService.getUserReservations().subscribe(
       (response) => {
-     //  this.reservations = response.result;
+      this.reservations = response.result;
         console.log(response);
       },
       (error) => {
@@ -167,31 +100,35 @@ export class MyProfileComponent implements OnInit {
     );
   }
 
-  getStatusLabel(status: number): string {
-    switch (status) {
-      case 1:
-        return 'Upcoming';
-      case 2:
-        return 'Past';
-      case 3:
-        return 'Ongoing';
-      default:
-        return 'Unknown';
+  getStatusLabel(reservation: Reservation): string {
+    const currentDate = new Date();
+    const checkInDate = new Date(reservation.check_in);
+    const checkOutDate = new Date(reservation.check_out);
+
+    if (currentDate < checkInDate) {
+      return 'Upcoming'; // Будущая резервация
+    } else if (currentDate > checkOutDate) {
+      return 'Past'; // Прошлая резервация
+    } else {
+      return 'Ongoing'; // Текущая резервация
     }
   }
 
-  getStatusClass(status: number): string {
-    switch (status) {
-      case 1:
-        return 'status-upcoming'; // Будущая резервация
-      case 2:
-        return 'status-past'; // Прошлая резервация
-      case 3:
-        return 'status-ongoing'; // Текущая резервация
-      default:
-        return 'status-unknown'; // Неизвестный статус
+
+  getStatusClass(reservation: Reservation): string {
+    const currentDate = new Date();
+    const checkInDate = new Date(reservation.check_in);
+    const checkOutDate = new Date(reservation.check_out);
+
+    if (currentDate < checkInDate) {
+      return 'status-upcoming'; // Будущая резервация
+    } else if (currentDate > checkOutDate) {
+      return 'status-past'; // Прошлая резервация
+    } else {
+      return 'status-ongoing'; // Текущая резервация
     }
   }
+
 
 
   cancelReservation(reservationId: number): void {

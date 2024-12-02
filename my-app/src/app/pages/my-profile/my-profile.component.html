@@ -136,8 +136,8 @@
           <p>Check-in: {{ reservation.check_in }}</p>
           <p>Check-out: {{ reservation.check_out }}</p>
           <p>Total Price: {{ reservation.total_price }} UAH</p>
-          <p [ngClass]="getStatusClass(reservation.status)">
-            Status: {{ getStatusLabel(reservation.status) }}
+          <p [ngClass]="getStatusClass(reservation)">
+            Status: {{ getStatusLabel(reservation) }}
           </p>
         </div>
         <div class="reservation-buttons" *ngIf="reservation.status === 1 || reservation.status === 3">

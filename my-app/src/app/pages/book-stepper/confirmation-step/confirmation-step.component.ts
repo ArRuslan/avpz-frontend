@@ -1,6 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { differenceInDays, format } from 'date-fns';
 import {ICreateOrderRequest, IPayPalConfig} from "ngx-paypal";
+import {OpenApiService} from "../../../services/open-api.service";
+import {tap} from "rxjs";
+import {Router} from "@angular/router";
 
 interface Room {
   name: string;
@@ -38,7 +41,8 @@ export class ConfirmationStepComponent implements OnInit {
   formattedCheckOut: string = '';
   public payPalConfig?: IPayPalConfig;
 
-  constructor() {}
+  constructor(
+    private openApiService: OpenApiService, private router: Router) {}
 
   ngOnInit(): void {
     this.calculateReservationDetails();
@@ -118,4 +122,21 @@ export class ConfirmationStepComponent implements OnInit {
       },
     };
   }
+
+  bookRoom() {
+    const formatDate = (date: Date) =>
+      date.toISOString().split('T')[0];
+
+    const payload = {
+      room_id: 2,
+      check_in: formatDate(new Date(this.checkIn)),
+      check_out: formatDate(new Date(this.checkOut)),
+    };
+
+    this.openApiService.makeReservation(payload).subscribe((res) => {
+      this.router.navigate(['/profile']);
+      console.log(res);
+    });
+  }
+
 }
