@@ -143,10 +143,8 @@ export class OpenApiService {
     const headers = new HttpHeaders({
       'Authorization': `${localStorage.getItem('token')}`
     });
-    // Виконайте запит GET до API для отримання методів оплати користувача
     return this.http.get(`${this.apiUrl}/users/me/payment`, { headers: headers });
   }
-
 
 
   getUserReservations() : Observable<any> {
@@ -155,5 +153,165 @@ export class OpenApiService {
     });
     // Виконайте запит GET до API для отримання методів оплати користувача
     return this.http.get<any[]>(`${this.apiUrl}/bookings`, { headers: headers });
+
+  private getHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    console.log('Current token:', token);
+    if (!token || this.isTokenExpired(token)) {
+      console.warn('Token is missing or expired.');
   }
+    return new HttpHeaders({
+      'Authorization': `${token}`,
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache',
+      'Pragma': 'no-cache'
+    });
+  }
+
+  private isTokenExpired(token: string): boolean {
+    try {
+        const payloadBase64 = token.split('.')[1];
+        const payload = JSON.parse(atob(payloadBase64));
+        const exp = payload.exp * 1000;
+        return Date.now() > exp;
+    } catch (error) {
+        console.error('Error decoding token:', error);
+        return true;
+    }
 }
+
+getHotels(page: number = 1): Observable<any> {
+  const headers = this.getHeaders();
+
+  const params = new HttpParams().set('page', page.toString());
+
+  return this.http.get<any>(`${this.apiUrl}/hotels`, { headers, params });
+}
+
+  getHotelRooms(hotelId: number): Observable<any> {
+    const headers = this.getHeaders();
+    console.log('Requesting rooms for hotel:', hotelId, 'with headers:', headers);
+    console.log('Requesting rooms with hotel ID:', hotelId);
+    return this.http.get<any>(`${this.apiUrl}/admin/hotels/${hotelId}/rooms`, { headers });
+  }
+
+  createHotel(hotelData: any): Observable<any> {
+    const headers = this.getHeaders();
+    console.log('Token in createHotel:', headers.get('Authorization'));
+    console.log('Headers in createHotel:', headers.keys());
+    console.log('Hotel Data in createHotel:', hotelData);
+    return this.http.post<any>(`${this.apiUrl}/admin/hotels`, hotelData, { headers });
+  }
+
+  updateHotel(hotelId: number, hotelData: any): Observable<any> {
+    const headers = this.getHeaders();
+    return this.http.patch<any>(`${this.apiUrl}/admin/hotels/${hotelId}`, hotelData, { headers });
+  }
+
+  private getAdminId(): number | null {
+    const token = localStorage.getItem('token');
+    if (token) {
+        try {
+            const payloadBase64 = token.split('.')[1]; // Отримуємо середню частину токена
+            const payload = JSON.parse(atob(payloadBase64)); // Декодуємо Base64
+            console.log('Decoded payload:', payload); // Логування всього payload
+            return payload?.admin_id || null; // Замість `admin_id` перевіряйте правильне поле
+        } catch (error) {
+            console.error('Error decoding token:', error);
+        }
+    }
+    return null;
+}
+
+  deleteHotelAdmin(hotelId: number): Observable<any> {
+    const headers = this.getHeaders();
+    const adminId = this.getAdminId();
+    if (!adminId) {
+        throw new Error('Admin ID is missing');
+    }
+    return this.http.delete<any>(`${this.apiUrl}/admin/hotels/${hotelId}/admins/${adminId}`, { headers });
+}
+
+createRoom(hotelId: number, roomData: any): Observable<any> {
+  const headers = this.getHeaders();
+  console.log('Token in createRoom:', headers.get('Authorization'));
+  return this.http.post<any>(`${this.apiUrl}/admin/hotels/${hotelId}/rooms`, roomData, { headers });
+}
+
+updateRoom(roomId: number, roomData: any): Observable<any> {
+  const headers = this.getHeaders();
+  console.log('Updating room with ID:', roomId);
+  return this.http.patch<any>(`${this.apiUrl}/admin/rooms/${roomId}`, roomData, { headers });
+}
+
+deleteRoom(roomId: number): Observable<any> {
+  const headers = this.getHeaders();
+  console.log('Token in deleteRoom:', headers.get('Authorization'));
+  return this.http.delete<any>(`${this.apiUrl}/admin/rooms/${roomId}`, { headers });
+}
+
+getAdmins(hotelId: number): Observable<any[]> {
+  const headers = this.getHeaders();
+  return this.http.get<any[]>(`${this.apiUrl}/admin/hotels/${hotelId}/admins`, { headers });
+}
+
+createAdmin(hotelId: number, adminData: any): Observable<any> {
+  const headers = this.getHeaders();
+  return this.http.post<any>(`${this.apiUrl}/admin/hotels/${hotelId}/admins`, adminData, { headers });
+}
+
+updateAdmin(adminId: number, adminData: any): Observable<any> {
+  const headers = this.getHeaders();
+  return this.http.patch<any>(`${this.apiUrl}/admin/admins/${adminId}`, adminData, { headers });
+}
+
+deleteAdmin(adminId: number): Observable<any> {
+  const headers = this.getHeaders();
+  return this.http.delete<any>(`${this.apiUrl}/admin/admins/${adminId}`, { headers });
+}
+
+getAdminsByHotel(hotelId: number): Observable<any> {
+  const headers = this.getHeaders();
+  return this.http.get<any>(`${this.apiUrl}/admin/hotels/${hotelId}/admins`, { headers });
+}
+
+getUsers(role: number, page: number = 1, pageSize: number = 50): Observable<UserResponse> {
+  const headers = this.getHeaders();
+  const params = new HttpParams()
+    .set('role', role.toString())
+    .set('page', page.toString())
+    .set('page_size', pageSize.toString());
+
+  return this.http.get<UserResponse>(`${this.apiUrl}/admin/users`, { headers, params });
+}
+
+searchUserByEmail(email: string): Observable<any> {
+  const headers = this.getHeaders();
+  const params = new HttpParams().set('email', email);
+
+  return this.http.get<any>(`${this.apiUrl}/admin/users/search`, { headers, params });
+}
+
+getUserById(userId: number): Observable<any> {
+  const headers = this.getHeaders();
+  return this.http.get<any>(`${this.apiUrl}/admin/users/${userId}`, { headers });
+}
+
+}
+
+interface UserResponse {
+  count: number;
+  result: User[];
+}
+
+interface User {
+  id: number;
+  email: string;
+  first_name: string;
+  last_name: string;
+  phone_number: string;
+  role: number;
+  mfa_enabled: boolean;
+}
+
+
