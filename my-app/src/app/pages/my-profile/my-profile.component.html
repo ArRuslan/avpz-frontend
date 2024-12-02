@@ -140,8 +140,9 @@
             Status: {{ getStatusLabel(reservation) }}
           </p>
         </div>
-        <div class="reservation-buttons" *ngIf="reservation.status === 1 || reservation.status === 3">
+        <div class="reservation-buttons" *ngIf="getStatusLabel(reservation) == 'Upcoming' || 'Ongoing'">
           <button class="cancel-btn" (click)="cancelReservation(reservation.id)">Cancel</button>
+          <button (click)="showReservationCode(reservation)">Show code</button>
         </div>
       </div>
     </div>
