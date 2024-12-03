@@ -9,6 +9,8 @@ import { SignUpComponent } from './pages/sign-up/sign-up.component';
 import { LoginComponent } from './pages/login/login.component';
 import {MyProfileComponent} from "./pages/my-profile/my-profile.component";
 import {BookStepperComponent} from "./pages/book-stepper/book-stepper.component";
+import { AdminComponent } from './pages/admin/admin.component';
+import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
 import {ResetPasswordComponent} from "./pages/reset-password/reset-password.component";
 
 const routes: Routes = [
@@ -23,6 +25,8 @@ const routes: Routes = [
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'login', component: LoginComponent },
   { path: 'profile', component: MyProfileComponent },
+  { path: 'admin', component: AdminComponent },
+  { path: 'admin-login', component: AdminLoginComponent },
   { path: '', redirectTo: '/main-page', pathMatch: 'full' },
   { path: '**', redirectTo: '/main-page' }
 ];

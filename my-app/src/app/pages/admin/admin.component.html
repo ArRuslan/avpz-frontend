@@ -1,0 +1,210 @@
+<div class="admin-container">
+  <aside class="sidebar">
+    <h1 class="logo">HBB.</h1>
+    <ul class="menu">
+      <li><a (click)="setActiveSection('Hotels')" [class.active]="activeSection === 'Hotels'">
+        <img src="assets/images/hotel.png" alt="Hotels" class="icon"> Hotels
+      </a></li>
+      <li><a (click)="setActiveSection('Rooms')" [class.active]="activeSection === 'Rooms'">
+        <img src="assets/images/room.png" alt="Rooms" class="icon"> Rooms
+      </a></li>
+      <li><a (click)="setActiveSection('Users')" [class.active]="activeSection === 'Users'">
+        <img src="assets/images/user-for-admin-menu.png" alt="Users" class="icon"> Users
+      </a></li>
+      <li><a (click)="setActiveSection('Administrators')" [class.active]="activeSection === 'Administrators'">
+        <img src="assets/images/admin.png" alt="Administrators" class="icon"> Administrators
+      </a></li>
+      <li><a (click)="setActiveSection('Bookings')" [class.active]="activeSection === 'Bookings'" [class.disabled]="isDisabled('Bookings')">
+          <img src="assets/images/book.png" alt="Bookings" class="icon"> Bookings
+        </a></li>
+      <li><a (click)="setActiveSection('Payments')"  [class.active]="activeSection === 'Payments'"  [class.disabled]="isDisabled('Payments')">
+          <img src="assets/images/payment.png" alt="Payments" class="icon"> Payments
+        </a>
+      </li></ul>
+  </aside>
+
+  <main class="main-content">
+    <header class="header">
+      <div class="admin-icons">
+        <img src="assets/images/surname.png" alt="Admin" class="admin-avatar" />
+      </div>
+    </header>
+
+    <section class="content">
+      <h2>{{ activeSection }} Information</h2>
+
+      <!-- Поля для фільтрації, які змінюються залежно від активного розділу -->
+      <div class="filters">
+        <ng-container *ngIf="activeSection === 'Hotels'">
+          <input type="text" placeholder="Enter Hotel Name" [disabled]="true"/>
+          <input type="text" placeholder="Enter Address" [disabled]="true"/>
+          <input type="text" placeholder="Description" [disabled]="true"/>
+        </ng-container>
+
+        <ng-container *ngIf="activeSection === 'Rooms'">
+          <select [(ngModel)]="selectedHotelId" (change)="loadRooms()" class="hotel-selector" aria-label="Select Hotel">
+            <option *ngFor="let hotel of hotels" [value]="hotel.id">
+              {{ hotel.name }}
+            </option>
+          </select>
+          <input type="text" placeholder="Enter Type" [disabled]="true"/>
+          <input type="text" placeholder="Enter Price" [disabled]="true"/>
+        </ng-container>
+
+
+        <ng-container *ngIf="activeSection === 'Bookings'">
+          <input type="text" placeholder="Enter User" />
+          <input type="text" placeholder="Enter Room" />
+          <input type="text" placeholder="Start Date" />
+          <input type="text" placeholder="End Date" />
+          <input type="text" placeholder="Total Price" />
+          <input type="text" placeholder="Enter Status" />
+        </ng-container>
+
+        <ng-container *ngIf="activeSection === 'Administrators'">
+          <input type="text" placeholder="Enter Customer Name" [disabled]="true"/>
+          <input type="text" placeholder="Enter Email" [disabled]="true"/>
+        </ng-container>
+
+        <ng-container *ngIf="activeSection === 'Users'">
+          <select id="user-role-select" [(ngModel)]="selectedRole" (change)="loadUsers(selectedRole)" class="hotel-selector" aria-label="select role">
+            <option [value]="0">Role: 0</option>
+            <option [value]="1">Role: 1</option>
+            <option [value]="2">Role: 2</option>
+            <option [value]="100">Role: 100</option>
+            <option [value]="999">Role: 999</option>
+          </select>
+          <input type="text" placeholder="Enter ID" [(ngModel)]="searchId" (keyup.enter)="searchUserById()" class="id-search"/>
+          <input type="text" placeholder="Enter Email" [(ngModel)]="searchEmail"  (keyup.enter)="searchUser()"/>
+        </ng-container>
+
+        <ng-container *ngIf="activeSection === 'Payments'">
+          <input type="text" placeholder="Enter Booking" />
+          <input type="text" placeholder="Enter Date" />
+          <input type="text" placeholder="Enter Amount" />
+          <input type="text" placeholder="Enter Method" />
+        </ng-container>
+      </div>
+
+      <!-- Таблиця з умовними колонками -->
+      <table class="table">
+        <thead>
+          <tr *ngIf="activeSection === 'Hotels'">
+            <th></th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Description</th>
+          </tr>
+          <tr *ngIf="activeSection === 'Rooms'">
+            <th></th>
+            <th>Hotel</th>
+            <th>Room Type</th>
+            <th>Price</th>
+          </tr>
+          <tr *ngIf="activeSection === 'Bookings'">
+            <th></th>
+            <th>ID</th>
+            <th>User</th>
+            <th>Room</th>
+            <th>Dates</th>
+            <th>Total Price</th>
+            <th>Status</th>
+          </tr>
+          <tr *ngIf="activeSection === 'Administrators'">
+            <th></th>
+            <th>ID</th>
+            <th>Email</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+            <th>Role</th>
+            <th>MFA Enabled</th>
+          </tr>
+          <tr *ngIf="activeSection === 'Users'">
+            <th></th>
+            <th>ID</th>
+            <th>Email</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Phone Number</th>
+            <th>Role</th>
+            <th>MFA Enabled</th>
+          </tr>
+          <tr *ngIf="activeSection === 'Payments'">
+            <th></th>
+            <th>ID</th>
+            <th>Booking</th>
+            <th>Date</th>
+            <th>Amount</th>
+            <th>Method</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of data" (click)="selectItem(item)" [class.selected]="item === selectedItem">
+            <td>
+              <input placeholder="checkbox" type="checkbox" [checked]="item === selectedItem" />
+            </td>
+
+            <ng-container *ngIf="activeSection === 'Hotels'">
+              <td>{{ item.name }}</td>
+              <td>{{ item.address }}</td>
+              <td>{{ item.description }}</td>
+            </ng-container>
+
+            <ng-container *ngIf="activeSection === 'Rooms'">
+              <td>{{ item.hotelName }}</td>
+              <td>{{ item.type }}</td>
+              <td>{{ item.price }}</td>
+            </ng-container>
+
+            <ng-container *ngIf="activeSection === 'Bookings'">
+              <td>{{ item.user }}</td>
+              <td>{{ item.room }}</td>
+              <td>{{ item.dates }}</td>
+              <td>{{ item.totalPrice }}</td>
+              <td>{{ item.status }}</td>
+            </ng-container>
+
+            <ng-container *ngIf="activeSection === 'Users'">
+              <td>{{ item.id }}</td>
+              <td>{{ item.email }}</td>
+              <td>{{ item.firstName }}</td>
+              <td>{{ item.lastName }}</td>
+              <td>{{ item.phoneNumber }}</td>
+              <td>{{ item.role }}</td>
+              <td>{{ item.mfaEnabled ? 'Yes' : 'No' }}</td>
+            </ng-container>
+
+            <ng-container *ngIf="activeSection === 'Payments'">
+              <td>{{ item.booking }}</td>
+              <td>{{ item.date }}</td>
+              <td>{{ item.amount }}</td>
+              <td>{{ item.method }}</td>
+            </ng-container>
+
+            <ng-container *ngIf="activeSection === 'Administrators'">
+              <td>{{ item.id }}</td>
+              <td>{{ item.email }}</td>
+              <td>{{ item.firstName }}</td>
+              <td>{{ item.lastName }}</td>
+              <td>{{ item.phoneNumber }}</td>
+              <td>{{ item.role }}</td>
+              <td>{{ item.mfaEnabled ? 'Yes' : 'No' }}</td>
+            </ng-container>
+          </tr>
+        </tbody>
+
+      </table>
+      <button *ngIf="!isSearching && showLoadMore && activeSection !== 'Rooms' && activeSection !== 'Administrators'"  (click)="loadMoreData()"  class="action-button show-more-button"> Show more </button>
+      <div *ngIf="activeSection === 'Users'"> <button *ngIf="activeSection === 'Users' && isSearching" (click)="exitSearchMode()"  class="action-button show-more-button">  Back  </button>  </div>
+    </section>
+  </main>
+
+  <div class="action-buttons">
+    <button class="action-button" [disabled]="activeSection === 'Users'" [disabled]="activeSection === 'Administrators'" (click)="handleAdd()">Add</button>
+    <button class="action-button" [disabled]="activeSection === 'Users'" [disabled]="activeSection === 'Administrators'" (click)="handleEdit()"> Edit </button>
+    <button class="action-button" [disabled]="activeSection === 'Hotels'" [disabled]="activeSection === 'Users'" [disabled]="activeSection === 'Administrators'" (click)="handleDelete()"> Delete </button>
+
+  </div>
+
+
