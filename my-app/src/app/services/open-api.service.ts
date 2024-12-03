@@ -153,6 +153,7 @@ export class OpenApiService {
     });
     // Виконайте запит GET до API для отримання методів оплати користувача
     return this.http.get<any[]>(`${this.apiUrl}/bookings`, { headers: headers });
+  }
 
   private getHeaders(): HttpHeaders {
     const token = localStorage.getItem('token');
