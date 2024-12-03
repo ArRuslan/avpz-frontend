@@ -40,6 +40,16 @@ export class ConfirmationStepComponent implements OnInit {
   formattedCheckIn: string = '';
   formattedCheckOut: string = '';
   public payPalConfig?: IPayPalConfig;
+  userData: any = {
+    first_name: '',
+    last_name: '',
+    email: '',
+    phone_number: '',
+    address: '',
+    city: '',
+    postal_code: '',
+  };
+
 
   constructor(
     private openApiService: OpenApiService, private router: Router) {}
@@ -47,7 +57,17 @@ export class ConfirmationStepComponent implements OnInit {
   ngOnInit(): void {
     this.calculateReservationDetails();
     this.initConfig();
+    this.loadUserData();
   }
+
+  loadUserData(): void {
+    this.openApiService.getUserInfo().pipe(
+      tap((response) => {
+        this.userData = response; // Сохраняем данные пользователя
+      })
+    ).subscribe();
+  }
+
 
   calculateReservationDetails(): void {
     // Calculate nights between check-in and check-out
