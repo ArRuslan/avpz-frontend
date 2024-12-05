@@ -12,6 +12,8 @@ import {BookStepperComponent} from "./pages/book-stepper/book-stepper.component"
 import { AdminComponent } from './pages/admin/admin.component';
 import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
 import {ResetPasswordComponent} from "./pages/reset-password/reset-password.component";
+import { MfaVerifyComponent } from './pages/mfa-verify/mfa-verify.component';
+import { MfaSetupComponent } from './pages/mfa-setup/mfa-setup.component';
 
 const routes: Routes = [
   { path: 'main-page', component: MainPageComponent },
@@ -25,6 +27,8 @@ const routes: Routes = [
   { path: 'reset-password', component: ResetPasswordComponent },
   { path: 'login', component: LoginComponent },
   { path: 'profile', component: MyProfileComponent },
+  { path: 'mfa-verify', component: MfaVerifyComponent },
+  { path: 'mfa-setup', component: MfaSetupComponent },
   { path: 'admin', component: AdminComponent },
   { path: 'admin-login', component: AdminLoginComponent },
   { path: '', redirectTo: '/main-page', pathMatch: 'full' },

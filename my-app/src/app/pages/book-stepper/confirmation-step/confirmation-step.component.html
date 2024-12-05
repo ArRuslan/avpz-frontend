@@ -12,33 +12,41 @@
   </div>
 
 
-<div class="guest-info">
+  <div class="guest-info">
     <h3>Guest Information</h3>
-    <input type="text" placeholder="First Name" required />
-    <input type="text" placeholder="Last Name" required />
-    <input type="email" placeholder="Email Address" required />
-    <input type="tel" placeholder="Phone Number" required />
-    <input type="text" placeholder="Address" required />
-    <input type="text" placeholder="City" required />
-    <select required>
-      <option>UNITED STATES</option>
+    <input type="text" [(ngModel)]="userData.first_name" placeholder="First Name" required />
+    <input type="text" [(ngModel)]="userData.last_name" placeholder="Last Name" required />
+    <input type="email" [(ngModel)]="userData.email" placeholder="Email Address" required />
+    <input type="tel" [(ngModel)]="userData.phone_number" placeholder="Phone Number" required />
+    <input type="text" [(ngModel)]="userData.address" placeholder="Address" />
+    <input type="text" [(ngModel)]="userData.city" placeholder="City" />
+    <select  required>
+      <option>Ukraine</option>
       <!-- Add more countries as needed -->
     </select>
-    <input type="text" placeholder="Postal Code" required />
+    <input type="text" [(ngModel)]="userData.postal_code" placeholder="Postal Code" />
   </div>
 
   <div class="payment-method">
     <h3>Payment Method</h3>
-    <div class="card-icons">
-    </div>
+    <ngx-paypal [config]="payPalConfig"></ngx-paypal>
+    <p>OR</p>
     <input type="text" placeholder="Name on Card" required />
     <input type="text" placeholder="Card Number" required />
     <input type="text" placeholder="MM/YY" required />
     <div class="checkboxes">
-      <label><input type="checkbox" /> Use the same address as contact information.</label>
-      <label><input type="checkbox" /> Notify me about special offers.</label>
-      <label><input type="checkbox" required /> I have read and agree to the&nbsp; <a href="#">Terms & Conditions</a>.</label>
+      <label>
+        <input type="checkbox" /> Use the same address as contact information.
+      </label>
+      <label>
+        <input type="checkbox" /> Notify me about special offers.
+      </label>
+      <label>
+        <input type="checkbox" required />
+        I have read and agree to the&nbsp;<a href="#">Terms & Conditions</a>.
+      </label>
     </div>
-    <button class="book-now">BOOK NOW</button>
+    <button class="book-now" (click)="bookRoom()">BOOK NOW</button>
   </div>
+
 </div>

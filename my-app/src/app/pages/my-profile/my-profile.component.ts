@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {OpenApiService, TicketData} from "../../services/open-api.service";
 import {
   PasswordConfirmationPopupComponent
@@ -7,6 +8,19 @@ import {MatDialog} from "@angular/material/dialog";
 import {AnnouncementPopupComponent} from "../../shared/popup-windows/announcement-popup/announcement-popup.component";
 import {Observable, tap} from "rxjs";
 import {SetAvatarPopupComponent} from "../../shared/popup-windows/set-avatar-popup/set-avatar-popup.component";
+
+export interface Reservation {
+  id: number;
+  user_id: number;
+  room_id: number;
+  check_in: string;
+  check_out: string;
+  total_price: number;
+  status: number;
+  created_at: string;
+  payment_id: string;
+}
+
 
 @Component({
   selector: 'app-my-profile',
@@ -23,13 +37,10 @@ export class MyProfileComponent implements OnInit {
     { type: 'Activate account', card_number: '4444-4444-4444-4444', isActive: true },
     { type: 'Activate account', card_number: '4444-4444-4444-4444', isActive: false },
   ];
-  reservations = [
-    { room: 'Room #1', status: 'Soon' },
-    { room: 'Room #2', status: 'Soon' },
-    { room: 'Room #3', status: 'Is Over' },
-  ];
+  reservations: Reservation[] = [];
 
-  constructor(public dialog: MatDialog, private openApiService: OpenApiService) { }
+
+  constructor(public dialog: MatDialog, private router: Router, private openApiService: OpenApiService) { }
 
   ngOnInit(): void {
     if (localStorage.getItem("token")) {
@@ -38,7 +49,7 @@ export class MyProfileComponent implements OnInit {
         () => {
           this.getUserAvatar();
           this.getUserPaymentMethods();
-          this.getUserTickets();
+          this.getUserReservations();
         },
         (error) => {
           console.error('Помилка при отриманні даних користувача:', error);
@@ -78,17 +89,73 @@ export class MyProfileComponent implements OnInit {
     );
   }
 
-  getUserTickets(): void {
-    this.openApiService.getUserTickets().subscribe(
+  getUserReservations(): void {
+    this.openApiService.getUserReservations().subscribe(
       (response) => {
-       // this.reservations = response;
-        console.log(this.reservations);
+      this.reservations = response.result;
+        console.log(response);
       },
       (error) => {
         console.log('Error fetching payment methods:', error);
       }
     );
   }
+
+  getStatusLabel(reservation: Reservation): string {
+    const currentDate = new Date();
+    const checkInDate = new Date(reservation.check_in);
+    const checkOutDate = new Date(reservation.check_out);
+
+    if (currentDate < checkInDate) {
+      return 'Upcoming'; // Будущая резервация
+    } else if (currentDate > checkOutDate) {
+      return 'Past'; // Прошлая резервация
+    } else {
+      return 'Ongoing'; // Текущая резервация
+    }
+  }
+
+
+  getStatusClass(reservation: Reservation): string {
+    const currentDate = new Date();
+    const checkInDate = new Date(reservation.check_in);
+    const checkOutDate = new Date(reservation.check_out);
+
+    if (currentDate < checkInDate) {
+      return 'status-upcoming'; // Будущая резервация
+    } else if (currentDate > checkOutDate) {
+      return 'status-past'; // Прошлая резервация
+    } else {
+      return 'status-ongoing'; // Текущая резервация
+    }
+  }
+
+  showReservationCode(reservation: Reservation): void {
+    const reservationCode = `${reservation.id}${reservation.user_id}${reservation.room_id}`;
+    alert(`Reservation Code: ${reservationCode}`);
+  }
+
+
+
+  cancelReservation(reservationId: number): void {
+    const confirmation = window.confirm(
+      'Are you sure you want to cancel this reservation?'
+    );
+    if (confirmation) {
+      console.log(`Canceling reservation with ID: ${reservationId}`);
+
+
+      this.openApiService.cancelReservation(reservationId).subscribe(() => {
+        this.reservations = this.reservations.filter(
+          (reservation) => reservation.id !== reservationId
+        );
+      });
+    } else {
+      console.log('Reservation cancellation canceled.');
+    }
+  }
+
+
 
   toggleEdit() {
     this.isEditing = !this.isEditing;
@@ -211,5 +278,11 @@ export class MyProfileComponent implements OnInit {
       width: '100%', height: '100%',
       data: { message: message } // Тут ви можете передати інформацію про квиток
     });
+  }
+  
+  enableMfa(): void {
+    localStorage.setItem('mfa_enabled', `${this.userData.mfa_enabled}`);
+    localStorage.setItem('email', `${this.userData.email}`)
+    this.router.navigate(['/mfa-setup']);
   }
 }

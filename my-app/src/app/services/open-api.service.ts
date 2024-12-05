@@ -58,6 +58,21 @@ export class OpenApiService {
     return this.http.post<any>(`${this.apiUrl}/tickets/request-payment`, ticketInfo, { headers: headers });
   }
 
+  makeReservation(reservation: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `${localStorage.getItem('token')}`
+    });
+
+    return this.http.post<any>(`${this.apiUrl}/bookings`, reservation, { headers: headers });
+  }
+
+  cancelReservation(id: any): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `${localStorage.getItem('token')}`
+    });
+    return this.http.post<any>(`${this.apiUrl}/bookings/${id}/cancel`, {booking_id: id}, { headers: headers });
+  }
+
   getVerification(ticket_id: number): Observable<any> {
     const headers = new HttpHeaders({
       'Authorization': `${localStorage.getItem('token')}`
@@ -132,11 +147,12 @@ export class OpenApiService {
   }
 
 
-  getUserTickets() : Observable<TicketData[]> {
+  getUserReservations() : Observable<any> {
     const headers = new HttpHeaders({
       'Authorization': `${localStorage.getItem('token')}`
     });
-    return this.http.get<TicketData[]>(`${this.apiUrl}/tickets`, { headers: headers });
+    // Виконайте запит GET до API для отримання методів оплати користувача
+    return this.http.get<any[]>(`${this.apiUrl}/bookings`, { headers: headers });
   }
 
   private getHeaders(): HttpHeaders {
@@ -280,6 +296,25 @@ searchUserByEmail(email: string): Observable<any> {
 getUserById(userId: number): Observable<any> {
   const headers = this.getHeaders();
   return this.http.get<any>(`${this.apiUrl}/admin/users/${userId}`, { headers });
+}
+
+enableMfa(password: string, key: string, code: string): Observable<any> {
+  const headers = this.getHeaders();
+  const body = {
+    password,
+    key,
+    code
+  };
+  return this.http.post<any>(`${environment.apiBaseUrl}/user/mfa/enable`, body, { headers });
+}
+
+disableMfa(password: string, code: string): Observable<any> {
+  const headers = this.getHeaders();
+  const body = {
+    password,
+    code
+  };
+  return this.http.post<any>(`${environment.apiBaseUrl}/user/mfa/disable`, body, { headers });
 }
 
 }
