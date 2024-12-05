@@ -298,6 +298,25 @@ getUserById(userId: number): Observable<any> {
   return this.http.get<any>(`${this.apiUrl}/admin/users/${userId}`, { headers });
 }
 
+enableMfa(password: string, key: string, code: string): Observable<any> {
+  const headers = this.getHeaders();
+  const body = {
+    password,
+    key,
+    code
+  };
+  return this.http.post<any>(`${environment.apiBaseUrl}/user/mfa/enable`, body, { headers });
+}
+
+disableMfa(password: string, code: string): Observable<any> {
+  const headers = this.getHeaders();
+  const body = {
+    password,
+    code
+  };
+  return this.http.post<any>(`${environment.apiBaseUrl}/user/mfa/disable`, body, { headers });
+}
+
 }
 
 interface UserResponse {

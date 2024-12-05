@@ -1,0 +1,40 @@
+<div class="mfa-setup-container">
+  <div class="mfa-setup">
+    <h2 *ngIf="!mfaEnabled">Enable Two-Factor Auth</h2>
+    <h2 *ngIf="mfaEnabled">Disable Two-Factor Auth</h2>
+    <p *ngIf="!mfaEnabled">Make your account safer in 3 easy steps</p>
+    <hr class="divider">
+  
+    <div *ngIf="!mfaEnabled" class="step">
+      <div class="content">
+        <h3>Download an authenticator app</h3>
+        <img src="https://img.icons8.com/ios/50/security-checked--v1.png" alt="App">
+        <p>Download and install Authy or Google Authenticator for your phone or tablet.</p>
+      </div>
+    </div>
+    <hr *ngIf="!mfaEnabled" class="divider">
+  
+    <div *ngIf="!mfaEnabled" class="step">
+      <div class="content">
+        <h3>Scan the QR code</h3>
+        <p>Open the authenticator app and scan the image below using your phone's camera.</p>
+        <div class="qr-code">
+          <a [href]="otpAuthUrl" target="_blank">
+          <img [src]="qrCodeUrl" alt="QR Code" /></a>
+        </div>
+        <p class="manual-key">2FA key (manual entry): <strong>{{ secretKey }}</strong></p>
+      </div>
+    </div>
+    <hr *ngIf="!mfaEnabled" class="divider">
+  
+    
+    <div class="step">
+      <h3>Enter the password and 6-digit verification code:</h3>
+      <div class="input-group">
+        <input type="password" id="password" placeholder="Password" [(ngModel)]="password">
+        <input type="text" id="code" placeholder="000 000" [(ngModel)]="verificationCode" maxlength="6">
+      </div>
+      <button (click)="submitCode()">Continue</button>
+    </div>
+  </div>
+</div>

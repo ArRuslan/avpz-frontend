@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import {OpenApiService, TicketData} from "../../services/open-api.service";
 import {
   PasswordConfirmationPopupComponent
@@ -39,7 +40,7 @@ export class MyProfileComponent implements OnInit {
   reservations: Reservation[] = [];
 
 
-  constructor(public dialog: MatDialog, private openApiService: OpenApiService) { }
+  constructor(public dialog: MatDialog, private router: Router, private openApiService: OpenApiService) { }
 
   ngOnInit(): void {
     if (localStorage.getItem("token")) {
@@ -277,5 +278,11 @@ export class MyProfileComponent implements OnInit {
       width: '100%', height: '100%',
       data: { message: message } // Тут ви можете передати інформацію про квиток
     });
+  }
+  
+  enableMfa(): void {
+    localStorage.setItem('mfa_enabled', `${this.userData.mfa_enabled}`);
+    localStorage.setItem('email', `${this.userData.email}`)
+    this.router.navigate(['/mfa-setup']);
   }
 }

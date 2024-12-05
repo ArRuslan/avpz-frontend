@@ -109,6 +109,11 @@
                 <p style="text-decoration: underline;">{{ userData.email }}</p>
               </div>
             </div>
+            <hr class="divider">
+            <div class="input-row">
+              <h2>Two-Factor Auth setup</h2>
+              <button class="submit" type="submit" (click)="enableMfa()">{{ userData.mfa_enabled ? "Disable 2FA" : "Enable 2FA" }}</button>
+            </div>
           </div>
         </div>
       </div>

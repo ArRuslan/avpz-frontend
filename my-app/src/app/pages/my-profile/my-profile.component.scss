@@ -296,6 +296,30 @@ main {
   }
 }
 
+.submit {
+  padding: 5px 10px;
+  width: 100%;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+  border: 3px solid #425BDF;
+  background-color: rgba(255, 255, 255, 0);
+  color: #425BDF;
+  font-size: 30px;
+
+  &:hover {
+    background-color: #425BDF;
+    color: white;
+  }
+}
+
+.divider {
+  border: none;
+  height: 1px;
+  background: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0));
+  margin: 20px 0;
+}
+
 .payment-method-block {
   display: flex;
   width: 100%;
