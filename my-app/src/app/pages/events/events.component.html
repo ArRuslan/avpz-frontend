@@ -1,8 +1,8 @@
 <div class="container">
   <div class="search-container">
     <div class="search">
-      <input type="text" placeholder="Search" [(ngModel)]="searchText">
-      <button class="search-button" (click)="searchEventsByName()"></button>
+      <input type="text" placeholder="Search" [(ngModel)]="searchQuery">
+      <button title="Search" class="search-button" (click)="searchHotels2()"></button>
     </div>
     <button class="filter" (click)="openFilterDialog()">Filter</button>
     <button class="sort" (click)="openSortDialog()">Sort</button>
@@ -21,11 +21,43 @@
       </div>
     </div>
 
-    <ng-template #noEventsMessage>
-      <div class="no-events-message">
-        <p>There are no rooms</p>
+  <div class="events-grid" *ngIf="!category && !rooms.length && hotels.length">
+    <div class="event-card" *ngFor="let hotel of hotels">
+      <div class="event-image"></div>
+      <div class="event-info">
+        <h3>{{ hotel.name }}</h3>
+        <p>Address: {{ hotel.address }}</p>
+        <button [routerLink]="'/hotel/' + hotel.id + '/rooms'" class="book-button">Explore</button>
       </div>
-    </ng-template>
+    </div>
+  </div>
+
+  <div class="events-grid" *ngIf="!category && rooms.length">
+    <div class="event-card" *ngFor="let room of rooms">
+      <div class="event-image"></div>
+      <div class="event-info">
+        <h3>Room Type: {{ room.type }}</h3>
+        <p>Price: ${{ room.price }}</p>
+        <p *ngIf="room.available">Available</p>
+        <p *ngIf="!room.available">Not Available</p>
+        <button class="book-button">Book</button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noEventsMessage>
+    <div class="no-events-message" *ngIf="!hotels?.length && !rooms?.length">
+      <p>There are no hotels or rooms available.</p>
+    </div>
+  </ng-template>
+
+  <div *ngIf="hotels?.length && totalCount && hotels.length < totalCount" class="load-more-container">
+    <button (click)="loadNextPage()">Load More</button>
+  </div>
+
+  <div *ngIf="!hotels?.length" class="no-events-message">
+    <p>No hotels found for your search query.</p>
+  </div>
 
   </main>
 </div>

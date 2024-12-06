@@ -282,6 +282,23 @@ getUserById(userId: number): Observable<any> {
   return this.http.get<any>(`${this.apiUrl}/admin/users/${userId}`, { headers });
 }
 
+getRoomsByType(type: string): Observable<any> {
+  const headers = this.getHeaders();
+  const params = new HttpParams().set('type', type);
+  return this.http.get<any>(`${this.apiUrl}/rooms`, { headers, params });
+}
+
+searchHotels2(params: any = {}): Observable<any> {
+  const headers = this.getHeaders();
+  const httpParams = new HttpParams({ fromObject: params });
+
+  console.log('Sending GET request to:', `${this.apiUrl}/hotels`);
+  console.log('With params:', params);
+  console.log('With headers:', headers);
+
+  return this.http.get<any>(`${this.apiUrl}/hotels`, { headers, params: httpParams });
+}
+
 }
 
 interface UserResponse {

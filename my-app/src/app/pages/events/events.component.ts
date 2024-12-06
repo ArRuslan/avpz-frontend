@@ -4,6 +4,7 @@ import { FilterPopupComponent } from '../../shared/popup-windows/filter-popup/fi
 import { SortPopupComponent } from '../../shared/popup-windows/sort-popup/sort-popup.component';
 import {OpenApiService} from "../../services/open-api.service";
 import {ActivatedRoute} from "@angular/router";
+import { forkJoin } from 'rxjs';
 
 class SortOptions {
   order: 'asc' | 'desc' = 'asc';
@@ -26,21 +27,138 @@ export class EventsComponent {
   searchText: any;
   sortOptions: SortOptions = new SortOptions();
   filterOptions: FilterOptions = new FilterOptions();
-  category: string | null | undefined;
+  hotels: any[] = [];
+  rooms: any[] = [];
+  isHotelsPage: boolean = true;
+  category: string | null = null;
+  searchQuery: string = '';
+  currentPage: number = 1;
+  pageSize: number = 50;
+  totalCount: number = 0;
 
   constructor(public dialog: MatDialog, private openApiService: OpenApiService, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.category = params['category']; // Отримайте параметр категорії з URL
-      // Тепер ви можете використовувати цей параметр для завантаження відповідних івентів
-      if (this.category) {
-        this.filterEventsByCategory(this.category);
+      const category = params['category'];
+      const hotelId = params['hotelId'];
+
+      if (category) {
+        this.getRoomsByCategory(category);
+      } else if (hotelId) {
+        this.getRoomsForHotel(+hotelId);
       } else {
-        this.getAllEvents();
+        this.getAllHotels();
       }
     });
   }
+
+  private determinePageType(): void {
+    this.route.url.subscribe(urlSegments => {
+      const isHotelsPage = urlSegments.some(segment => segment.path === 'hotels');
+      const hotelId = isHotelsPage ? null : +this.route.snapshot.params['hotelId'];
+
+      if (isHotelsPage) {
+        this.getAllHotels();
+      } else if (hotelId) {
+        this.getRoomsForHotel(hotelId);
+      }
+    });
+  }
+
+  private getAllHotels(): void {
+    this.openApiService.searchHotels().subscribe(
+      response => {
+        this.hotels = response.result.map((hotel: any) => ({
+          ...hotel,
+          imageUrl: `https://via.placeholder.com/250`
+        }));
+      },
+      error => {
+        console.error('Error fetching hotels:', error);
+      }
+    );
+  }
+
+  private getRoomsByCategory(category: string): void {
+    this.openApiService.getRoomsByType(category).subscribe(
+      response => {
+        this.rooms = response.result.map((room: any) => ({
+          ...room,
+          imageUrl: `https://via.placeholder.com/250`
+        }));
+      },
+      error => {
+        console.error('Error fetching rooms by category:', error);
+      }
+    );
+  }
+
+  private getRoomsForHotel(hotelId: number): void {
+    this.openApiService.getHotelRooms(hotelId).subscribe(
+      response => {
+        console.log('API response:', response);
+        if (Array.isArray(response)) {
+          this.rooms = response.map((room: any) => ({
+            ...room,
+            imageUrl: `https://via.placeholder.com/250`
+          }));
+        } else {
+          console.error('Invalid API response format:', response);
+        }
+      },
+      error => {
+        console.error('Error fetching rooms for hotel:', error);
+      }
+    );
+  }
+
+  searchHotels2(): void {
+    const trimmedQuery = this.searchQuery?.trim();
+
+    if (!trimmedQuery) {
+      console.warn('Search query is empty');
+      return;
+    }
+
+    const params: any = {
+      page: this.currentPage.toString(),
+      page_size: this.pageSize.toString(),
+    };
+
+    const nameSearch = this.openApiService.searchHotels2({ ...params, name: trimmedQuery });
+    const addressSearch = this.openApiService.searchHotels2({ ...params, address: trimmedQuery });
+    const descriptionSearch = this.openApiService.searchHotels2({ ...params, description: trimmedQuery });
+
+    forkJoin([nameSearch, addressSearch, descriptionSearch]).subscribe(
+      ([nameResults, addressResults, descriptionResults]) => {
+        const allResults = [
+          ...(nameResults?.result || []),
+          ...(addressResults?.result || []),
+          ...(descriptionResults?.result || []),
+        ];
+
+        this.hotels = Array.from(new Set(allResults.map(hotel => hotel.id))).map(
+          id => allResults.find(hotel => hotel.id === id)
+        );
+
+        console.log('Merged results:', this.hotels);
+      },
+      error => {
+        console.error('Error fetching hotels:', error);
+        this.hotels = [];
+      }
+    );
+  }
+
+  loadNextPage(): void {
+    if (this.hotels.length < this.totalCount) {
+      this.currentPage++;
+      this.searchHotels2();
+    }
+  }
+
+
 
   getAllEventsImages(): void {
     for (let i = 0; i < this.events.length; i++) {
@@ -171,4 +289,6 @@ export class EventsComponent {
       }
     );
   }
+
+
 }
