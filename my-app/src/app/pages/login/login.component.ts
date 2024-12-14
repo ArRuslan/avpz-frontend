@@ -74,12 +74,18 @@ export class LoginComponent implements OnInit {
 
     this.http.post<LoginResponse>(`${environment.apiBaseUrl}/auth/login`, requestBody).subscribe({
       next: (response) => {
-        localStorage.setItem('token', response.token);
-        this.router.navigate(['/main-page']);
-        this.showToast('Login successful', 'success');
+        if(response.token){
+          localStorage.setItem('token', response.token);
+          this.router.navigate(['/main-page']);
+          this.showToast('Login successful', 'success');
+        }
       },
       error: (err) => {
-        this.showToast('Login failed', 'error');
+        if(err.error.mfa_token) {
+          localStorage.setItem('mfa_token', err.error.mfa_token);
+          this.router.navigate(['/mfa-verify']);
+        }
+        else this.showToast(err.message, 'error');
       }
     });
   }

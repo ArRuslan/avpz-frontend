@@ -13,7 +13,7 @@ export class AppComponent {
   constructor(private router: Router, private renderer: Renderer2) {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
-        const noHeaderRoutes = ['/login', '/sign_up', '/reset-password', '/admin', '/admin-login'];
+        const noHeaderRoutes = ['/login', '/sign_up', '/reset-password', '/admin', '/admin-login', '/mfa-verify', '/mfa-setup'];
         this.showHeader = !noHeaderRoutes.includes(event.url);
 
         if (this.showHeader) {

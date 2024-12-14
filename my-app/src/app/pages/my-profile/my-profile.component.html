@@ -109,6 +109,11 @@
                 <p style="text-decoration: underline;">{{ userData.email }}</p>
               </div>
             </div>
+            <hr class="divider">
+            <div class="input-row">
+              <h2>Two-Factor Auth setup</h2>
+              <button class="submit" type="submit" (click)="enableMfa()">{{ userData.mfa_enabled ? "Disable 2FA" : "Enable 2FA" }}</button>
+            </div>
           </div>
         </div>
       </div>
@@ -129,16 +134,24 @@
     </div>
 
     <div class="reservations">
-      <div class="reservations-filter">
-        <h2>My reservations</h2>
-      </div>
-
+      <h2>My Reservations</h2>
       <div *ngFor="let reservation of reservations" class="reservation">
-        <b>{{ reservation.room }}</b>
-        <button class="soon-btn" (click)="showTicketInfo(reservation)">{{ reservation.status }}</button>
+        <div>
+          <b>Room ID: {{ reservation.room_id }}</b>
+          <p>Check-in: {{ reservation.check_in }}</p>
+          <p>Check-out: {{ reservation.check_out }}</p>
+          <p>Total Price: {{ reservation.total_price }} UAH</p>
+          <p [ngClass]="getStatusClass(reservation)">
+            Status: {{ getStatusLabel(reservation) }}
+          </p>
+        </div>
+        <div class="reservation-buttons" *ngIf="getStatusLabel(reservation) == 'Upcoming' || 'Ongoing'">
+          <button class="cancel-btn" (click)="cancelReservation(reservation.id)">Cancel</button>
+          <button (click)="showReservationCode(reservation)">Show code</button>
+        </div>
       </div>
-
     </div>
+
   </section>
   <section class="login" *ngIf="!isUserLoggedIn"> <!-- Показується тільки якщо користувач не увійшов у систему -->
     <h1>You must be logged in to view your profile</h1>

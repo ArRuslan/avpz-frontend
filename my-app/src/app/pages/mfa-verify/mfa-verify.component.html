@@ -1,0 +1,9 @@
+<div class="mfa-container">
+  <div class="mfa-box">
+    <h1>2FA VERIFY</h1>
+      <div class="input-group" [class.invalid]="mfaForm.get('mfaCode')?.invalid && mfaForm.get('mfaCode')?.touched">
+        <input [(ngModel)]="mfaCode" type="text" class="mfa-input" placeholder="000 000" maxlength="6"/>
+      </div>
+      <button type="submit" (click)="verifyMfaCode()">Verify</button>
+  </div>
+</div>
