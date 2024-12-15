@@ -79,7 +79,6 @@ export class SignUpComponent {
 
     const requestBody = {
       ...this.signUpForm.value,
-      role: 999,
       captcha_key: this.captchaKey
     };
 

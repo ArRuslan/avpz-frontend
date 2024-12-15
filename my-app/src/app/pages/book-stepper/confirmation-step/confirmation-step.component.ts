@@ -7,6 +7,8 @@ import {Router} from "@angular/router";
 
 interface Room {
   name: string;
+  id: number,
+  hotel_id: number,
   description: string;
   maxOccupancy: number;
   bedType: string;
@@ -148,7 +150,8 @@ export class ConfirmationStepComponent implements OnInit {
       date.toISOString().split('T')[0];
 
     const payload = {
-      room_id: 2,
+      room_id: this.room.id,
+      hotel_id: this.room.hotel_id,
       check_in: formatDate(new Date(this.checkIn)),
       check_out: formatDate(new Date(this.checkOut)),
     };
