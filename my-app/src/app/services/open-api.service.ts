@@ -86,7 +86,7 @@ export class OpenApiService {
       'Authorization': `${localStorage.getItem('token')}`
     });
 
-    return this.http.post<any>(`${this.apiUrl}/tickets/${ticket_id}/check-payment`, {}, { headers: headers });
+    return this.http.post<any>(`${this.apiUrl}/bookings/${ticket_id}/check-payment`, {}, { headers: headers });
   }
 
   sortEvents(sort_by: string, sort_direction: string): Observable<any> {
