@@ -23,6 +23,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {HeaderComponent} from './shared/header/shared/header/header.component';
 import {FooterComponent} from './shared/footer/shared/footer/footer.component';
 import {AnnouncementPopupComponent} from './shared/popup-windows/announcement-popup/announcement-popup.component';
+import {PaymentPopupComponent} from './shared/popup-windows/payment-popup/payment-popup.component';
 import {PasswordConfirmationPopupComponent} from './shared/popup-windows/password-confirmation-popup/password-confirmation-popup.component';
 import {SetAvatarPopupComponent} from './shared/popup-windows/set-avatar-popup/set-avatar-popup.component';
 import { HotelPageComponent } from './pages/hotel-page/hotel-page.component';
@@ -52,6 +53,7 @@ import {MfaSetupComponent} from './pages/mfa-setup/mfa-setup.component';
     MyProfileComponent,
     MfaVerifyComponent,
     MfaSetupComponent,
+    PaymentPopupComponent,
     FilterPopupComponent,
     SortPopupComponent,
     HeaderComponent,

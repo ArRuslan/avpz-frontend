@@ -1,0 +1,31 @@
+<div class="payment-popup">
+  <div class="payment-popup-content">
+    <h2 class="popup-title">Reservation Details</h2>
+    
+    <div class="reservation-details">
+      <div class="detail-row">
+        <span class="detail-label">Room ID:</span>
+        <span class="detail-value">{{ reservation.room_id }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Check In:</span>
+        <span class="detail-value">{{ reservation.check_in | date:'short' }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Check Out:</span>
+        <span class="detail-value">{{ reservation.check_out | date:'short' }}</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Total Price:</span>
+        <span class="detail-value">{{ reservation.total_price }} UAH</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Created At:</span>
+        <span class="detail-value">{{ reservation.created_at | date:'short' }}</span>
+      </div>
+    </div>
+
+    <div id="paypal-button-container"></div>
+    <button mat-button (click)="closePopup()" class="close-button">Close</button>
+  </div>
+</div>

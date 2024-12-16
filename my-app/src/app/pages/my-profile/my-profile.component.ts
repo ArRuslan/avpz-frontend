@@ -6,6 +6,7 @@ import {
 } from "../../shared/popup-windows/password-confirmation-popup/password-confirmation-popup.component";
 import {MatDialog} from "@angular/material/dialog";
 import {AnnouncementPopupComponent} from "../../shared/popup-windows/announcement-popup/announcement-popup.component";
+import {PaymentPopupComponent} from "../../shared/popup-windows/payment-popup/payment-popup.component";
 import {Observable, tap} from "rxjs";
 import {SetAvatarPopupComponent} from "../../shared/popup-windows/set-avatar-popup/set-avatar-popup.component";
 
@@ -49,7 +50,19 @@ export class MyProfileComponent implements OnInit {
         () => {
           this.getUserAvatar();
           this.getUserPaymentMethods();
-          this.getUserReservations();
+          //this.getUserReservations();
+          let res: Reservation[] = [{
+            id: 1,
+            user_id: this.userData.id,
+            room_id: 1,
+            check_in: "2024-12-20T14:00:00",
+            check_out: "2024-12-25T12:00:00",
+            total_price: 500.00,
+            status: 1,
+            created_at: "2024-12-15T10:30:00",
+            payment_id: ""
+          }];
+          this.reservations = res;
         },
         (error) => {
           console.error('Помилка при отриманні даних користувача:', error);
@@ -155,7 +168,17 @@ export class MyProfileComponent implements OnInit {
     }
   }
 
+  pay(reservation: Reservation): void {
+    const dialogRef = this.dialog.open(PaymentPopupComponent, {
+      width: '100%',
+      height: '100%',
+      data: { reservation: reservation }
+    });
 
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('Payment popup closed');
+    });
+  }
 
   toggleEdit() {
     this.isEditing = !this.isEditing;
