@@ -53,7 +53,7 @@ export class PaymentPopupComponent implements OnInit {
                 if (response.payment_id) {
                   return response.payment_id;
                 }
-                throw new Error('Не удалось создать платеж');
+                throw new Error('Failed to create payment');
               }
             });
           },
@@ -61,7 +61,7 @@ export class PaymentPopupComponent implements OnInit {
             await this.checkPaymentStatus();
           },
           onError: (err: any) => {
-            console.error('Ошибка при обработке платежа:', err);
+            console.error('Error processing payment:', err);
           }
         }).render('#paypal-button-container');
       }
@@ -76,12 +76,12 @@ export class PaymentPopupComponent implements OnInit {
         next: (response) => {
           if (response.status !== 0) {
             clearInterval(intervalId);
-            alert('Оплата успешно завершена');
+            alert('Payment success');
             this.closePopup();
           }
         },
         error: (err) => {
-          console.error('Ошибка при проверке статуса оплаты:', err);
+          console.error('Error checking payment status:', err);
           clearInterval(intervalId);
         }
       });
