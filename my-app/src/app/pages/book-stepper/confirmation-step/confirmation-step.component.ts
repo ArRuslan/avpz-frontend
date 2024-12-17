@@ -130,7 +130,30 @@ export class ConfirmationStepComponent implements OnInit {
           console.log('Full order details:', details);
         });
       },
-      onClientAuthorization: () => {
+      authorizeOnServer: () => {
+        return new Promise((resolve, reject) => {
+
+        if(this.bookingId) {
+          const interval = setInterval(() => {
+            this.openApiService.getBooking(this.bookingId as number).subscribe(
+              response => {
+                if(response.status > 0) {
+                  console.log('Booking confirmed: ' + JSON.stringify(response));
+                  clearInterval(interval);
+                  resolve(true);
+                  this.router.navigate(['/bookings', this.bookingId]);
+                }
+              },
+              error => {
+                console.error('Failed to fetch booking details', error);
+              }
+            );
+          }, 3000);
+        }
+
+        });
+      },
+      /*onClientAuthorization: () => {
         if (this.bookingId) {
           this.openApiService.checkPayment(this.bookingId).subscribe(
             (response) => {
@@ -142,7 +165,7 @@ export class ConfirmationStepComponent implements OnInit {
             }
           );
         }
-      },
+      },*/
       onCancel: (data, actions) => {
         console.log('Payment cancelled', data, actions);
       },

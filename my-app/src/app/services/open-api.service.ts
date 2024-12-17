@@ -66,6 +66,14 @@ export class OpenApiService {
     return this.http.post<any>(`${this.apiUrl}/bookings`, reservation, { headers: headers });
   }
 
+  getBooking(bookingId: number): Observable<any> {
+    const headers = new HttpHeaders({
+      'Authorization': `${localStorage.getItem('token')}`
+    });
+
+    return this.http.get<any>(`${this.apiUrl}/bookings/${bookingId}`, { headers: headers });
+  }
+
   cancelReservation(id: any): Observable<any> {
     const headers = new HttpHeaders({
       'Authorization': `${localStorage.getItem('token')}`
