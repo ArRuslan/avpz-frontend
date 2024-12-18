@@ -461,30 +461,6 @@ nextPage(): void {
       } else {
         alert('Invalid input. Make sure all fields are filled and the role is valid (0, 1, 2, 100, 999).');
       }
-    } else if (this.activeSection === 'Bookings') {
-      const email = prompt('Enter Admin Email:', '');
-      const role = prompt('Enter Admin Role (0, 1, 2, 100, 999):', '');
-
-      if (email && role && ['0', '1', '2', '100', '999'].includes(role)) {
-        const newAdmin = {
-          email: email.trim(),
-          role: parseInt(role, 10)
-        };
-
-        this.apiService.createAdmin(this.selectedHotelId!, newAdmin).subscribe(
-          (response) => {
-            console.log('Admin added successfully:', response);
-            alert('Admin added successfully!');
-            this.loadAdmins(); // Оновіть таблицю адміністраторів
-          },
-          (error) => {
-            console.error('Error adding admin:', error);
-            alert('Error adding admin: ' + error.message);
-          }
-        );
-      } else {
-        alert('Invalid input. Make sure all fields are filled and the role is valid (0, 1, 2, 100, 999).');
-      }
     }
   }
 
