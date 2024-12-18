@@ -112,12 +112,12 @@
 
 
         <ng-container *ngIf="activeSection === 'Bookings'">
-          <input type="text" placeholder="Enter User" />
-          <input type="text" placeholder="Enter Room" />
-          <input type="text" placeholder="Start Date" />
-          <input type="text" placeholder="End Date" />
-          <input type="text" placeholder="Total Price" />
-          <input type="text" placeholder="Enter Status" />
+          <input type="text" placeholder="Enter User" [(ngModel)]="booking_user_id" (keyup.enter)="loadData()"/>
+          <input type="text" placeholder="Enter Room" [(ngModel)]="booking_room_id" (keyup.enter)="loadData()"/>
+          <input type="text" placeholder="Start Date" [(ngModel)]="booking_check_in" (keyup.enter)="loadData()"/>
+          <input type="text" placeholder="End Date" [(ngModel)]="booking_check_out" (keyup.enter)="loadData()"/>
+          <input type="text" placeholder="Total Price" [(ngModel)]="booking_totalPrice" (keyup.enter)="loadData()"/>
+          <input type="text" placeholder="Enter Status" [(ngModel)]="booking_status" (keyup.enter)="loadData()"/>
         </ng-container>
 
         <ng-container *ngIf="activeSection === 'Administrators'">
@@ -217,6 +217,7 @@
             </ng-container>
 
             <ng-container *ngIf="activeSection === 'Bookings'">
+              <td>{{ item.id }}</td>
               <td>{{ item.user }}</td>
               <td>{{ item.room }}</td>
               <td>{{ item.dates }}</td>
@@ -259,7 +260,7 @@
     </section>
   </main>
 
-  <div class="action-buttons">
+  <div class="action-buttons" *ngIf="activeSection != 'Bookings'" >
     <button class="action-button" [disabled]="activeSection === 'Users'" [disabled]="activeSection === 'Administrators'" (click)="handleAdd()">Add</button>
     <button class="action-button" [disabled]="activeSection === 'Users'" [disabled]="activeSection === 'Administrators'" (click)="handleEdit()"> Edit </button>
     <button class="action-button" [disabled]="activeSection === 'Hotels'" [disabled]="activeSection === 'Users'" [disabled]="activeSection === 'Administrators'" (click)="handleDelete()"> Delete </button>

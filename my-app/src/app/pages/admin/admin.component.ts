@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OpenApiService } from '../../services/open-api.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-admin',
@@ -16,6 +17,7 @@ export class AdminComponent implements OnInit {
   selectedRole: number = 0;
   admins: any[] = [];
   allUsers: any[] = [];
+  allBookings: any[] = [];
   currentPage: number = 1;
   pageSize: number = 50;
   totalPages: number = 1;
@@ -96,6 +98,8 @@ export class AdminComponent implements OnInit {
       setTimeout(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }, 100);
+    } else if (this.activeSection === 'Bookings') {
+      this.loadMoreBookings();
     }
   }
 
@@ -263,12 +267,57 @@ loadUsers(role?: number, page: number = 1): void {
   );
 }
 
-
 loadMoreUsers(): void {
   if (this.currentPage < this.totalPages) {
     this.currentPage++;
     this.loadUsers(this.selectedRole, this.currentPage);
   }
+}
+
+booking_user_id: string = '';
+booking_room_id: string = '';
+booking_check_in: string = '';
+booking_check_out: string = '';
+booking_totalPrice: string = '';
+booking_status: string = '';
+
+loadBookings(page: number = 1): void {
+  this.apiService.getBookings(page).subscribe(
+    (response) => {
+    this.data = response.result.map((item: any) => ({
+      id: item.id,
+      user: item.user_id,
+      room: item.room_id,
+      dates: item.check_in + ' - ' + item.check_out,
+      totalPrice: item.total_price,
+      status: item.status}))
+      .filter((item: any) => 
+        (this.booking_user_id === '' || item.user == this.booking_user_id) &&
+        (this.booking_room_id === '' || item.room == this.booking_room_id) &&
+        (this.booking_check_in === '' || item.check_in == this.booking_check_in) &&
+        (this.booking_check_out === '' || item.check_out == this.booking_check_out) &&
+        (this.booking_totalPrice === '' || item.totalPrice == this.booking_totalPrice) &&
+        (this.booking_status === '' || item.status == this.booking_status)
+      );
+    }),
+    (error: any) => console.error('Error fetching data:', error)
+};
+
+loadMoreBookings(): void {
+  this.currentPage++;
+  this.apiService.getBookings(this.currentPage).subscribe(
+    (response) => {
+      if (response && response.length > 0) {
+        this.data = [...this.data, ...response];
+        this.showLoadMore = response.length === 25;
+      } else {
+        this.showLoadMore = false;
+      }
+    },
+    (error) => {
+      console.error('Error fetching Bookings:', error);
+    }
+  );
 }
 
 updatePageData(): void {
@@ -305,6 +354,10 @@ nextPage(): void {
     switch (this.activeSection) {
       case 'Hotels':
         this.loadHotels();
+        break;
+
+      case 'Bookings':
+        this.loadBookings();
         break;
 
       case 'Rooms':
@@ -385,6 +438,30 @@ nextPage(): void {
         alert('All fields are required!');
       }
     } else if (this.activeSection === 'Administrators') {
+      const email = prompt('Enter Admin Email:', '');
+      const role = prompt('Enter Admin Role (0, 1, 2, 100, 999):', '');
+
+      if (email && role && ['0', '1', '2', '100', '999'].includes(role)) {
+        const newAdmin = {
+          email: email.trim(),
+          role: parseInt(role, 10)
+        };
+
+        this.apiService.createAdmin(this.selectedHotelId!, newAdmin).subscribe(
+          (response) => {
+            console.log('Admin added successfully:', response);
+            alert('Admin added successfully!');
+            this.loadAdmins(); // Оновіть таблицю адміністраторів
+          },
+          (error) => {
+            console.error('Error adding admin:', error);
+            alert('Error adding admin: ' + error.message);
+          }
+        );
+      } else {
+        alert('Invalid input. Make sure all fields are filled and the role is valid (0, 1, 2, 100, 999).');
+      }
+    } else if (this.activeSection === 'Bookings') {
       const email = prompt('Enter Admin Email:', '');
       const role = prompt('Enter Admin Role (0, 1, 2, 100, 999):', '');
 

@@ -347,6 +347,12 @@ getAdminBookings(booking_id: string): Observable<any> {
   return this.http.get<any>(`${environment.apiBaseUrl}/admin/bookings/${booking_id}`, { headers });
 }
 
+getBookings(page: number = 1): Observable<any> {
+  const headers = this.getHeaders();
+  const params = new HttpParams().set('page', page.toString());
+
+  return this.http.get<any>(`${this.apiUrl}/bookings`, { headers, params });
+}
 }
 
 interface UserResponse {
