@@ -131,7 +131,7 @@ export class MyProfileComponent implements OnInit {
   }
 
   showReservationCode(reservation: Reservation): void {
-    const reservationCode = `${reservation.id}${reservation.user_id}${reservation.room_id}`;
+    const reservationCode = `${reservation.id}:${reservation.user_id}:${reservation.room_id}`;
     alert(`Reservation Code: ${reservationCode}`);
   }
 

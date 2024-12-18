@@ -48,7 +48,7 @@ export class AdminComponent implements OnInit {
       return;
     }
 
-    this.apiService.getAdminBookings(booking_id).subscribe((data) => {
+    this.apiService.getAdminBookingVerify(booking_id).subscribe((data) => {
       console.log(data);
       if (data.user.id == user_id && data.room.id == room_id) {
         this.verificationResult = 'Verification successful.';
@@ -86,7 +86,7 @@ export class AdminComponent implements OnInit {
   }
 
   isDisabled(section: string): boolean {
-    const restrictedSections = ['Bookings', 'Payments'];
+    const restrictedSections = ['Payments'];
     return restrictedSections.includes(section);
   }
 
@@ -292,12 +292,12 @@ loadBookings(page: number = 1): void {
       totalPrice: item.total_price,
       status: item.status}))
       .filter((item: any) => 
-        (this.booking_user_id === '' || item.user == this.booking_user_id) &&
-        (this.booking_room_id === '' || item.room == this.booking_room_id) &&
-        (this.booking_check_in === '' || item.check_in == this.booking_check_in) &&
-        (this.booking_check_out === '' || item.check_out == this.booking_check_out) &&
-        (this.booking_totalPrice === '' || item.totalPrice == this.booking_totalPrice) &&
-        (this.booking_status === '' || item.status == this.booking_status)
+        (this.booking_user_id.trim() === '' || item.user_id == this.booking_user_id.trim()) &&
+        (this.booking_room_id.trim() === '' || item.room_id == this.booking_room_id.trim()) &&
+        (this.booking_check_in.trim() === '' || item.check_in == this.booking_check_in.trim()) &&
+        (this.booking_check_out.trim() === '' || item.check_out == this.booking_check_out.trim()) &&
+        (this.booking_totalPrice.trim() === '' || item.totalPrice == this.booking_totalPrice.trim()) &&
+        (this.booking_status.trim() === '' || item.status == this.booking_status.trim())
       );
     }),
     (error: any) => console.error('Error fetching data:', error)
@@ -307,9 +307,9 @@ loadMoreBookings(): void {
   this.currentPage++;
   this.apiService.getBookings(this.currentPage).subscribe(
     (response) => {
-      if (response && response.length > 0) {
-        this.data = [...this.data, ...response];
-        this.showLoadMore = response.length === 25;
+      if (response && response.count > 0) {
+        this.data = [...this.data, ...response.result];
+        this.showLoadMore = response.count === 25;
       } else {
         this.showLoadMore = false;
       }
