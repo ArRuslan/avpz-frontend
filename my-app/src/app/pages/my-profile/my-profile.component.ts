@@ -50,19 +50,7 @@ export class MyProfileComponent implements OnInit {
         () => {
           this.getUserAvatar();
           this.getUserPaymentMethods();
-          //this.getUserReservations();
-          let res : Reservation[] = [{
-            id: 12,
-            user_id: 12,
-            room_id: 12,
-            check_in: '',
-            check_out: '',
-            total_price: 55,
-            status: 1,
-            created_at: '',
-            payment_id: ''
-          }];
-          this.reservations = res;
+          this.getUserReservations();
         },
         (error) => {
           console.error('Помилка при отриманні даних користувача:', error);
