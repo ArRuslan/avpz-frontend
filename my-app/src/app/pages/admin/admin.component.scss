@@ -246,3 +246,106 @@ a.disabled {
 .show-more-button:active {
   background-color: #003d80; /* Темніший колір при натисканні */
 }
+
+
+.verify-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: auto;
+  background-color: #001f3f;
+  font-family: Arial, sans-serif;
+
+  .verify-content {
+      text-align: center;
+      width: 800px;
+      margin-top: 40px;
+      margin-bottom: 40px;
+      padding: 40px;
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  h1, h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #102a43;
+  }
+
+  .input-section, .result-section, .booking-details {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+
+  input {
+    padding: 10px;
+    width: 100%;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+
+  .btn {
+      padding: 8px 16px; /* Зменшений розмір кнопки */
+      font-size: 14px; /* Зменшений розмір тексту */
+      color: #102a43;
+      background-color: transparent;
+      border-radius: 20px;
+      border: 2px solid #007bff;
+      color: #007bff;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+  }
+
+  .btn:hover {
+    background-color: #007bff;
+    color: white;
+  }
+
+  .clear-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    color: white;
+    background-color: transparent;
+    border-radius: 20px;
+    border: 2px solid #dc3545;
+    color: #dc3545;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.clear-btn:hover {
+  background-color: #dc3545;
+  color: white;
+}
+
+  h3, p, label {
+    margin: 5px 0;
+    color: #102a43;
+  }
+
+  .status-success {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .status-not-success {
+    color: red;
+    font-weight: bold;
+  }
+
+  .horizontal {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .vertical {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+  }
+}

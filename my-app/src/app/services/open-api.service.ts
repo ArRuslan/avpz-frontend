@@ -342,6 +342,11 @@ disableMfa(password: string, code: string): Observable<any> {
   return this.http.post<any>(`${environment.apiBaseUrl}/user/mfa/disable`, body, { headers });
 }
 
+getAdminBookings(booking_id: string): Observable<any> {
+  const headers = this.getHeaders();
+  return this.http.get<any>(`${environment.apiBaseUrl}/admin/bookings/${booking_id}`, { headers });
+}
+
 }
 
 interface UserResponse {

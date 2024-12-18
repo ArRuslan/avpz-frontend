@@ -27,7 +27,45 @@ export class AdminComponent implements OnInit {
   rowsHistory: any[][] = [];
   isSearching: boolean = false;
 
+  bookingCode: string = '';
+  verificationResult: string | null = null;
+  booking: any = null;
+
   constructor(private apiService: OpenApiService, private cdr: ChangeDetectorRef) {}
+
+  verifyBookingCode(): void {
+    if (!this.bookingCode) {
+      this.verificationResult = 'Please enter a booking code.';
+      return;
+    }
+
+    const [booking_id, user_id, room_id] = this.bookingCode.split(':');
+
+    if (!booking_id || !user_id || !room_id) {
+      this.verificationResult = 'Invalid code format. Use booking_id:user_id:room_id.';
+      return;
+    }
+
+    this.apiService.getAdminBookings(booking_id).subscribe((data) => {
+      console.log(data);
+      if (data.user.id == user_id && data.room.id == room_id) {
+        this.verificationResult = 'Verification successful.';
+        this.booking = data;
+      } else {
+        this.verificationResult = 'Verification failed. User ID or Room ID does not match.';
+        this.booking = null;
+      }
+    }, (error) => {
+      this.verificationResult = 'Error fetching booking details. Please try again.';
+      console.error(error);
+    });
+  }
+
+  clear(): void {
+    this.booking = null;
+    this.verificationResult = null;
+    this.bookingCode = '';
+  }
 
   selectItem(item: any): void {
     this.selectedItem = item;

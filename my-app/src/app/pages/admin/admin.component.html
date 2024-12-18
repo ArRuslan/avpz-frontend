@@ -14,7 +14,7 @@
       <li><a (click)="setActiveSection('Administrators')" [class.active]="activeSection === 'Administrators'">
         <img src="assets/images/admin.png" alt="Administrators" class="icon"> Administrators
       </a></li>
-      <li><a (click)="setActiveSection('Bookings')" [class.active]="activeSection === 'Bookings'" [class.disabled]="isDisabled('Bookings')">
+      <li><a (click)="setActiveSection('Bookings')" [class.active]="activeSection === 'Bookings'">
           <img src="assets/images/book.png" alt="Bookings" class="icon"> Bookings
         </a></li>
       <li><a (click)="setActiveSection('Payments')"  [class.active]="activeSection === 'Payments'"  [class.disabled]="isDisabled('Payments')">
@@ -29,6 +29,65 @@
         <img src="assets/images/surname.png" alt="Admin" class="admin-avatar" />
       </div>
     </header>
+
+    <div class="verify-container" *ngIf="activeSection === 'Bookings'">
+      <div class="verify-content">
+          <h1>Bookings Verification</h1>
+          
+          <!-- Поле для ввода кода букинга -->
+          <div class="input-section">
+            <label for="bookingCode">Enter Booking Code:</label>
+            <div class="vertical">
+              <input type="text" id="bookingCode" [(ngModel)]="bookingCode" placeholder="booking_id:user_id:room_id">
+              <button (click)="verifyBookingCode()" class="btn verify">Verify</button>
+            </div>
+          </div>
+        
+          <!-- Результат проверки -->
+          <div *ngIf="verificationResult" class="result-section">
+            <p><span [ngClass]="{'status-success': verificationResult == 'Verification successful.', 'status-not-success': verificationResult != 'Verification successful.'}">
+              {{ verificationResult }}
+            </span></p>
+          </div>
+        
+          <!-- Детали букинга после успешной верификации -->
+          <div *ngIf="booking" class="booking-details">
+            <h2>Booking Details</h2>
+            <div class="vertical">
+              <div class="horizontal">
+                <h3>Booking Details</h3>
+                <p><strong>Booking ID:</strong> {{ booking.id }}</p>
+                <p><strong>Booking check_in:</strong> {{ booking.check_in }}</p>
+                <p><strong>Booking check_out:</strong> {{ booking.check_out }}</p>
+                <p><strong>Booking total_price:</strong> {{ booking.total_price }}</p>
+                <p><strong>Booking created_at:</strong> {{ booking.created_at }}</p>
+                <p><strong>Booking status:</strong> 
+                  <span [ngClass]="{'status-success': booking.status == 0, 'status-not-success': booking.status == 1}">
+                    {{ booking.status == 0 ? "Paid" : "Not Paid" }}
+                  </span>
+                </p>
+              </div>
+              <div class="horizontal">
+                <h3>User Details</h3>  
+                <p><strong>User ID:</strong> {{ booking.user.id }}</p>
+                <p><strong>User email:</strong> {{ booking.user.email }}</p>
+                <p><strong>User first_name:</strong> {{ booking.user.first_name }}</p>
+                <p><strong>User last_name:</strong> {{ booking.user.last_name }}</p>
+                <p><strong>User phone_number:</strong> {{ booking.user.phone_number }}</p>
+              </div>
+              <div class="horizontal">
+                <h3>Room Details</h3>
+                <p><strong>Room ID:</strong> {{ booking.room.id }}</p>
+                <p><strong>Room hotel_id:</strong> {{ booking.room.hotel_id }}</p>
+                <p><strong>Room type:</strong> {{ booking.room.type }}</p>
+                <p><strong>Room price:</strong> {{ booking.room.price }}</p>
+                <p><strong>Room available:</strong> {{ booking.room.available }}</p>
+              </div>
+            </div>
+            <button (click)="clear()" class="clear-btn">Clear</button>
+          </div>
+      </div>
+    </div>
 
     <section class="content">
       <h2>{{ activeSection }} Information</h2>
