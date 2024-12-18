@@ -7,6 +7,7 @@ import {
 import {MatDialog} from "@angular/material/dialog";
 import {AnnouncementPopupComponent} from "../../shared/popup-windows/announcement-popup/announcement-popup.component";
 import {Observable, tap} from "rxjs";
+import {PaymentPopupComponent} from "../../shared/popup-windows/payment-popup/payment-popup.component";
 import {SetAvatarPopupComponent} from "../../shared/popup-windows/set-avatar-popup/set-avatar-popup.component";
 
 export interface Reservation {
@@ -49,7 +50,19 @@ export class MyProfileComponent implements OnInit {
         () => {
           this.getUserAvatar();
           this.getUserPaymentMethods();
-          this.getUserReservations();
+          //this.getUserReservations();
+          let res : Reservation[] = [{
+            id: 12,
+            user_id: 12,
+            room_id: 12,
+            check_in: '',
+            check_out: '',
+            total_price: 55,
+            status: 1,
+            created_at: '',
+            payment_id: ''
+          }];
+          this.reservations = res;
         },
         (error) => {
           console.error('Помилка при отриманні даних користувача:', error);
@@ -155,7 +168,17 @@ export class MyProfileComponent implements OnInit {
     }
   }
 
+  pay(reservation: Reservation): void {
+    const dialogRef = this.dialog.open(PaymentPopupComponent, {
+      width: '100%',
+      height: '100%',
+      data: { reservation: reservation }
+    });
 
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('Payment popup closed');
+    });
+  }
 
   toggleEdit() {
     this.isEditing = !this.isEditing;

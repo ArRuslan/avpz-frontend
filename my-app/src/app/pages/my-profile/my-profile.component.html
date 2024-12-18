@@ -136,18 +136,22 @@
     <div class="reservations">
       <h2>My Reservations</h2>
       <div *ngFor="let reservation of reservations" class="reservation">
-        <div>
-          <b>Room ID: {{ reservation.room_id }}</b>
-          <p>Check-in: {{ reservation.check_in }}</p>
-          <p>Check-out: {{ reservation.check_out }}</p>
-          <p>Total Price: {{ reservation.total_price }} UAH</p>
-          <p [ngClass]="getStatusClass(reservation)">
-            Status: {{ getStatusLabel(reservation) }}
-          </p>
-        </div>
-        <div class="reservation-buttons" *ngIf="getStatusLabel(reservation) == 'Upcoming' || 'Ongoing'">
-          <button class="cancel-btn" (click)="cancelReservation(reservation.id)">Cancel</button>
-          <button (click)="showReservationCode(reservation)">Show code</button>
+        <div class="horizontal-box">
+          <div>
+            <b>Room ID: {{ reservation.room_id }}</b>
+            <p class="not-paid" *ngIf="reservation.status == 1">not paid</p>
+            <p>Check-in: {{ reservation.check_in }}</p>
+            <p>Check-out: {{ reservation.check_out }}</p>
+            <p>Total Price: {{ reservation.total_price }} UAH</p>
+            <p [ngClass]="getStatusClass(reservation)">
+              Status: {{ getStatusLabel(reservation) }}
+            </p>
+          </div>
+          <div class="reservation-buttons" *ngIf="getStatusLabel(reservation) == 'Upcoming' || 'Ongoing'">
+            <button class="pay-btn" (click)="pay(reservation)" *ngIf="reservation.status == 1">Pay</button>
+            <button (click)="showReservationCode(reservation)">Show code</button>
+            <button class="cancel-btn" (click)="cancelReservation(reservation.id)">Cancel</button>
+          </div>
         </div>
       </div>
     </div>
