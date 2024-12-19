@@ -306,3 +306,49 @@ main {
     }
   }
 }
+
+.hotel-main-photo {
+  min-width: 1550px;
+  max-height: 500px;
+  display: block;
+  margin-top: -200px;
+  margin-left: -190px;
+}
+
+.hotel-title {
+  font-size: 36px;
+  margin: 20px 0;
+  color: #333;
+  text-align: center;
+}
+
+.hotel-description {
+  font-size: 25px;
+  margin: 0 auto 40px;
+  max-width: 800px;
+  line-height: 1.5;
+  color: #555;
+  text-align: center;
+}
+
+.back-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+
+  .back-button {
+    background-color: #425BDF;
+      color: #FFF;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 50px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+      &:hover {
+        background-color: #2e42a2;
+    }
+  }
+}

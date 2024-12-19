@@ -6,6 +6,7 @@ import {OpenApiService} from "../../services/open-api.service";
 import {ActivatedRoute} from "@angular/router";
 import { forkJoin } from 'rxjs';
 import { Router } from '@angular/router';
+import { SortOptionsModel } from '../../shared/popup-windows/sort-popup/sort-popup.component';
 
 class SortOptions {
   order: 'asc' | 'desc' = 'asc';
@@ -34,16 +35,22 @@ interface RoomTypeInfo {
 export class EventsComponent {
   events: any[] = [];
   searchText: any;
-  sortOptions: SortOptions = new SortOptions();
   filterOptions: FilterOptions = new FilterOptions();
   hotels: any[] = [];
   rooms: any[] = [];
-  isHotelsPage: boolean = true;
   category: string | null = null;
   searchQuery: string = '';
   currentPage: number = 1;
   pageSize: number = 50;
   totalCount: number = 0;
+  selectedHotel: any = null;
+  hotelDetails: any = null;
+  isHotelPage: boolean = true;
+  isSearchActive: boolean = false;
+  isFilterActive: boolean = false;
+  currentHotelId: number | null = null;
+  sortOptions: SortOptionsModel = new SortOptionsModel();
+  isSortActive: boolean = false;
 
   constructor(public dialog: MatDialog, private openApiService: OpenApiService, private route: ActivatedRoute, private router: Router) {}
 
@@ -126,17 +133,28 @@ export class EventsComponent {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      const category = params['category'];
-      const hotelId = params['hotelId'];
+    // Визначаємо, чи це сторінка готелю з кімнатами або загальна сторінка готелів
+    this.route.url.subscribe(urlSegments => {
+      const isHotelRoomsPage = urlSegments.some(segment => segment.path === 'hotel') &&
+                               urlSegments.some(segment => segment.path === 'rooms');
+      this.isHotelPage = !isHotelRoomsPage; // true, якщо загальна сторінка готелів
 
-      if (category) {
-        this.showRoomDetails(category);
-      } else if (hotelId) {
-        this.getRoomsForHotel(+hotelId);
-      } else {
-        this.getAllHotels();
-      }
+      // Обробляємо параметри URL
+      this.route.params.subscribe(params => {
+        const category = params['category'];
+        const hotelId = params['hotelId'];
+
+        if (category) {
+          this.showRoomDetails(category); // Показуємо деталі типу кімнат
+        } else if (isHotelRoomsPage && hotelId) {
+          this.currentHotelId = +hotelId;
+          this.getHotelDetails(+hotelId); // Завантажуємо деталі готелю
+          this.getRoomsForHotel(+hotelId); // Завантажуємо кімнати для готелю
+          this.searchRoomsForHotel(+hotelId); // Пошук кімнат для готелю
+        } else if (this.isHotelPage) {
+          this.getAllHotels(); // Завантажуємо всі готелі
+        }
+      });
     });
   }
 
@@ -167,46 +185,56 @@ export class EventsComponent {
     );
   }
 
-  private getRoomsByCategory(category: string): void {
-    this.openApiService.getRoomsByType(category).subscribe(
-      response => {
-        this.rooms = response.result.map((room: any) => ({
-          ...room,
-          imageUrl: `https://via.placeholder.com/250`
-        }));
+  private getHotelDetails(hotelId: number): void {
+    this.openApiService.getHotelById(hotelId).subscribe(
+      (response) => {
+        this.hotelDetails = response;
+        console.log('Hotel details fetched:', this.hotelDetails);
       },
-      error => {
-        console.error('Error fetching rooms by category:', error);
+      (error) => {
+        console.error('Error fetching hotel details:', error);
       }
     );
   }
 
   private getRoomsForHotel(hotelId: number): void {
-    this.openApiService.getHotelRooms(hotelId).subscribe(
-      response => {
-        console.log('API response:', response);
-        if (Array.isArray(response)) {
-          this.rooms = response.map((room: any) => ({
-            ...room,
-            imageUrl: `https://via.placeholder.com/250`
-          }));
-        } else {
-          console.error('Invalid API response format:', response);
-        }
+    this.openApiService.getRoomsByHotelId(hotelId).subscribe(
+      (response) => {
+        this.rooms = response.result.map((room: any) => ({
+          ...room,
+          imageUrl: `/assets/images/rooms/${room.type.toLowerCase().replace(' ', '_')}_1.jpg`
+        }));
+        console.log('Rooms fetched for hotel:', this.rooms);
       },
-      error => {
+      (error) => {
         console.error('Error fetching rooms for hotel:', error);
       }
     );
   }
 
-  searchHotels2(): void {
+  search(): void {
     const trimmedQuery = this.searchQuery?.trim();
 
     if (!trimmedQuery) {
       console.warn('Search query is empty');
       return;
     }
+
+    this.isSearchActive = true;
+
+    if (this.isHotelPage) {
+      // Пошук готелів
+      this.searchHotels2();
+    } else {
+      const hotelId = +this.route.snapshot.params['hotelId'];
+      this.searchRoomsForHotel(hotelId);
+    }
+  }
+
+  searchHotels2(): void {
+    const trimmedQuery = this.searchQuery?.trim();
+
+    this.isSearchActive = true;
 
     const params: any = {
       page: this.currentPage.toString(),
@@ -238,12 +266,161 @@ export class EventsComponent {
     );
   }
 
+  searchRoomsForHotel(hotelId: number): void {
+    const trimmedQuery = this.searchQuery?.trim();
+
+    if (!trimmedQuery) {
+      console.warn('Search query is empty');
+      return;
+    }
+
+    const params: any = {
+      page: this.currentPage.toString(),
+      page_size: this.pageSize.toString(),
+      hotel_id: hotelId.toString(),
+    };
+
+    const requests = [];
+
+    // Пошук за типом кімнати завжди
+    requests.push(this.openApiService.searchRooms({ ...params, type: trimmedQuery }));
+
+    // Пошук за ціною, тільки якщо введене значення є числом
+    if (!isNaN(Number(trimmedQuery))) {
+      requests.push(this.openApiService.searchRooms({ ...params, price_min: Number(trimmedQuery) }));
+      requests.push(this.openApiService.searchRooms({ ...params, price_max: Number(trimmedQuery) }));
+    }
+
+    // Виконуємо всі запити одночасно
+    forkJoin(requests).subscribe(
+      (results) => {
+        // Об'єднуємо результати усіх запитів у єдиний масив
+        const allResults = results.flatMap((res: any) => res?.result || []);
+
+        // Видаляємо дублікатні кімнати за унікальним ID
+        this.rooms = Array.from(new Set(allResults.map(room => room.id))).map(
+          id => allResults.find(room => room.id === id)
+        );
+
+        console.log('Merged results:', this.rooms);
+      },
+      error => {
+        console.error('Error fetching rooms:', error);
+        this.rooms = [];
+      }
+    );
+  }
+
+  resetSearch(): void {
+    this.searchQuery = '';
+  this.isSearchActive = false;
+  this.isFilterActive = false;
+  this.isSortActive = false;
+  this.currentPage = 1;
+
+    if (this.isHotelPage) {
+      this.getAllHotels(); // Завантажити всі готелі
+    } else if (this.currentHotelId) {
+      this.getRoomsForHotel(this.currentHotelId); // Завантажити всі кімнати для готелю
+    }
+  }
+
   loadNextPage(): void {
     if (this.hotels.length < this.totalCount) {
       this.currentPage++;
       this.searchHotels2();
     }
   }
+
+  openFilterDialog(): void {
+    const dialogRef = this.dialog.open(FilterPopupComponent, {
+      width: '100%',
+      height: '100%',
+      data: {
+        filterOptions: this.filterOptions,
+        isHotelPage: this.isHotelPage // Передаємо флаг
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        console.log('Applied filters:', result);
+        this.filterOptions = result;
+        this.applyFilters(result);
+      }
+    });
+  }
+
+  applyFilters(filters: any): void {
+    // Видаляємо параметри зі значенням null або undefined
+    const cleanedFilters = Object.fromEntries(
+      Object.entries(filters).filter(([_, value]) => value != null && value !== '')
+    );
+
+    this.isFilterActive = true;
+
+    if (this.isHotelPage) {
+      this.openApiService.filterHotels(cleanedFilters).subscribe(
+        (response) => {
+          this.hotels = response.result;
+          console.log('Filtered hotels:', this.hotels);
+        },
+        (error) => {
+          console.error('Error filtering hotels:', error);
+        }
+      );
+    } else {
+      const params = { hotel_id: this.currentHotelId, ...cleanedFilters };
+      this.openApiService.filterRooms(params).subscribe(
+        (response) => {
+          this.rooms = response.result;
+          console.log('Filtered rooms:', this.rooms);
+        },
+        (error) => {
+          console.error('Error filtering rooms:', error);
+        }
+      );
+    }
+  }
+
+  openSortDialog(): void {
+    const dialogRef = this.dialog.open(SortPopupComponent, {
+      width: '400px',
+      data: {
+        sortOptions: this.sortOptions,
+        isHotelPage: this.isHotelPage
+      }
+    });
+
+    dialogRef.afterClosed().subscribe((result: SortOptionsModel) => {
+      if (result) {
+        this.sortOptions = result; // Тепер це SortOptionsModel
+        this.applySorting(result);
+      }
+    });
+  }
+
+  applySorting(sortOptions: SortOptionsModel): void {
+    this.isSortActive = true;
+
+    const sortParameter = sortOptions.sortParameter;
+    const order = sortOptions.order === 'asc' ? 1 : -1;
+
+    if (this.isHotelPage) {
+      if (sortParameter === 'name' || sortParameter === 'address') {
+        this.hotels.sort((a, b) => a[sortParameter].localeCompare(b[sortParameter]) * order);
+      }
+    } else {
+      if (sortParameter === 'type') {
+        this.rooms.sort((a, b) => a.type.localeCompare(b.type) * order);
+      } else if (sortParameter === 'price') {
+        this.rooms.sort((a, b) => (a.price - b.price) * order);
+      }
+    }
+
+    console.log(`Список після сортування (${sortParameter}, ${sortOptions.order}):`, this.isHotelPage ? this.hotels : this.rooms);
+  }
+
 
 
 
@@ -288,74 +465,6 @@ export class EventsComponent {
     );
   }
 
-  openSortDialog(): void {
-    const dialogRef = this.dialog.open(SortPopupComponent, {width: '100%', height: '100%', data: { sortOptions: this.sortOptions }});
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log(result);
-        this.sortOptions = result;
-        this.applySorting(result); // Передача результату сортування до методу applySorting()
-
-      }
-    });
-  }
-
-  applySorting(sortOptions: any): void {
-
-    this.openApiService.sortEvents(sortOptions.sortParameter, sortOptions.order).subscribe(
-      (response) => {
-        this.events = response;
-        console.log(response);
-        this.getAllEventsImages();
-      },
-      (error) => {
-        console.log('Error fetching events:', error);
-      }
-    );
-  }
-
-  openFilterDialog(): void {
-    const dialogRef = this.dialog.open(FilterPopupComponent, {width: '100%', height: '100%', data: { filterOptions: this.filterOptions }});
-
-    dialogRef.afterClosed().subscribe((result) => {
-      if (result) {
-        console.log(result);
-        this.filterOptions = result;
-        this.applyFilters(result); // Передача результату сортування до методу applySorting()
-
-      }
-    });
-  }
-
-  applyFilters(filters: any): void {
-    const searchData: {
-      name?: string, // Назва івенту для фільтрації
-      city?: string, // Назва міста для фільтрації
-      category?: string
-    } = {};
-
-    if (filters.name !== null && filters.name !== "") {
-      searchData.name = filters.name;
-    }
-    if (filters.city !== null && filters.city !== "") {
-      searchData.city = filters.city;
-    }
-    if (filters.category !== null && filters.category !== "") {
-      searchData.category = filters.category;
-    }
-
-    this.openApiService.searchHotels().subscribe(
-      (response) => {
-        this.events = response;
-        console.log(this.events);
-        this.getAllEventsImages();
-      },
-      (error) => {
-        console.log('Error fetching events:', error);
-      }
-    );
-  }
 
   private filterEventsByCategory(category: string) {
     console.log('Filtering events by category:', category);

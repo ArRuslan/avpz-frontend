@@ -1,11 +1,9 @@
-import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {OpenApiService} from "../../../services/open-api.service";
-import {Observable} from "rxjs";
+import { Component, Inject } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 
-class SortOptions {
+export class SortOptionsModel {
   order: 'asc' | 'desc' = 'asc';
-  sortParameter: 'name' | 'category' | 'start_time' = 'name';
+  sortParameter: 'name' | 'type' | 'price' | 'address' | 'category' | 'start_time' = 'name';
 }
 
 @Component({
@@ -14,21 +12,31 @@ class SortOptions {
   styleUrls: ['./sort-popup.component.scss']
 })
 export class SortPopupComponent {
-  events: any[] = [];
-  sortOptions: SortOptions = new SortOptions();
+  sortOptions: SortOptionsModel = new SortOptionsModel();
+  availableSortParameters: { value: string, label: string }[] = [];
 
   constructor(
     private dialogRef: MatDialogRef<SortPopupComponent>,
     @Inject(MAT_DIALOG_DATA) private data: any
   ) {
-    this.sortOptions = data.sortOptions;
+    this.sortOptions = data.sortOptions || new SortOptionsModel();
+
+    this.availableSortParameters = data.isHotelPage
+      ? [
+          { value: 'name', label: 'Name' },
+          { value: 'address', label: 'Address' }
+        ]
+      : [
+          { value: 'type', label: 'Room Type' },
+          { value: 'price', label: 'Price' }
+        ];
   }
 
   closePopup() {
     this.dialogRef.close();
   }
 
-  applySorting(): void {
+  applySorting() {
     this.dialogRef.close(this.sortOptions);
   }
 }

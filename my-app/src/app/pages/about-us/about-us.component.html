@@ -1,5 +1,5 @@
 <div class="background">
-  <img class="backgroundimg" src="assets/images/hotels.png">
+  <img alt="Photo 1" class="backgroundimg" src="assets/images/hotels.png">
 </div>
 <div class="text-block">
   <div class="text">
@@ -13,7 +13,7 @@
   <h2>Our team</h2>
   <div class="team-container">
     <div class="team-member" *ngFor="let member of team">
-      <img src="{{member.img}}">
+      <img alt="Photo 2" src="{{member.img}}">
       <h3>{{member.name}}</h3>
       <p>{{member.role}}</p>
     </div>
@@ -25,7 +25,7 @@
   <div class="faq-item" *ngFor="let item of questions; let i = index" (click)="toggleAnswer(i)">
     <div class="faq-header">
       <span>{{item.question}}</span>
-      <img src="assets/images/arrow-down.png" [class.rotated]="item.isVisible"/>
+      <img alt="Photo 3" src="assets/images/arrow-down.png" [class.rotated]="item.isVisible"/>
     </div>
     <div class="faq-content" *ngIf="item.isVisible">
       <div>

@@ -1,24 +1,48 @@
 <div class="filter-popup">
   <div class="filter-popup-content">
-    <h2 mat-dialog-title>Event Name</h2>
-    <div mat-dialog-content class="range-input">
-      <input type="text" placeholder="Event Name" [(ngModel)]="filterOptions.name">
+    <!-- Заголовок фільтра -->
+    <h2 mat-dialog-title>{{ isHotelPage ? 'Filter Hotels' : 'Filter Rooms' }}</h2>
+
+    <!-- Фільтри для готелів -->
+    <div *ngIf="isHotelPage">
+      <h3>Name</h3>
+      <div mat-dialog-content class="range-input">
+        <input type="text" placeholder="Hotel Name" [(ngModel)]="filterOptions.name">
+      </div>
+
+      <h3>Address</h3>
+      <div mat-dialog-content class="range-input">
+        <input type="text" placeholder="Address" [(ngModel)]="filterOptions.address">
+      </div>
+
+      <h3>Description</h3>
+      <div mat-dialog-content class="range-input">
+        <input type="text" placeholder="Description" [(ngModel)]="filterOptions.description">
+      </div>
     </div>
 
-    <h2 mat-dialog-title>City</h2>
-    <div mat-dialog-content class="range-input">
-      <input type="text" placeholder="City" [(ngModel)]="filterOptions.city">
+    <!-- Фільтри для кімнат -->
+    <div *ngIf="!isHotelPage">
+      <h3>Type</h3>
+      <div mat-dialog-content class="range-input">
+        <input type="text" placeholder="Room Type" [(ngModel)]="filterOptions.type">
+      </div>
+
+      <h3>Min Price</h3>
+      <div mat-dialog-content class="range-input">
+        <input type="number" placeholder="Min Price" [(ngModel)]="filterOptions.price_min">
+      </div>
+
+      <h3>Max Price</h3>
+      <div mat-dialog-content class="range-input">
+        <input type="number" placeholder="Max Price" [(ngModel)]="filterOptions.price_max">
+      </div>
     </div>
 
-    <h2 mat-dialog-title>Category</h2>
-    <div mat-dialog-content class="range-input">
-      <input type="text" placeholder="Category" [(ngModel)]="filterOptions.category">
-    </div>
-
+    <!-- Дії -->
     <div mat-dialog-actions>
       <button (click)="closePopup()" class="cancel">Cancel</button>
       <button (click)="applyFilters()" class="filter">Filter</button>
     </div>
   </div>
 </div>
-

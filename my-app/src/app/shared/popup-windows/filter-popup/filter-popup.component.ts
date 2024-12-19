@@ -2,9 +2,15 @@ import {Component, Inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 class FilterOptions {
-  name: string | null = null; // Назва івенту для фільтрації
-  city: string | null = null; // Назва міста для фільтрації
-  category: string | null = null; // Категорія для фільтрації
+  // Для фільтрації готелів
+  name: string | null = null;       // Назва готелю
+  address: string | null = null;    // Адреса готелю
+  description: string | null = null; // Опис готелю
+
+  // Для фільтрації кімнат
+  type: string | null = null;       // Тип кімнати
+  price_min: number | null = null;  // Мінімальна ціна
+  price_max: number | null = null;  // Максимальна ціна
 }
 
 @Component({
@@ -14,12 +20,14 @@ class FilterOptions {
 })
 export class FilterPopupComponent {
   filterOptions: FilterOptions = new FilterOptions();
+  isHotelPage: boolean = true;
 
   constructor(
     private dialogRef: MatDialogRef<FilterPopupComponent>,
     @Inject(MAT_DIALOG_DATA) private data: any
   ) {
-    this.filterOptions = data.filterOptions;
+    this.filterOptions = data.filterOptions || new FilterOptions();
+    this.isHotelPage = data.isHotelPage; 
   }
 
   closePopup() {
