@@ -1,16 +1,19 @@
 <div class="sort-popup">
   <div class="sort-popup-content">
+    <!-- Порядок сортування -->
     <h2 mat-dialog-title>Order</h2>
     <div mat-dialog-content class="ascDesc">
       <label><input type="radio" name="order" value="asc" [(ngModel)]="sortOptions.order"> Ascending</label>
       <label><input type="radio" name="order" value="desc" [(ngModel)]="sortOptions.order"> Descending</label>
     </div>
 
+    <!-- Параметри сортування -->
     <h2 mat-dialog-title>Sort Parameter</h2>
     <div mat-dialog-content>
-      <label><input type="radio" name="sort-parameter" value="name" [(ngModel)]="sortOptions.sortParameter"> Name</label>
-      <label><input type="radio" name="sort-parameter" value="category" [(ngModel)]="sortOptions.sortParameter"> Category</label>
-      <label><input type="radio" name="sort-parameter" value="start_time" [(ngModel)]="sortOptions.sortParameter"> Date</label>
+      <label *ngFor="let param of availableSortParameters">
+        <input type="radio" name="sort-parameter" [value]="param.value" [(ngModel)]="sortOptions.sortParameter">
+        {{ param.label }}
+      </label>
     </div>
 
     <div mat-dialog-actions>

@@ -298,6 +298,79 @@ getUserById(userId: number): Observable<any> {
   return this.http.get<any>(`${this.apiUrl}/admin/users/${userId}`, { headers });
 }
 
+getRoomsByType(type: string): Observable<any> {
+  const headers = this.getHeaders();
+  const params = new HttpParams().set('type', type);
+  return this.http.get<any>(`${this.apiUrl}/rooms`, { headers, params });
+}
+
+getRoomsByHotelId(hotelId: number): Observable<any> {
+  const params = new HttpParams().set('hotel_id', hotelId.toString());
+  console.log('Sending GET request to:', `${this.apiUrl}/hotels`);
+  console.log('With params:', params);
+  return this.http.get<any>(`${this.apiUrl}/rooms`, { params });
+}
+
+getHotelById(hotelId: number): Observable<any> {
+  return this.http.get<any>(`${this.apiUrl}/hotels/${hotelId}`);
+}
+
+searchHotels2(params: any = {}): Observable<any> {
+  const headers = this.getHeaders();
+  const httpParams = new HttpParams({ fromObject: params });
+
+  console.log('Sending GET request to:', `${this.apiUrl}/hotels`);
+  console.log('With params:', params);
+  console.log('With headers:', headers);
+
+  return this.http.get<any>(`${this.apiUrl}/hotels`, { headers, params: httpParams });
+}
+
+searchRooms(params: any = {}): Observable<any> {
+  const headers = this.getHeaders();
+  const httpParams = new HttpParams({ fromObject: params });
+
+  console.log('Sending GET request to:', `${this.apiUrl}/rooms`);
+  console.log('With params:', params);
+  console.log('With headers:', headers);
+
+  return this.http.get<any>(`${this.apiUrl}/rooms`, { headers, params: httpParams });
+}
+
+// Фільтрація готелів
+filterHotels(params: any = {}): Observable<any> {
+  const headers = this.getHeaders();
+  const httpParams = new HttpParams({ fromObject: params });
+
+  console.log('Sending GET request to filter hotels:', this.apiUrl + '/hotels');
+  return this.http.get<any>(`${this.apiUrl}/hotels`, { headers, params: httpParams });
+}
+
+// Фільтрація кімнат
+filterRooms(params: any = {}): Observable<any> {
+  const headers = this.getHeaders();
+  const httpParams = new HttpParams({ fromObject: params });
+
+  console.log('Sending GET request to filter rooms:', this.apiUrl + '/rooms');
+  return this.http.get<any>(`${this.apiUrl}/rooms`, { headers, params: httpParams });
+}
+
+sortHotels(params: any): Observable<any> {
+  const headers = this.getHeaders();
+  const httpParams = new HttpParams({ fromObject: params });
+
+  console.log('Sorting hotels with params:', params);
+  return this.http.get<any>(`${this.apiUrl}/hotels`, { headers, params: httpParams });
+}
+
+sortRooms(params: any): Observable<any> {
+  const headers = this.getHeaders();
+  const httpParams = new HttpParams({ fromObject: params });
+
+  console.log('Sorting rooms with params:', params);
+  return this.http.get<any>(`${this.apiUrl}/rooms`, { headers, params: httpParams });
+}
+
 enableMfa(password: string, key: string, code: string): Observable<any> {
   const headers = this.getHeaders();
   const body = {
@@ -315,6 +388,7 @@ disableMfa(password: string, code: string): Observable<any> {
     code
   };
   return this.http.post<any>(`${environment.apiBaseUrl}/user/mfa/disable`, body, { headers });
+
 }
 
 }

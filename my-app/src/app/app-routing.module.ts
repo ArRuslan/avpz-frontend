@@ -18,7 +18,8 @@ import { MfaSetupComponent } from './pages/mfa-setup/mfa-setup.component';
 const routes: Routes = [
   { path: 'main-page', component: MainPageComponent },
   { path: 'hotels', component: EventsComponent },
-  { path: 'hotels/:category', component: EventsComponent },
+  { path: 'hotels/category/:category', component: EventsComponent },
+  { path: 'hotel/:hotelId/rooms', component: EventsComponent },
   { path: 'event/:event_id', component: EventDetailComponent },
   { path: 'about_us', component: AboutUsComponent },
   { path: 'contacts', component: ContactsComponent },
@@ -40,3 +41,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+

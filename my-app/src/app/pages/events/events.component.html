@@ -1,13 +1,80 @@
 <div class="container">
-  <div class="search-container">
-    <div class="search">
-      <input type="text" placeholder="Search" [(ngModel)]="searchText">
-      <button class="search-button" (click)="searchEventsByName()"></button>
-    </div>
-    <button class="filter" (click)="openFilterDialog()">Filter</button>
-    <button class="sort" (click)="openSortDialog()">Sort</button>
-  </div>
   <main>
+    <div *ngIf="selectedRoomType" class="room-details">
+      <!-- Верхнє фото на всю ширину -->
+      <div class="room-header">
+        <img [src]="selectedRoomType.photos[0]" alt="{{ selectedRoomType.title }}" class="room-main-photo">
+      </div>
+
+      <!-- Назва кімнати -->
+      <h2 class="room-title">{{ selectedRoomType.title }}</h2>
+
+      <!-- Три фото в ряд -->
+      <div class="room-photo-gallery">
+        <img *ngFor="let photo of selectedRoomType.photos.slice(1, 4)" [src]="photo" alt="{{ selectedRoomType.title }}">
+      </div>
+
+      <!-- Перший абзац тексту -->
+      <p class="room-description">{{ selectedRoomType.description }}</p>
+
+      <!-- Два стовпці тексту -->
+      <div class="room-info-columns">
+        <div class="room-features">
+          <h3>What the room includes:</h3>
+          <ul>
+            <li *ngFor="let detail of selectedRoomType.details">{{ detail }}</li>
+          </ul>
+        </div>
+        <div class="room-reasons">
+          <h3>Why choose this room:</h3>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce volutpat orci eget augue suscipit, ut pretium metus faucibus.</p>
+          <p>Phasellus venenatis magna vitae ipsum luctus, at aliquet magna interdum. Proin vel justo id magna posuere vulputate.</p>
+        </div>
+      </div>
+
+      <!-- Кнопка Explore hotels -->
+      <div class="explore-hotels">
+        <button (click)="navigateToHotels()" class="explore-button">Explore hotels</button>
+      </div>
+    </div>
+
+    <!-- Головне фото готелю -->
+<div *ngIf="hotelDetails" class="room-header">
+  <img [src]="'/assets/images/rooms/3.jpg'" alt="{{ hotelDetails.name }}" class="hotel-main-photo">
+</div>
+
+<!-- Назва готелю -->
+<h2 *ngIf="hotelDetails" class="hotel-title">{{ hotelDetails.name }}</h2>
+
+<!-- Опис готелю -->
+<p *ngIf="hotelDetails" class="hotel-description">{{ hotelDetails.description }}</p>
+
+<div class="search-container" *ngIf="!selectedRoomType">
+  <div class="search">
+    <input type="text" placeholder="Search" [(ngModel)]="searchQuery">
+    <button title="Search" class="search-button" (click)="search()"></button>
+  </div>
+  <button class="filter" (click)="openFilterDialog()">Filter</button>
+  <button class="sort" (click)="openSortDialog()">Sort</button>
+</div>
+
+<!-- Список кімнат -->
+<div class="events-grid" *ngIf="rooms.length > 0">
+  <div class="event-card" *ngFor="let room of rooms">
+    <div class="event-image">
+      <img [src]="room.imageUrl" alt="Room Image">
+    </div>
+    <div class="event-info">
+      <h3>Room Type: {{ room.type }}</h3>
+      <p>Price: ${{ room.price }}</p>
+      <p *ngIf="room.available">Available</p>
+      <p *ngIf="!room.available">Not Available</p>
+      <button class="book-button">Book</button>
+    </div>
+  </div>
+</div>
+
+
     <div class="events-grid" *ngIf="events.length > 0; else noEventsMessage">
       <div class="event-card" *ngFor="let event of events">
         <div class="event-image">
@@ -21,11 +88,30 @@
       </div>
     </div>
 
+    <div class="events-grid" *ngIf="!category && !rooms.length && hotels.length">
+      <div class="event-card" *ngFor="let hotel of hotels">
+        <div class="event-image"></div>
+        <div class="event-info">
+          <h3>{{ hotel.name }}</h3>
+          <p>Address: {{ hotel.address }}</p>
+          <button [routerLink]="'/hotel/' + hotel.id + '/rooms'" class="book-button">Explore</button>
+        </div>
+      </div>
+    </div>
+
     <ng-template #noEventsMessage>
-      <div class="no-events-message">
-        <p>There are no rooms</p>
+      <div class="no-events-message" *ngIf="!hotels?.length && !rooms?.length && !selectedRoomType">
+        <p>There are no hotels or rooms available.</p>
       </div>
     </ng-template>
+
+    <div *ngIf="hotels?.length && totalCount && hotels.length < totalCount" class="load-more-container">
+      <button (click)="loadNextPage()">Load More</button>
+    </div>
+
+    <div class="back-button-container" *ngIf="isSearchActive || isFilterActive || isSortActive">
+      <button class="back-button" (click)="resetSearch()">Back</button>
+    </div>
 
   </main>
 </div>
