@@ -369,6 +369,7 @@ sortRooms(params: any): Observable<any> {
 
   console.log('Sorting rooms with params:', params);
   return this.http.get<any>(`${this.apiUrl}/rooms`, { headers, params: httpParams });
+}
 
 enableMfa(password: string, key: string, code: string): Observable<any> {
   const headers = this.getHeaders();
