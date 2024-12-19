@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {differenceInDays, format} from "date-fns";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-book-stepper',
@@ -19,10 +20,19 @@ export class BookStepperComponent implements OnInit {
   guests: any;
   selectedStep: number = 0;
 
-  constructor() {
-  }
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      this.selectedRoom = {
+        type: params['type'],
+        price: +params['price'], // Преобразование в число
+        id: +params['id'], // Преобразование в число
+        hotel_id: +params['hotel_id'], // Преобразование в число
+        available: params['available'] === 'true' // Преобразование в boolean
+      };
+      console.log(this.selectedRoom); // Ваш объект `room`
+    });
   }
 
   changeStep(step: number) {

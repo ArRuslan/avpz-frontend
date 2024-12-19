@@ -136,7 +136,7 @@ export class EventsComponent {
     // Визначаємо, чи це сторінка готелю з кімнатами або загальна сторінка готелів
     this.route.url.subscribe(urlSegments => {
       const isHotelRoomsPage = urlSegments.some(segment => segment.path === 'hotel') &&
-                               urlSegments.some(segment => segment.path === 'rooms');
+        urlSegments.some(segment => segment.path === 'rooms');
       this.isHotelPage = !isHotelRoomsPage; // true, якщо загальна сторінка готелів
 
       // Обробляємо параметри URL
@@ -313,10 +313,10 @@ export class EventsComponent {
 
   resetSearch(): void {
     this.searchQuery = '';
-  this.isSearchActive = false;
-  this.isFilterActive = false;
-  this.isSortActive = false;
-  this.currentPage = 1;
+    this.isSearchActive = false;
+    this.isFilterActive = false;
+    this.isSortActive = false;
+    this.currentPage = 1;
 
     if (this.isHotelPage) {
       this.getAllHotels(); // Завантажити всі готелі

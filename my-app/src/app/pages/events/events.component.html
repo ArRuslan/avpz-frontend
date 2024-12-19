@@ -39,40 +39,40 @@
     </div>
 
     <!-- Головне фото готелю -->
-<div *ngIf="hotelDetails" class="room-header">
-  <img [src]="'/assets/images/rooms/3.jpg'" alt="{{ hotelDetails.name }}" class="hotel-main-photo">
-</div>
-
-<!-- Назва готелю -->
-<h2 *ngIf="hotelDetails" class="hotel-title">{{ hotelDetails.name }}</h2>
-
-<!-- Опис готелю -->
-<p *ngIf="hotelDetails" class="hotel-description">{{ hotelDetails.description }}</p>
-
-<div class="search-container" *ngIf="!selectedRoomType">
-  <div class="search">
-    <input type="text" placeholder="Search" [(ngModel)]="searchQuery">
-    <button title="Search" class="search-button" (click)="search()"></button>
-  </div>
-  <button class="filter" (click)="openFilterDialog()">Filter</button>
-  <button class="sort" (click)="openSortDialog()">Sort</button>
-</div>
-
-<!-- Список кімнат -->
-<div class="events-grid" *ngIf="rooms.length > 0">
-  <div class="event-card" *ngFor="let room of rooms">
-    <div class="event-image">
-      <img [src]="room.imageUrl" alt="Room Image">
+    <div *ngIf="hotelDetails" class="room-header">
+      <img [src]="'/assets/images/rooms/3.jpg'" alt="{{ hotelDetails.name }}" class="hotel-main-photo">
     </div>
-    <div class="event-info">
-      <h3>Room Type: {{ room.type }}</h3>
-      <p>Price: ${{ room.price }}</p>
-      <p *ngIf="room.available">Available</p>
-      <p *ngIf="!room.available">Not Available</p>
-      <button class="book-button">Book</button>
+
+    <!-- Назва готелю -->
+    <h2 *ngIf="hotelDetails" class="hotel-title">{{ hotelDetails.name }}</h2>
+
+    <!-- Опис готелю -->
+    <p *ngIf="hotelDetails" class="hotel-description">{{ hotelDetails.description }}</p>
+
+    <div class="search-container" *ngIf="!selectedRoomType">
+      <div class="search">
+        <input type="text" placeholder="Search" [(ngModel)]="searchQuery">
+        <button title="Search" class="search-button" (click)="search()"></button>
+      </div>
+      <button class="filter" (click)="openFilterDialog()">Filter</button>
+      <button class="sort" (click)="openSortDialog()">Sort</button>
     </div>
-  </div>
-</div>
+
+    <!-- Список кімнат -->
+    <div class="events-grid" *ngIf="rooms.length > 0">
+      <div class="event-card" *ngFor="let room of rooms">
+        <div class="event-image">
+          <img [src]="room.imageUrl" alt="Room Image">
+        </div>
+        <div class="event-info">
+          <h3>Room Type: {{ room.type }}</h3>
+          <p>Price: ${{ room.price }}</p>
+          <p *ngIf="room.available">Available</p>
+          <p *ngIf="!room.available">Not Available</p>
+          <button class="book-button">Book</button>
+        </div>
+      </div>
+    </div>
 
 
     <div class="events-grid" *ngIf="events.length > 0; else noEventsMessage">

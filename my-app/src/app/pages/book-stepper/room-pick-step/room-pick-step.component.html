@@ -1,25 +1,24 @@
 <div class="room-pick">
   <h2>Rooms</h2>
 
-  <div *ngFor="let room of rooms" class="room-card">
+  <div class="room-card">
     <!-- Image Section -->
-    <img [src]="room.imageUrl" [alt]="room.name" class="room-image" />
+    <img [src]="room.imageUrl" [alt]="'room-img'" class="room-image" />
 
     <!-- Room Info Section -->
     <div class="room-info">
-      <h3>{{ room.name }}</h3>
+      <h3>{{ room.type }}</h3>
       <p>{{ room.description }}</p>
       <p class="room-details">
         <span><img src="assets/images/peoples.png" alt="People" /> {{ room.maxOccupancy }} People</span>
         <span><img src="assets/images/bed.png" alt="Beds" /> {{ room.bedType }}</span>
       </p>
-      <a href="#" class="details-link">View Room Details</a>
     </div>
 
     <!-- Booking Section -->
     <div class="booking">
       <span class="price">${{ room.price.toFixed(2) }}</span>
-      <button class="book-button" (click)="bookRoom(room)">BOOK</button>
+<!--      <button class="book-button" (click)="bookRoom(room)">BOOK</button>-->
     </div>
   </div>
 </div>

@@ -1,12 +1,13 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { differenceInDays, format } from 'date-fns';
-import {ICreateOrderRequest, IPayPalConfig} from "ngx-paypal";
-import {OpenApiService} from "../../../services/open-api.service";
-import {tap} from "rxjs";
-import {Router} from "@angular/router";
+import { IPayPalConfig } from "ngx-paypal";
+import { OpenApiService } from "../../../services/open-api.service";
+import { Router } from "@angular/router";
 
 interface Room {
   name: string;
+  id: number;
+  hotel_id: number;
   description: string;
   maxOccupancy: number;
   bedType: string;
@@ -49,114 +50,131 @@ export class ConfirmationStepComponent implements OnInit {
     city: '',
     postal_code: '',
   };
+  bookingId: number | null = null; // ID созданного букинга
+  orderId: string | null = null; // Payment ID для PayPal
+  isBookingCreated: boolean = false; // Показывать кнопки оплаты?
 
-
-  constructor(
-    private openApiService: OpenApiService, private router: Router) {}
+  constructor(private openApiService: OpenApiService, private router: Router) {}
 
   ngOnInit(): void {
     this.calculateReservationDetails();
-    this.initConfig();
     this.loadUserData();
   }
 
   loadUserData(): void {
-    this.openApiService.getUserInfo().pipe(
-      tap((response) => {
-        this.userData = response; // Сохраняем данные пользователя
-      })
-    ).subscribe();
+    this.openApiService.getUserInfo().subscribe(
+      (response) => {
+        this.userData = response;
+      },
+      (error) => {
+        console.error('Failed to load user data', error);
+      }
+    );
   }
 
-
   calculateReservationDetails(): void {
-    // Calculate nights between check-in and check-out
     this.nights = differenceInDays(this.checkOut, this.checkIn);
-
-    // Calculate total and taxes
     this.subtotal = this.nights * this.room.price;
     this.taxes = this.subtotal * 0.15;
     this.total = this.subtotal + this.taxes;
 
-    // Format dates for display
     this.formattedCheckIn = format(this.checkIn, 'eee MMM dd yyyy');
     this.formattedCheckOut = format(this.checkOut, 'eee MMM dd yyyy');
   }
 
-  private initConfig(): void {
-    this.payPalConfig = {
-      currency: 'EUR',
-      clientId: 'sb',
-      createOrderOnClient: (data) => <ICreateOrderRequest>{
-        intent: 'CAPTURE',
-        purchase_units: [
-          {
-            amount: {
-              currency_code: 'EUR',
-              value: '9.99',
-              breakdown: {
-                item_total: {
-                  currency_code: 'EUR',
-                  value: '9.99'
-                }
-              }
-            },
-            items: [
-              {
-                name: 'Enterprise Subscription',
-                quantity: '1',
-                category: 'DIGITAL_GOODS',
-                unit_amount: {
-                  currency_code: 'EUR',
-                  value: '9.99',
-                },
-              }
-            ]
-          }
-        ]
-      },
-      advanced: {
-        commit: 'true'
-      },
-      style: {
-        label: 'paypal',
-        layout: 'vertical'
-      },
-      onApprove: (data, actions) => {
-        console.log('onApprove - transaction was approved, but not authorized', data, actions);
-        actions.order.get().then((details: any) => {
-          console.log('onApprove - you can get full order details inside onApprove: ', details);
-        });
-      },
-      onClientAuthorization: (data) => {
-        console.log('onClientAuthorization - you should probably inform your server about completed transaction at this point', data);
-      },
-      onCancel: (data, actions) => {
-        console.log('OnCancel', data, actions);
-      },
-      onError: err => {
-        console.log('OnError', err);
-      },
-      onClick: (data, actions) => {
-        console.log('onClick', data, actions);
-      },
-    };
-  }
-
-  bookRoom() {
-    const formatDate = (date: Date) =>
-      date.toISOString().split('T')[0];
+  bookRoom(): void {
+    const formatDate = (date: Date) => date.toISOString().split('T')[0];
 
     const payload = {
-      room_id: 2,
+      room_id: this.room.id,
+      hotel_id: this.room.hotel_id,
       check_in: formatDate(new Date(this.checkIn)),
       check_out: formatDate(new Date(this.checkOut)),
     };
 
-    this.openApiService.makeReservation(payload).subscribe((res) => {
-      this.router.navigate(['/profile']);
-      console.log(res);
-    });
+    this.openApiService.makeReservation(payload).subscribe(
+      (response) => {
+        this.bookingId = response.booking_id; // Получаем ID букинга
+        this.orderId = response.payment_id; // Получаем payment_id для PayPal
+        this.isBookingCreated = true; // Показываем кнопки оплаты
+        this.initPayPalConfig(); // Инициализируем PayPal с новым order_id
+      },
+      (error) => {
+        console.error('Failed to create booking', error);
+        alert('Error: ' + error.message || 'Failed to create booking');
+      }
+    );
   }
 
+  private initPayPalConfig(): void {
+    this.payPalConfig = {
+      currency: 'USD',
+      clientId: 'sb',
+      createOrderOnServer: () => {
+        return new Promise<string>((resolve) => {
+          if (this.orderId) {
+            resolve(this.orderId); // Передаем order_id в PayPal
+          }
+        });
+      },
+      advanced: {
+        commit: 'true',
+      },
+      style: {
+        label: 'paypal',
+        layout: 'vertical',
+      },
+      onApprove: (data, actions) => {
+        console.log('Transaction approved', data, actions);
+        actions.order.get().then((details: any) => {
+          console.log('Full order details:', details);
+        });
+      },
+      authorizeOnServer: () => {
+        return new Promise((resolve, reject) => {
+
+        if(this.bookingId) {
+          const interval = setInterval(() => {
+            this.openApiService.getBooking(this.bookingId as number).subscribe(
+              response => {
+                if(response.status > 0) {
+                  console.log('Booking confirmed: ' + JSON.stringify(response));
+                  clearInterval(interval);
+                  resolve(true);
+                  this.router.navigate(['/bookings', this.bookingId]);
+                }
+              },
+              error => {
+                console.error('Failed to fetch booking details', error);
+              }
+            );
+          }, 3000);
+        }
+
+        });
+      },
+      /*onClientAuthorization: () => {
+        if (this.bookingId) {
+          this.openApiService.checkPayment(this.bookingId).subscribe(
+            (response) => {
+              alert('Booking confirmed: ' + JSON.stringify(response));
+              this.router.navigate(['/bookings', this.bookingId]);
+            },
+            (error) => {
+              console.error('Failed to fetch booking details', error);
+            }
+          );
+        }
+      },*/
+      onCancel: (data, actions) => {
+        console.log('Payment cancelled', data, actions);
+      },
+      onError: (err) => {
+        console.error('Payment error', err);
+      },
+      onClick: (data, actions) => {
+        console.log('PayPal button clicked', data, actions);
+      },
+    };
+  }
 }

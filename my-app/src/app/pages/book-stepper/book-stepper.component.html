@@ -52,6 +52,7 @@
 
   <ng-container *ngIf="selectedStep == 2">
     <app-room-pick-step
+      [room]="selectedRoom"
       (moveToNextStep)="selectRoom($event)"></app-room-pick-step>
   </ng-container>
 
