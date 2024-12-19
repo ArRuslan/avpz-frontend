@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { OpenApiService } from '../../services/open-api.service';
 import { ChangeDetectorRef } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-admin',
@@ -16,6 +17,7 @@ export class AdminComponent implements OnInit {
   selectedRole: number = 0;
   admins: any[] = [];
   allUsers: any[] = [];
+  allBookings: any[] = [];
   currentPage: number = 1;
   pageSize: number = 50;
   totalPages: number = 1;
@@ -27,7 +29,45 @@ export class AdminComponent implements OnInit {
   rowsHistory: any[][] = [];
   isSearching: boolean = false;
 
+  bookingCode: string = '';
+  verificationResult: string | null = null;
+  booking: any = null;
+
   constructor(private apiService: OpenApiService, private cdr: ChangeDetectorRef) {}
+
+  verifyBookingCode(): void {
+    if (!this.bookingCode) {
+      this.verificationResult = 'Please enter a booking code.';
+      return;
+    }
+
+    const [booking_id, user_id, room_id] = this.bookingCode.split(':');
+
+    if (!booking_id || !user_id || !room_id) {
+      this.verificationResult = 'Invalid code format. Use booking_id:user_id:room_id.';
+      return;
+    }
+
+    this.apiService.getAdminBookingVerify(booking_id).subscribe((data) => {
+      console.log(data);
+      if (data.user.id == user_id && data.room.id == room_id) {
+        this.verificationResult = 'Verification successful.';
+        this.booking = data;
+      } else {
+        this.verificationResult = 'Verification failed. User ID or Room ID does not match.';
+        this.booking = null;
+      }
+    }, (error) => {
+      this.verificationResult = 'Error fetching booking details. Please try again.';
+      console.error(error);
+    });
+  }
+
+  clear(): void {
+    this.booking = null;
+    this.verificationResult = null;
+    this.bookingCode = '';
+  }
 
   selectItem(item: any): void {
     this.selectedItem = item;
@@ -46,7 +86,7 @@ export class AdminComponent implements OnInit {
   }
 
   isDisabled(section: string): boolean {
-    const restrictedSections = ['Bookings', 'Payments'];
+    const restrictedSections = ['Payments'];
     return restrictedSections.includes(section);
   }
 
@@ -58,6 +98,8 @@ export class AdminComponent implements OnInit {
       setTimeout(() => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }, 100);
+    } else if (this.activeSection === 'Bookings') {
+      this.loadMoreBookings();
     }
   }
 
@@ -225,12 +267,57 @@ loadUsers(role?: number, page: number = 1): void {
   );
 }
 
-
 loadMoreUsers(): void {
   if (this.currentPage < this.totalPages) {
     this.currentPage++;
     this.loadUsers(this.selectedRole, this.currentPage);
   }
+}
+
+booking_user_id: string = '';
+booking_room_id: string = '';
+booking_check_in: string = '';
+booking_check_out: string = '';
+booking_totalPrice: string = '';
+booking_status: string = '';
+
+loadBookings(page: number = 1): void {
+  this.apiService.getBookings(page).subscribe(
+    (response) => {
+    this.data = response.result.map((item: any) => ({
+      id: item.id,
+      user: item.user_id,
+      room: item.room_id,
+      dates: item.check_in + ' - ' + item.check_out,
+      totalPrice: item.total_price,
+      status: item.status}))
+      .filter((item: any) => 
+        (this.booking_user_id.trim() === '' || item.user_id == this.booking_user_id.trim()) &&
+        (this.booking_room_id.trim() === '' || item.room_id == this.booking_room_id.trim()) &&
+        (this.booking_check_in.trim() === '' || item.check_in == this.booking_check_in.trim()) &&
+        (this.booking_check_out.trim() === '' || item.check_out == this.booking_check_out.trim()) &&
+        (this.booking_totalPrice.trim() === '' || item.totalPrice == this.booking_totalPrice.trim()) &&
+        (this.booking_status.trim() === '' || item.status == this.booking_status.trim())
+      );
+    }),
+    (error: any) => console.error('Error fetching data:', error)
+};
+
+loadMoreBookings(): void {
+  this.currentPage++;
+  this.apiService.getBookings(this.currentPage).subscribe(
+    (response) => {
+      if (response && response.count > 0) {
+        this.data = [...this.data, ...response.result];
+        this.showLoadMore = response.count === 25;
+      } else {
+        this.showLoadMore = false;
+      }
+    },
+    (error) => {
+      console.error('Error fetching Bookings:', error);
+    }
+  );
 }
 
 updatePageData(): void {
@@ -267,6 +354,10 @@ nextPage(): void {
     switch (this.activeSection) {
       case 'Hotels':
         this.loadHotels();
+        break;
+
+      case 'Bookings':
+        this.loadBookings();
         break;
 
       case 'Rooms':

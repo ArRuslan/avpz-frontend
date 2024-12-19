@@ -7,6 +7,7 @@ import {
 import {MatDialog} from "@angular/material/dialog";
 import {AnnouncementPopupComponent} from "../../shared/popup-windows/announcement-popup/announcement-popup.component";
 import {Observable, tap} from "rxjs";
+import {PaymentPopupComponent} from "../../shared/popup-windows/payment-popup/payment-popup.component";
 import {SetAvatarPopupComponent} from "../../shared/popup-windows/set-avatar-popup/set-avatar-popup.component";
 
 export interface Reservation {
@@ -131,7 +132,7 @@ export class MyProfileComponent implements OnInit {
   }
 
   showReservationCode(reservation: Reservation): void {
-    const reservationCode = `${reservation.id}${reservation.user_id}${reservation.room_id}`;
+    const reservationCode = `${reservation.id}:${reservation.user_id}:${reservation.room_id}`;
     alert(`Reservation Code: ${reservationCode}`);
   }
 
@@ -155,7 +156,17 @@ export class MyProfileComponent implements OnInit {
     }
   }
 
+  pay(reservation: Reservation): void {
+    const dialogRef = this.dialog.open(PaymentPopupComponent, {
+      width: '100%',
+      height: '100%',
+      data: { reservation: reservation }
+    });
 
+    dialogRef.afterClosed().subscribe(() => {
+      console.log('Payment popup closed');
+    });
+  }
 
   toggleEdit() {
     this.isEditing = !this.isEditing;

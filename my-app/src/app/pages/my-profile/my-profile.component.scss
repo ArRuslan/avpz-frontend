@@ -115,11 +115,17 @@ main {
       overflow-y: auto;
     }
 
-    .reservation {
+    .horizontal-box {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
-      align-items: center;
+      width: 100%;
+    }
+
+    .reservation {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
       gap: 10px;
       background-color: #f9f9f9;
       padding: 20px;
@@ -178,6 +184,15 @@ main {
       color: white;
     }
 
+    button.pay-btn {
+      border-color: #28a745;
+      color: #28a745;
+    }
+
+    button.pay-btn:hover {
+      background-color: #28a745;
+      color: white;
+    }
   }
 
   .status-upcoming {
