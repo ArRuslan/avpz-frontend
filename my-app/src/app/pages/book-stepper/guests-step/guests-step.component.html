@@ -4,32 +4,19 @@
   <div class="selection-row">
     <div class="selection-item">
       <label>Adults</label>
-      <select [(ngModel)]="adults">
-        <option *ngFor="let num of [1, 2, 3, 4, 5]">{{ num }}</option>
-      </select>
+      <input type="number" [(ngModel)]="adults" min="0" max="10" />
     </div>
 
     <div class="selection-item">
       <label>Children</label>
-      <select [(ngModel)]="children">
-        <option *ngFor="let num of [1, 2, 3, 4, 5]">{{ num }}</option>
-      </select>
-    </div>
-
-    <div class="selection-item">
-      <label>Rooms</label>
-      <select [(ngModel)]="rooms">
-        <option *ngFor="let num of [1, 2, 3, 4, 5]">{{ num }}</option>
-      </select>
+      <input type="number" [(ngModel)]="children" min="0" max="10" />
     </div>
   </div>
 
-  <div class="promo-code">
-    <label>Enter Group or Promo Code</label>
-    <input type="text" [(ngModel)]="promoCode" placeholder="Enter Promo Code" />
-  </div>
+  <a class="add-room" (click)="addRoom()">+ Add a Room</a>
+  <p>Total rooms: {{rooms}}</p>
 
-  <button class="update-button"
-          [disabled]="!rooms || !adults"
-          (click)="updateGuestsAndRooms()">Update Guests & Rooms</button>
+  <button class="update-button" [disabled]="!rooms || !adults" (click)="updateGuestsAndRooms()">
+    UPDATE GUESTS & ROOMS
+  </button>
 </div>

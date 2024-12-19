@@ -455,7 +455,7 @@ export class EventsComponent {
 
     this.openApiService.searchHotels().subscribe(
       (response) => {
-        this.events = response;
+        this.events = response.result;
         console.log(this.events);
         this.getAllEventsImages();
       },
@@ -476,7 +476,7 @@ export class EventsComponent {
 
     this.openApiService.searchHotels().subscribe(
       (response) => {
-        this.events = response;
+        this.events = response.result;
         console.log(this.events);
         this.getAllEventsImages();
       },

@@ -35,6 +35,8 @@ import {MatSnackBarModule} from "@angular/material/snack-bar";
 import { AdminComponent } from './pages/admin/admin.component';
 import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
 import { ResetPasswordComponent } from './pages/reset-password/reset-password.component';
+import {MfaVerifyComponent} from './pages/mfa-verify/mfa-verify.component';
+import {MfaSetupComponent} from './pages/mfa-setup/mfa-setup.component';
 
 @NgModule({
   declarations: [
@@ -48,6 +50,8 @@ import { ResetPasswordComponent } from './pages/reset-password/reset-password.co
     LoginComponent,
     NavBarComponent,
     MyProfileComponent,
+    MfaVerifyComponent,
+    MfaSetupComponent,
     FilterPopupComponent,
     SortPopupComponent,
     HeaderComponent,

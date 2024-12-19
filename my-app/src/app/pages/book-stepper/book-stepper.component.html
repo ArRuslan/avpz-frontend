@@ -1,25 +1,70 @@
-<ng-container *ngIf="selectedStep == 0">
-<app-guests-step
-(moveToNextStep)="selectGuests($event)"></app-guests-step>
-</ng-container>
+<div class="wrapper">
+  <div class="stepper-status">
+    <div class="logo">
+      <img src="assets/images/hhb-logo.png" alt="logo">
+    </div>
+    <div
+      class="step"
+      [class.active]="selectedStep === 0"
+      [class.completed]="selectedStep > 0"
+      (click)="changeStep(0)"
+    >
+      <p>ADULTS & CHILDREN</p>
+      <span>{{ selectedStep > 0 ? 'Done' : 'Select' }}</span>
+    </div>
+    <div
+      class="step"
+      [class.active]="selectedStep === 1"
+      [class.completed]="selectedStep > 1"
+      (click)="changeStep(1)"
+    >
+      <p>DAYS OF STAY</p>
+      <span>{{ selectedStep > 1 ? 'Done' : 'Select' }}</span>
+    </div>
+    <div
+      class="step"
+      [class.active]="selectedStep === 2"
+      [class.completed]="selectedStep > 2"
+      (click)="changeStep(2)"
+    >
+      <p>ACCOMMODATIONS</p>
+      <span>{{ selectedStep > 2 ? 'Done' : 'Select' }}</span>
+    </div>
+    <div
+      class="step"
+      [class.active]="selectedStep === 3"
+      (click)="changeStep(3)"
+    >
+      <p>TOTAL</p>
+      <span>${{ selectedRoom ? total.toFixed(2) : '0.00' }}</span>
+    </div>
+  </div>
 
-<ng-container *ngIf="selectedStep == 1">
-<app-date-picker-step
-  (moveToNextStep)="selectDate($event)"></app-date-picker-step>
-</ng-container>
+  <ng-container *ngIf="selectedStep == 0">
+    <app-guests-step
+      (moveToNextStep)="selectGuests($event)"></app-guests-step>
+  </ng-container>
 
-<ng-container *ngIf="selectedStep == 2">
-<app-room-pick-step
-  (moveToNextStep)="selectRoom($event)"></app-room-pick-step>
-</ng-container>
+  <ng-container *ngIf="selectedStep == 1">
+    <app-date-picker-step
+      (moveToNextStep)="selectDate($event)"></app-date-picker-step>
+  </ng-container>
 
-<ng-container *ngIf="selectedStep == 3">
-<app-confirmation-step
-[room]="selectedRoom"
-[checkIn]="checkInDate"
-[checkOut]="checkOutDate"
-[guests]="guests"
-></app-confirmation-step>
-</ng-container>
+  <ng-container *ngIf="selectedStep == 2">
+    <app-room-pick-step
+      (moveToNextStep)="selectRoom($event)"></app-room-pick-step>
+  </ng-container>
+
+  <ng-container *ngIf="selectedStep == 3">
+    <app-confirmation-step
+      [room]="selectedRoom"
+      [checkIn]="checkInDate"
+      [checkOut]="checkOutDate"
+      [guests]="guests"
+    ></app-confirmation-step>
+  </ng-container>
+
+</div>
+
 
 <app-footer></app-footer>

@@ -1,0 +1,62 @@
+.wrapper {
+  min-height: 500px;
+  height: 100%;
+}
+
+.stepper-status {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #001f3f;
+  padding: 10px 20px;
+  color: #fff;
+  font-family: Arial, sans-serif;
+
+  .logo {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+
+    img {
+      height: 65px;
+    }
+  }
+
+  .step {
+    height: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    text-align: center;
+    padding: 10px 0;
+    cursor: pointer;
+    background-color: #001f3f;
+    color: #fff;
+    transition: background-color 0.3s ease;
+
+    &.active {
+      background-color: #0056b3;
+    }
+
+    &.completed {
+      background-color: #007bff;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.9em;
+      font-weight: bold;
+    }
+
+    span {
+      margin-top: 5px;
+      font-size: 0.8em;
+    }
+
+    &:hover {
+      background-color: #004080;
+    }
+  }
+}
