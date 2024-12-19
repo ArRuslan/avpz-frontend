@@ -69,7 +69,10 @@
           <p>Price: ${{ room.price }}</p>
           <p *ngIf="room.available">Available</p>
           <p *ngIf="!room.available">Not Available</p>
-          <button class="book-button">Book</button>
+          <button
+            [routerLink]="'/book-room'"
+            [queryParams]="{ type: room.type, id: room.id, hotel_id: room.hotel_id, price: room.price, available: room.available }"
+            class="book-button">Book</button>
         </div>
       </div>
     </div>
